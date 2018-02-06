@@ -36,7 +36,7 @@ async function stat(file) {
     return new Promise(function (resolve, reject) {
         fs.stat(file, function (err, stats) {
             if (err) {
-                console.error(err)
+                // console.error(err)
                 reject(err);
             } else {
                 resolve(stats);
@@ -48,9 +48,8 @@ async function stat(file) {
 /**
  * Returns a Promise with an objects info array
  * @param {string} path the path to be searched for
- * @param {function} progress function returning index and total of current scan
  */
-async function myReaddir(path, progress) {
+async function myReaddir(path) {
     const data = []
     return new Promise(function (resolve, reject) {
 
@@ -68,7 +67,7 @@ async function myReaddir(path, progress) {
 
                     // If error reject them
                     if (err) {
-                        console.error(err)
+                        // console.error(err)
                         reject(err);
                     } else {
 
@@ -79,8 +78,6 @@ async function myReaddir(path, progress) {
                                 'path': rpath,
                                 'fullname': rpath + '/' + files[i]
                             }
-                            if (progress != undefined)
-                                progress(i + 1, tam, obj)
 
                             data.push(obj);
                         }
@@ -115,7 +112,7 @@ async function listDir(path, settings, progress) {
     try {
         list = await myReaddir(path);
     } catch (err) {
-        console.error(err);
+        // console.error(err);
         return [{ 'error': err, 'path': path }]
     }
     if (settings.stats || settings.recursive || settings.ignoreFolders) {
@@ -136,7 +133,7 @@ async function listDir(path, settings, progress) {
                     }
                 }
             } catch (err) {
-                console.error(err)
+                // console.error(err)
                 list[i].error = err
             }
 
@@ -165,7 +162,7 @@ async function dir(path, options, progress) {
     // options skipped?
     if (typeof options == 'function') {
         progress = options
-        options = undefined
+        //options = undefined
     }
 
     // Setting default settings
