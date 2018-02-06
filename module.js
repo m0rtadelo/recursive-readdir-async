@@ -171,7 +171,7 @@ async function dir(path, options, progress) {
     // Setting default settings
     const settings = {
         mode: LIST,
-        recursive: false,
+        recursive: true,
         stats: false,
         ignoreFolders: true
     }
