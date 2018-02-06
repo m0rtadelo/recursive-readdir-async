@@ -1,8 +1,15 @@
 var assert = require('assert');
-describe('Array', function() {
-  describe('#indexOf()', function() {
-    it('should return -1 when the value is not present', function() {
-      assert.equal([1,2,3].indexOf(4), -1);
+const rra = require('../module.js')
+
+describe('recursive-readdir-async', function () {
+    it('should load on require', function () {
+        assert.notEqual(rra, undefined, 'module not loaded')
     });
-  });
+    it('should return an object', function () {
+        assert.equal(typeof rra, 'object', 'not returns a object, returns ' + typeof rra)
+    })
+    it('should return an object (Promise)', function () {
+        const prom = rra.list('.');
+        assert.equal(Promise.resolve(prom), prom, 'not returns a promise.')
+    })
 });
