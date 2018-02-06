@@ -196,7 +196,6 @@ async function dir(path, options, progress) {
 
 module.exports = {
     list: dir,
-    stat: stat,
     LIST: LIST,
     TREE: TREE
 }

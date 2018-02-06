@@ -17,12 +17,12 @@ const rra = require('recursive-readdir-async')
 Example of basic usage:
 ```javascript
 const rra = require('recursive-readdir-async');
-const list = await rra.readdir('.');
+const list = await rra.dir('.');
 console.log(list)
 ```
 ```javascript
 const rra = require('recursive-readdir-async');
-rra.readdir('.');
+rra.dir('.');
 rra.then(function(list){
     console.log(list)
 })
@@ -37,7 +37,7 @@ const options = {
     ignoreFolders: true
 }
 try {
-    const list = await rra.readdir('.', options, function (obj, index, total) {
+    const list = await rra.dir('.', options, function (obj, index, total) {
         console.log(`${index} of ${total} ${obj.path}`)
         if(obj.name=="folder2")
             return true;// return true to delete item
