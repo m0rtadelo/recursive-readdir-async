@@ -1,0 +1,23 @@
+{
+  "name": "recursive-readdir-async",
+  "version": "1.0.0",
+  "description": "Module to recursive read directory async (non blocking). Can be used with Promises or Callback. Configurable, extended filtering. etc.",
+  "main": "module.js",
+  "scripts": {
+    "test": "qunit test"
+  },
+  "keywords": [
+    "recursive",
+    "readdir",
+    "directory",
+    "files",
+    "listing",
+    "async",
+    "promise",
+    "callback",
+    "list",
+    "dir"
+  ],
+  "author": "ricard.figuls",
+  "license": "MIT"
+}
