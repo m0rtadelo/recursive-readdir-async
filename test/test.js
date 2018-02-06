@@ -35,7 +35,7 @@ describe('recursive-readdir-async load', function () {
     })
     it('should load without options (with callback)', async function () {
         let cb = false
-        const prom = await rra.list('.', function (file) {
+        const prom = await rra.list('./test/test/folder1/', function (file) {
             cb = true
         });
         assert.equal(cb, true, 'not loads supressing options.')
