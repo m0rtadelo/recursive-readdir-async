@@ -4,7 +4,8 @@
   "description": "Module to recursive read directory async (non blocking). Must be used with Promises. Configurable, extended filtering. etc.",
   "main": "module.js",
   "scripts": {
-    "test": "nyc mocha"
+    "test": "nyc mocha",
+    "coverage":"nyc --reporter=lcov --reporter=text-lcov npm test"
   },
   "keywords": [
     "recursive",
