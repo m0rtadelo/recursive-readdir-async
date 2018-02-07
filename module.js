@@ -113,7 +113,7 @@ async function listDir(path, settings, progress) {
         list = await myReaddir(path);
     } catch (err) {
         // console.error(err);
-        return [{ 'error': err, 'path': path }]
+        return { 'error': err, 'path': path }
     }
     if (settings.stats || settings.recursive || settings.ignoreFolders) {
         let isOk = true
@@ -193,6 +193,7 @@ async function dir(path, options, progress) {
 
 module.exports = {
     list: dir,
+    stat: stat,
     LIST: LIST,
     TREE: TREE
 }
