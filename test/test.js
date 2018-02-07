@@ -1,7 +1,7 @@
 var assert = require('assert');
 const rra = require('../module.js')
 
-describe('recursive-readdir-async load', function () {
+describe('load', function () {
 
     // Creating test structure
     const fs = require('fs-extra')
@@ -42,7 +42,7 @@ describe('recursive-readdir-async load', function () {
     })
 });
 
-describe('recursive-readdir-async usage', function () {
+describe('usage', function () {
     it('should return an array of 2 items (only files)', async function () {
         const prom = await rra.list('./test/test/')
         assert.equal(prom.length, 2, 'returns ' + prom.length)
@@ -106,5 +106,38 @@ describe('recursive-readdir-async usage', function () {
         })
         assert.equal(counter, 7, 'returns ' + prom.length)
     });
+    it('should ignore folder2 structure', async function () {
+        options = {
+            mode: rra.TREE,
+            recursive: true,
+            ignoreFolders: true,
+            stats: false
+        }
+        const prom = await rra.list('./test/test/',options)
+        assert.equal(prom.length , 1, 'returns ' + prom.length)
+    });
 
+});
+
+describe('error control', function () {
+    it('controlled error for list (must be quiet)',async function(){
+        let isOk = false
+        try {
+            const res = await rra.list('./test/test/inexistent.file');
+            if(res.error)
+                isOk = true
+        } catch (error) {
+            isOk = false
+        }
+        assert.equal(isOk,true,'unexpected behavior (error or no json with error)')
+    })
+    it('controlled error for stat (must throw error)',async function(){
+        let isOk = false
+        try {
+            await rra.stat('./test/test/inexistent.file');
+        } catch (error) {
+            isOk = true
+        }
+        assert.equal(isOk,true,'unexpected behavior (no error)')
+    })
 });
