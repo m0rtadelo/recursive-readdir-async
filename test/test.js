@@ -35,7 +35,7 @@ describe('load', function () {
     })
     it('should load without options (with callback)', async function () {
         let cb = false
-        const prom = await rra.list('./test/test/folder1/', function (file) {
+        await rra.list('./test/test/folder1/', function () {
             cb = true
         });
         assert.equal(cb, true, 'not loads supressing options.')
@@ -101,7 +101,7 @@ describe('usage', function () {
             stats: false
         }
         let counter = 0
-        const prom = await rra.list('./test/test/', options, function (file) {
+        const prom = await rra.list('./test/test/', options, function () {
             counter++
         })
         assert.equal(counter, 7, 'returns ' + prom.length)
