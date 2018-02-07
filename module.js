@@ -26,8 +26,6 @@ const DEFAULTS = {
 // native fs module
 const fs = require('fs')
 
-// region PROMISES
-
 /**
  * returns a Promise with Stats info of the file
  * @param {string} file 
@@ -94,10 +92,6 @@ async function myReaddir(path) {
     });
 }
 
-// endregion
-
-// region PRIVATE
-
 /**
  * Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style).
  * @param  {string} path
@@ -112,7 +106,6 @@ async function listDir(path, settings, progress) {
     try {
         list = await myReaddir(path);
     } catch (err) {
-        // console.error(err);
         return { 'error': err, 'path': path }
     }
     if (settings.stats || settings.recursive || settings.ignoreFolders) {
@@ -133,7 +126,6 @@ async function listDir(path, settings, progress) {
                     }
                 }
             } catch (err) {
-                // console.error(err)
                 list[i].error = err
             }
 
@@ -146,10 +138,6 @@ async function listDir(path, settings, progress) {
     }
     return list;
 }
-
-// endregion
-
-// region PUBLIC
 
 /**
  * Returns a javascript object with directory items information (non blocking async with Promises)
@@ -188,8 +176,6 @@ async function dir(path, options, progress) {
     // Reading contents
     return await listDir(path, settings, progress);
 }
-
-// endregion
 
 module.exports = {
     list: dir,
