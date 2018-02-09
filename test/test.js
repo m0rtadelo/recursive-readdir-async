@@ -120,7 +120,7 @@ describe('usage', function () {
 });
 
 describe('error control', function () {
-    it('controlled error for list (must be quiet)',async function(){
+    it('controlled error for list (must be quiet and return error into object)',async function(){
         let isOk = false
         try {
             const res = await rra.list('./test/test/inexistent.file');
