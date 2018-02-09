@@ -108,7 +108,7 @@ async function listDir(path, settings, progress) {
     } catch (err) {
         return { 'error': err, 'path': path }
     }
-    if (settings.stats || settings.recursive || settings.ignoreFolders) {
+    if (settings.stats || settings.recursive || settings.ignoreFolders || settings.mode == TREE) {
         let isOk = true
         for (let i = list.length - 1; i > -1; i--) {
             try {
