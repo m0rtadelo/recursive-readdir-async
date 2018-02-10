@@ -14,10 +14,13 @@
     "files",
     "listing",
     "async",
+    "await",
     "promise",
     "callback",
     "list",
-    "dir"
+    "tree",
+    "dir",
+    "ls"
   ],
   "author": "ricard.figuls",
   "bugs": {
