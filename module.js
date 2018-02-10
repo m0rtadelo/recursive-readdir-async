@@ -5,7 +5,6 @@
  * 2018
  */
 'use strict';
-
 // constants
 /**
  * creates list object with content
@@ -15,17 +14,8 @@ const LIST = 1
  * creates tree object with content
  */
 const TREE = 2
-
-const DEFAULTS = {
-    mode: LIST,
-    recursive: true,
-    stats: false,
-    ignoreFolders: true
-}
-
 // native fs module
 const fs = require('fs')
-
 /**
  * returns a Promise with Stats info of the file
  * @param {string} file 
@@ -42,7 +32,6 @@ async function stat(file) {
         })
     });
 }
-
 /**
  * Returns a Promise with an objects info array
  * @param {string} path the path to be searched for
@@ -91,7 +80,6 @@ async function myReaddir(path) {
         }
     });
 }
-
 /**
  * Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style).
  * @param  {string} path
@@ -100,7 +88,12 @@ async function myReaddir(path) {
 function normalizePath(path) {
     return path.replace(/\\/g, '/');
 }
-
+/**
+ * Returns an array of items in path
+ * @param {*} path 
+ * @param {*} settings 
+ * @param {*} progress 
+ */
 async function listDir(path, settings, progress) {
     let list
     try {
@@ -138,7 +131,6 @@ async function listDir(path, settings, progress) {
     }
     return list;
 }
-
 /**
  * Returns a javascript object with directory items information (non blocking async with Promises)
  * @param {string} path the path to start reading contents
@@ -148,10 +140,8 @@ async function listDir(path, settings, progress) {
 async function dir(path, options, progress) {
 
     // options skipped?
-    if (typeof options == 'function') {
+    if (typeof options == 'function') 
         progress = options
-        //options = undefined
-    }
 
     // Setting default settings
     const settings = {
@@ -176,7 +166,6 @@ async function dir(path, options, progress) {
     // Reading contents
     return await listDir(path, settings, progress);
 }
-
 module.exports = {
     list: dir,
     stat: stat,
