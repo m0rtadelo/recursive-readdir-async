@@ -48,7 +48,7 @@ describe('usage', function () {
         const prom = await rra.list('./test/test/')
         if(prom[0].deep || prom[0].stats || prom[0].extension)
             isOK = false
-        if(!(prom[0].name && prom[0].path && prom[0].fullname))
+        if(!(prom[0].name && prom[0].path && prom[0].fullname && prom[0].isDirectory != undefined))
             isOK = false
         assert.equal(isOK, true, prom[0])
     });
