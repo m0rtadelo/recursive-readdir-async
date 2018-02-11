@@ -22,8 +22,7 @@ console.log(list)
 ```
 ```javascript
 const rra = require('recursive-readdir-async');
-rra.list('.');
-rra.then(function(list){
+rra.list('.').then(function(list){
     console.log(list)
 })
 ```
