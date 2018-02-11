@@ -1,0 +1,5 @@
+1.0.1
+    adding fs and path to module exports
+    better packaje.json information
+    added extensions option
+    added deep option
