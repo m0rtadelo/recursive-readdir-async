@@ -33,7 +33,9 @@ const options = {
     mode: rra.LIST,
     recursive: true,
     stats: false,
-    ignoreFolders: true
+    ignoreFolders: true,
+    extensions: true,
+    deep: true
 }
 const list = await rra.list('.', options, function (obj, index, total) {
     console.log(`${index} of ${total} ${obj.path}`)
@@ -49,8 +51,10 @@ else
 An options object can be passed to configure the module. The next options can be used:
 * **mode (LIST | TREE)** : The list will return an array of items. The tree will return the items structured like the file system. *Default: list*
 * **recursive (true | false)** : If true, files and folders of folders and subfolders will be listed. IF false, only the files and folders of the select directory will be listed. *Default: true*
-* **stats (true | false)** : If true a stats object (with file information), will be added to every file. If false this info is not added. *Default: false*
+* **stats (true | false)** : If true a stats object (with file information), will be added to every item. If false this info is not added. *Default: false*
 * **ignoreFolders (true | false)** : If true and mode is LIST, the list will be returned with files only. If true and mode is TREE, the directory structures without files will be deleted. If false, all empty and non empty directories will be listed. *Default: true*
+* **extensions (true | false)** : If true, lowercase extensions will be added to every item (file.TXT = .txt). *Default: false*
+* **deep (true | false)** : If true, folder depth information will be added to every item starting by 0 (initial path), and be incremented by 1 in every subfolder. *Default: false*
 ## Object structure
 The function will return an object and never throw an error. All errors will be added to the returned object. The return object in LIST mode are like this:
 ```json
