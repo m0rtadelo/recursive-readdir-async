@@ -27,6 +27,10 @@
     "url": "https://github.com/m0rtadelo/recursive-readdir-async/issues"
   },
   "homepage": "https://github.com/m0rtadelo/recursive-readdir-async",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/m0rtadelo/recursive-readdir-async.git"
+  },
   "license": "MIT",
   "devDependencies": {
     "fs-extra": "^5.0.0",
