@@ -7,6 +7,9 @@
     "test": "nyc mocha",
     "coverage":"nyc --reporter=lcov --reporter=text-lcov npm test"
   },
+  "engines": {
+    "node": ">=7.6"
+  },  
   "keywords": [
     "recursive",
     "readdir",
