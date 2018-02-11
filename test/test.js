@@ -14,7 +14,7 @@ describe('load', function () {
     fs.mkdirSync('./test/test/folder1/')
     fs.mkdirSync('./test/test/folder1/subfolder1/')
     fs.mkdirSync('./test/test/folder1/subfolder1/subsubf1/')
-    fs.writeFileSync('./test/test/folder1/file1.txt', 'some')
+    fs.writeFileSync('./test/test/folder1/file1.TXT', 'some')
     fs.writeFileSync('./test/test/folder1/subfolder1/subsubf1/subfile1.txt', 'something')
     fs.mkdirSync('./test/test/folder2/')
     fs.mkdirSync('./test/test/folder2/subfolder2/')
@@ -43,6 +43,15 @@ describe('load', function () {
 });
 
 describe('usage', function () {
+    it('checking defaults', async function () {
+        let isOK = true
+        const prom = await rra.list('./test/test/')
+        if(prom[0].deep || prom[0].stats || prom[0].extension)
+            isOK = false
+        if(!(prom[0].name && prom[0].path && prom[0].fullname))
+            isOK = false
+        assert.equal(isOK, true, prom[0])
+    });
     it('should return an array of 2 items (only files)', async function () {
         const prom = await rra.list('./test/test/')
         assert.equal(prom.length, 2, 'returns ' + prom.length)
@@ -111,33 +120,56 @@ describe('usage', function () {
             mode: rra.TREE,
             recursive: true,
             ignoreFolders: true,
-            stats: false
+            stats: false,
+            deep: true,
+            extensions: true
         }
-        const prom = await rra.list('./test/test/',options)
-        assert.equal(prom.length , 1, 'returns ' + prom.length)
+        const prom = await rra.list('./test/test/', options)
+        assert.equal(prom.length, 1, 'returns ' + prom.length)
+    });
+    it('should return deep & lowercase extensions properly', async function () {
+        let isOK=true
+        options = {
+            mode: rra.LIST,
+            recursive: true,
+            ignoreFolders: true,
+            stats: false,
+            deep: true,
+            extensions: true
+        }
+        const prom = await rra.list('./test/test/', options)
+        for (var i = 0; i < prom.length; i++) {
+            if(prom[i].extension != '.txt' || isNaN(prom[i].deep))
+                isOK = false
+            if(prom[i].name=='file1.TXT' && prom[i].deep != 1)
+                isOK = false
+            if(prom[i].name=='subfile1.txt' && prom[i].deep != 3)
+                isOK = false
+        }
+        assert.equal(isOK, true, 'something went wrong')
     });
 
 });
 
 describe('error control', function () {
-    it('controlled error for list (must be quiet and return error into object)',async function(){
+    it('controlled error for list (must be quiet and return error into object)', async function () {
         let isOk = false
         try {
             const res = await rra.list('./test/test/inexistent.file');
-            if(res.error)
+            if (res.error)
                 isOk = true
         } catch (error) {
             isOk = false
         }
-        assert.equal(isOk,true,'unexpected behavior (error or no json with error)')
+        assert.equal(isOk, true, 'unexpected behavior (error or no json with error)')
     })
-    it('controlled error for stat (must throw error)',async function(){
+    it('controlled error for stat (must throw error)', async function () {
         let isOk = false
         try {
             await rra.stat('./test/test/inexistent.file');
         } catch (error) {
             isOk = true
         }
-        assert.equal(isOk,true,'unexpected behavior (no error)')
+        assert.equal(isOk, true, 'unexpected behavior (no error)')
     })
 });
