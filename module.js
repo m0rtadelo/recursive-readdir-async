@@ -68,8 +68,7 @@ async function myReaddir(path, settings, deep) {
                                 'path': rpath,
                                 'fullname': rpath + '/' + files[i]
                             }
-                            obj.extension = (settings.extensions ? (PATH.extname(files[i])).toLowerCase() : undefined)
-                            obj.deep = (settings.deep ? deep : undefined)
+                            addOptionalKeys(obj, files[i]);
                             data.push(obj);
                         }
 
@@ -83,6 +82,17 @@ async function myReaddir(path, settings, deep) {
             reject(err)
         }
     });
+    /**
+     * Adds optional keys to item
+     * @param {object} obj item object
+     * @param {string} file filename
+     */
+    function addOptionalKeys(obj, file) {
+        if (settings.extensions)
+            obj.extension = (PATH.extname(file)).toLowerCase();
+        if (settings.deep)
+            obj.deep = deep;
+    }
 }
 /**
  * Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style).
@@ -146,7 +156,8 @@ async function statDir(list, settings, progress, deep) {
 async function statDirItem(list, i, settings, progress, deep) {
     const stats = await stat(list[i].fullname);
     list[i].isDirectory = stats.isDirectory();
-    list[i].stats = (settings.stats ? stats : undefined);
+    if(settings.stats)
+        list[i].stats = stats
     if (list[i].isDirectory && settings.recursive) {
         if (settings.mode == LIST)
             list = list.concat(await listDir(list[i].fullname, settings, progress, deep + 1));
