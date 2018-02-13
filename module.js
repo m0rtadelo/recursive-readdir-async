@@ -66,10 +66,8 @@ async function myReaddir(path, settings, deep) {
                                 'path': rpath,
                                 'fullname': rpath + '/' + files[i]
                             }
-                            if (settings.extensions)
-                                obj.extension = (PATH.extname(files[i])).toLowerCase()
-                            if (settings.deep)
-                                obj.deep = deep
+                            obj.extension = (settings.extensions ? (PATH.extname(files[i])).toLowerCase() : undefined)
+                            obj.deep = (settings.deep ? deep : undefined)
                             data.push(obj);
                         }
 
@@ -100,43 +98,52 @@ function normalizePath(path) {
  */
 async function listDir(path, settings, progress, deep) {
     let list
-    if (deep == undefined)
-        deep = 0;
+    deep = (deep == undefined ? 0 : deep)
     try {
         list = await myReaddir(path, settings, deep);
     } catch (err) {
         return { 'error': err, 'path': path }
     }
     if (settings.stats || settings.recursive || settings.ignoreFolders || settings.mode == TREE) {
-        let isOk = true
-        for (let i = list.length - 1; i > -1; i--) {
-            try {
-                const stats = await stat(list[i].fullname)
-                list[i].isDirectory = stats.isDirectory()
-                if (settings.stats)
-                    list[i].stats = stats
-                if (list[i].isDirectory && settings.recursive) {
-                    if (settings.mode == LIST)
-                        list = list.concat(await listDir(list[i].fullname, settings, progress, deep+1))
-                    else {
-                        list[i].content = await listDir(list[i].fullname, settings, progress, deep+1)
-                        if (list[i].content.length == 0)
-                            list[i].content = null
-                    }
-                }
-            } catch (err) {
-                list[i].error = err
-            }
 
-            if (progress != undefined)
-                isOk = !progress(list[i], list.length - i, list.length)
+        list = await statDir(list, settings, progress, deep);
+    }
+    return list;
+}
 
-            if ((list[i].isDirectory && settings.ignoreFolders && list[i].content == undefined) || isOk == false)
-                list.splice(i, 1)
+async function statDir(list, settings, progress, deep) {
+    let isOk = true;
+    for (let i = list.length - 1; i > -1; i--) {
+        try {
+            list = await statDirItem(list, i, settings, progress, deep);
+        }
+        catch (err) {
+            list[i].error = err;
+        }
+        if (progress != undefined)
+            isOk = !progress(list[i], list.length - i, list.length);
+        if ((list[i].isDirectory && settings.ignoreFolders && list[i].content == undefined) || !isOk)
+            list.splice(i, 1);
+    }
+    return list;
+}
+
+async function statDirItem(list, i, settings, progress, deep) {
+    const stats = await stat(list[i].fullname);
+    list[i].isDirectory = stats.isDirectory();
+    list[i].stats = (settings.stats ? stats : undefined);
+    if (list[i].isDirectory && settings.recursive) {
+        if (settings.mode == LIST)
+            list = list.concat(await listDir(list[i].fullname, settings, progress, deep + 1));
+        else {
+            list[i].content = await listDir(list[i].fullname, settings, progress, deep + 1);
+            if (list[i].content.length == 0)
+                list[i].content = null;
         }
     }
     return list;
 }
+
 /**
  * Returns a javascript object with directory items information (non blocking async with Promises)
  * @param {string} path the path to start reading contents
