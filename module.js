@@ -18,7 +18,7 @@ const TREE = 2
 const FS = require('fs')
 const PATH = require('path')
 /**
- * returns a Promise with Stats info of the file
+ * returns a Promise with Stats info of the item (file/folder/...)
  * @param {string} file 
  */
 async function stat(file) {
@@ -36,6 +36,8 @@ async function stat(file) {
 /**
  * Returns a Promise with an objects info array
  * @param {string} path the path to be searched for
+ * @param {object} settings options
+ * @param {number} deep folder depth
  */
 async function myReaddir(path, settings, deep) {
     const data = []
@@ -84,17 +86,17 @@ async function myReaddir(path, settings, deep) {
 }
 /**
  * Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style).
- * @param  {string} path
- * @return {string}
+ * @param  {string} path windows/unix path
+ * @return {string} normalized path (unix style)
  */
 function normalizePath(path) {
     return path.replace(/\\/g, '/');
 }
 /**
  * Returns an array of items in path
- * @param {*} path 
- * @param {*} settings 
- * @param {*} progress 
+ * @param {*} path path
+ * @param {object} settings options
+ * @param {function} progress callback progress
  */
 async function listDir(path, settings, progress, deep) {
     let list
@@ -110,7 +112,13 @@ async function listDir(path, settings, progress, deep) {
     }
     return list;
 }
-
+/**
+ * Returns an object with all items with selected options
+ * @param {object} list items list
+ * @param {object} settings options
+ * @param {function} progress callback progress
+ * @param {number} deep folder depth
+ */
 async function statDir(list, settings, progress, deep) {
     let isOk = true;
     for (let i = list.length - 1; i > -1; i--) {
@@ -127,7 +135,14 @@ async function statDir(list, settings, progress, deep) {
     }
     return list;
 }
-
+/**
+ * Returns an object with updated item information
+ * @param {object} list items list
+ * @param {number} i index of item
+ * @param {object} settings options
+ * @param {function} progress callback progress
+ * @param {number} deep folder depth
+ */
 async function statDirItem(list, i, settings, progress, deep) {
     const stats = await stat(list[i].fullname);
     list[i].isDirectory = stats.isDirectory();
