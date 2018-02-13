@@ -4,3 +4,4 @@ coverage/*
 test/*
 .npmignore
 .gitignore
+module.js
