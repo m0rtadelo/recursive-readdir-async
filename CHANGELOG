@@ -3,3 +3,9 @@
     better packaje.json information
     added extensions option
     added deep option
+1.0.2
+    minified build created (module.min.js)
+    minified build added to package.json (to be used instead of source code on npm)
+    minified build added to .gitignore (github is for source/development)
+    source code added to .npmignore (npm is production)
+    clean of lint errors & warnings (refactor)
