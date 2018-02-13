@@ -48,7 +48,7 @@ describe('usage', function () {
         const prom = await rra.list('./test/test/')
         if(prom[0].deep || prom[0].stats || prom[0].extension)
             isOK = false
-        if(!(prom[0].name && prom[0].path && prom[0].fullname && prom[0].isDirectory != undefined))
+        else if(!(prom[0].name && prom[0].path && prom[0].fullname && prom[0].isDirectory != undefined))
             isOK = false
         assert.equal(isOK, true, prom[0])
     });
@@ -148,7 +148,13 @@ describe('usage', function () {
         }
         assert.equal(isOK, true, 'something went wrong')
     });
-
+    it('should not return keys (deep, extension,... ) if not set', async function () {
+        const prom = await rra.list('./test/test/')
+        let isOK = true
+        if(prom[0].hasOwnProperty('stats') || prom[0].hasOwnProperty('deep') || prom[0].hasOwnProperty('extension'))
+            isOK = false
+        assert.equal(isOK, true, 'something wrong')
+    });
 });
 
 describe('error control', function () {
