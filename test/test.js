@@ -46,9 +46,9 @@ describe('usage', function () {
     it('checking defaults', async function () {
         let isOK = true
         const prom = await rra.list('./test/test/')
-        if(prom[0].deep || prom[0].stats || prom[0].extension)
+        if (prom[0].deep || prom[0].stats || prom[0].extension || prom[0].fullname.indexOf('/') == -1)
             isOK = false
-        else if(!(prom[0].name && prom[0].path && prom[0].fullname && prom[0].isDirectory != undefined))
+        else if (!(prom[0].name && prom[0].path && prom[0].fullname && prom[0].isDirectory != undefined))
             isOK = false
         assert.equal(isOK, true, prom[0])
     });
@@ -128,7 +128,7 @@ describe('usage', function () {
         assert.equal(prom.length, 1, 'returns ' + prom.length)
     });
     it('should return deep & lowercase extensions properly', async function () {
-        let isOK=true
+        let isOK = true
         options = {
             mode: rra.LIST,
             recursive: true,
@@ -139,11 +139,11 @@ describe('usage', function () {
         }
         const prom = await rra.list('./test/test/', options)
         for (var i = 0; i < prom.length; i++) {
-            if(prom[i].extension != '.txt' || isNaN(prom[i].deep))
+            if (prom[i].extension != '.txt' || isNaN(prom[i].deep))
                 isOK = false
-            if(prom[i].name=='file1.TXT' && prom[i].deep != 1)
+            if (prom[i].name == 'file1.TXT' && prom[i].deep != 1)
                 isOK = false
-            if(prom[i].name=='subfile1.txt' && prom[i].deep != 3)
+            if (prom[i].name == 'subfile1.txt' && prom[i].deep != 3)
                 isOK = false
         }
         assert.equal(isOK, true, 'something went wrong')
@@ -151,9 +151,16 @@ describe('usage', function () {
     it('should not return keys (deep, extension,... ) if not set', async function () {
         const prom = await rra.list('./test/test/')
         let isOK = true
-        if(prom[0].hasOwnProperty('stats') || prom[0].hasOwnProperty('deep') || prom[0].hasOwnProperty('extension'))
+        if (prom[0].hasOwnProperty('stats') || prom[0].hasOwnProperty('deep') || prom[0].hasOwnProperty('extension'))
             isOK = false
         assert.equal(isOK, true, 'something wrong')
+    });
+    it('should not normalize and set realPath (only works in Windows)', async function () {
+        const prom = await rra.list('.\\test\\test\\', { 'realPath': false, 'normalizePath': false })
+        let isOK = true
+        if (!prom[0].path.startsWith('.\\test\\test\\folder1'))
+            isOK = false
+        assert.equal(isOK, true, 'Working in Linux? ' + prom[0].path)
     });
 });
 
