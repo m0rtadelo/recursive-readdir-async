@@ -9,3 +9,5 @@
     minified build added to .gitignore (github is for source/development)
     source code added to .npmignore (npm is production)
     clean of lint errors & warnings (refactor)
+    added realPath & normalizePath option
+    Fixed path separator duplication 
