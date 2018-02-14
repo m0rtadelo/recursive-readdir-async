@@ -30,12 +30,14 @@ Example with full features:
 ```javascript
 const rra = require('recursive-readdir-async');
 const options = {
-    mode: rra.LIST,
+    mode: LIST,
     recursive: true,
     stats: false,
     ignoreFolders: true,
-    extensions: true,
-    deep: true
+    extensions: false,
+    deep: false,
+    realPath: true,
+    normalizePath: true
 }
 const list = await rra.list('.', options, function (obj, index, total) {
     console.log(`${index} of ${total} ${obj.path}`)
@@ -55,6 +57,8 @@ An options object can be passed to configure the module. The next options can be
 * **ignoreFolders (true | false)** : If true and mode is LIST, the list will be returned with files only. If true and mode is TREE, the directory structures without files will be deleted. If false, all empty and non empty directories will be listed. *Default: true*
 * **extensions (true | false)** : If true, lowercase extensions will be added to every item (file.TXT = .txt). *Default: false*
 * **deep (true | false)** : If true, folder depth information will be added to every item starting by 0 (initial path), and be incremented by 1 in every subfolder. *Default: false*
+* **normalizePath (true | false)** : Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style). *Default: true*
+* **realPath (true | false)** : Computes the canonical pathname by resolving ., .. and symbolic links. *Default: true*
 ## Object structure
 The function will return an object and never throw an error. All errors will be added to the returned object. The return object in LIST mode are like this:
 ```json
