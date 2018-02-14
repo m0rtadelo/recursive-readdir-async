@@ -17,6 +17,8 @@ const TREE = 2
 // native modules
 const FS = require('fs')
 const PATH = require('path')
+// variables
+let pathSimbol = '/';
 /**
  * returns a Promise with Stats info of the item (file/folder/...)
  * @param {string} file 
@@ -46,11 +48,12 @@ async function myReaddir(path, settings, deep) {
         try {
             // Asynchronously computes the canonical pathname by resolving ., .. and symbolic links.
             FS.realpath(path, function (err, rpath) {
-                if (err)
+                if (err || settings.realPath === false)
                     rpath = path
 
                 // Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style).
-                rpath = normalizePath(rpath)
+                if (settings.normalizePath)
+                    rpath = normalizePath(rpath)
 
                 // Reading contents of path
                 FS.readdir(rpath, function (err, files) {
@@ -66,7 +69,7 @@ async function myReaddir(path, settings, deep) {
                             const obj = {
                                 'name': files[i],
                                 'path': rpath,
-                                'fullname': rpath + '/' + files[i]
+                                'fullname': rpath + (rpath.endsWith(pathSimbol) ? '' : pathSimbol) + files[i]
                             }
                             addOptionalKeys(obj, files[i]);
                             data.push(obj);
@@ -156,7 +159,7 @@ async function statDir(list, settings, progress, deep) {
 async function statDirItem(list, i, settings, progress, deep) {
     const stats = await stat(list[i].fullname);
     list[i].isDirectory = stats.isDirectory();
-    if(settings.stats)
+    if (settings.stats)
         list[i].stats = stats
     if (list[i].isDirectory && settings.recursive) {
         if (settings.mode == LIST)
@@ -189,27 +192,44 @@ async function list(path, options, progress) {
         stats: false,
         ignoreFolders: true,
         extensions: false,
-        deep: false
+        deep: false,
+        realPath: true,
+        normalizePath: true
     }
 
     // Aplying options (if set)
-    if (options != undefined) {
-        if (options.recursive != undefined)
-            settings.recursive = options.recursive
-        if (options.mode != undefined)
-            settings.mode = options.mode
-        if (options.stats != undefined)
-            settings.stats = options.stats
-        if (options.ignoreFolders != undefined)
-            settings.ignoreFolders = options.ignoreFolders
-        if (options.deep != undefined)
-            settings.deep = options.deep
-        if (options.extensions != undefined)
-            settings.extensions = options.extensions
-    }
+    setOptions();
 
+    // Setting pathSimbol if normalizePath is disabled
+    if (settings.normalizePath === false) {
+        pathSimbol = PATH.sep
+    }else{
+        pathSimbol = '/'
+    }
+    
     // Reading contents
     return await listDir(path, settings, progress);
+
+    function setOptions() {
+        if (options != undefined) {
+            if (options.recursive != undefined)
+                settings.recursive = options.recursive;
+            if (options.mode != undefined)
+                settings.mode = options.mode;
+            if (options.stats != undefined)
+                settings.stats = options.stats;
+            if (options.ignoreFolders != undefined)
+                settings.ignoreFolders = options.ignoreFolders;
+            if (options.deep != undefined)
+                settings.deep = options.deep;
+            if (options.extensions != undefined)
+                settings.extensions = options.extensions;
+            if (options.realPath != undefined)
+                settings.realPath = options.realPath;
+            if (options.normalizePath != undefined)
+                settings.normalizePath = options.normalizePath;
+        }
+    }
 }
 module.exports = {
     LIST: LIST,
