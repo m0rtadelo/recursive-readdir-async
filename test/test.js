@@ -1,6 +1,7 @@
 var assert = require('assert');
 const rra = require('../module.js')
 
+// UT testing
 describe('load', function () {
 
     // Creating test structure
