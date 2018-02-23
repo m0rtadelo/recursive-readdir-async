@@ -27,13 +27,25 @@ async function stat(file) {
     return new Promise(function (resolve, reject) {
         FS.stat(file, function (err, stats) {
             if (err) {
-                // console.error(err)
                 reject(err);
             } else {
                 resolve(stats);
             }
         })
     });
+}
+/**
+ * Returns if an item should be added based on include/exclude options. 
+ * @param {string} path item path
+ * @param {object} settings options
+ * @returns {boolean} returns if item must be added
+ */
+function checkItem(path, settings) {
+    for (let i = 0; i < settings.exclude.length; i++) {
+        if (path.indexOf(settings.exclude[i]) > -1)
+            return false
+    }
+    return true
 }
 /**
  * Returns a Promise with an objects info array
@@ -71,8 +83,10 @@ async function myReaddir(path, settings, deep) {
                                 'path': rpath,
                                 'fullname': rpath + (rpath.endsWith(pathSimbol) ? '' : pathSimbol) + files[i]
                             }
-                            addOptionalKeys(obj, files[i]);
-                            data.push(obj);
+                            if (checkItem(obj.fullname, settings)) {
+                                addOptionalKeys(obj, files[i]);
+                                data.push(obj);
+                            }
                         }
 
                         // Finish, returning content
@@ -107,7 +121,7 @@ function normalizePath(path) {
 }
 /**
  * Returns an array of items in path
- * @param {*} path path
+ * @param {string} path path
  * @param {object} settings options
  * @param {function} progress callback progress
  */
@@ -123,7 +137,19 @@ async function listDir(path, settings, progress, deep) {
 
         list = await statDir(list, settings, progress, deep);
     }
+
+    onlyInclude();
+
     return list;
+
+    function onlyInclude() {
+        for (let j = 0; j < settings.include.length; j++) {
+            for (let i = list.length - 1; i > -1; i--) {
+                if (list[i].fullname.indexOf(settings.include[j]) == -1)
+                    list.splice(i, 1);
+            }
+        }
+    }
 }
 /**
  * Returns an object with all items with selected options
@@ -194,7 +220,9 @@ async function list(path, options, progress) {
         extensions: false,
         deep: false,
         realPath: true,
-        normalizePath: true
+        normalizePath: true,
+        include: [],
+        exclude: []
     }
 
     // Aplying options (if set)
@@ -203,10 +231,10 @@ async function list(path, options, progress) {
     // Setting pathSimbol if normalizePath is disabled
     if (settings.normalizePath === false) {
         pathSimbol = PATH.sep
-    }else{
+    } else {
         pathSimbol = '/'
     }
-    
+
     // Reading contents
     return await listDir(path, settings, progress);
 
@@ -228,6 +256,10 @@ async function list(path, options, progress) {
                 settings.realPath = options.realPath;
             if (options.normalizePath != undefined)
                 settings.normalizePath = options.normalizePath;
+            if (options.include != undefined)
+                settings.include = options.include;
+            if (options.exclude != undefined)
+                settings.exclude = options.exclude;
         }
     }
 }
@@ -239,3 +271,15 @@ module.exports = {
     fs: FS,
     path: PATH
 }
+/*
+async function test() {
+    const obj = await list('./test/test', { 'mode': TREE, 'ignoreFolders': true })
+    obj.forEach(element => {
+        console.log(element)
+    })
+//    console.log(obj)
+//    console.log(obj.length)
+}
+test()
+*/
+//console.log(checkItem('./test/test/folder1/', { 'mode': LIST,'exclude':['folder2/'],'include':[] }))
