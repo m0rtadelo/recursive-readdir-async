@@ -169,6 +169,8 @@ describe('usage', function () {
         if (prom.length == 1 && prom[0].fullname.indexOf('/test/test/folder2') > -1)
             isOK = true
         assert.equal(isOK, true, 'path folder2 must be included' + (prom.length ? prom[0].fullname : ""))
+        assert.strictEqual(prom[0].content.length, 1, 'path folder2 must include subfolder content')
+        assert.ok(prom[0].content[0].fullname.indexOf('/subfolder2') > 7, 'path folder2 must include subfolder2 in its tree')
     });
     it('should exclude paths that exists in settings.exclude', async function () {
         const prom = await rra.list('./test/test/', { 'exclude': ['subfolder2'], 'mode': rra.TREE })

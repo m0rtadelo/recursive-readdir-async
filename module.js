@@ -145,7 +145,14 @@ async function listDir(path, settings, progress, deep) {
     function onlyInclude() {
         for (let j = 0; j < settings.include.length; j++) {
             for (let i = list.length - 1; i > -1; i--) {
-                if (list[i].fullname.indexOf(settings.include[j]) == -1)
+                let item = list[i];
+                
+                // do not check directory entries in TREE mode where we already know
+                // there's at least one(1) content entry which matches the `include`
+                // criteria:
+                if (settings.mode === TREE && item.isDirectory && item.content) continue;
+
+                if (item.fullname.indexOf(settings.include[j]) === -1)
                     list.splice(i, 1);
             }
         }
