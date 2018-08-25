@@ -30,7 +30,7 @@ Example with full features:
 ```javascript
 const rra = require('recursive-readdir-async');
 const options = {
-    mode: LIST,
+    mode: rra.LIST,
     recursive: true,
     stats: false,
     ignoreFolders: true,
@@ -52,21 +52,22 @@ else
 ## Options
 An options object can be passed to configure the module. The next options can be used:
 * **mode (LIST | TREE)** : The list will return an array of items. The tree will return the items structured like the file system. *Default: list*
-* **recursive (true | false)** : If true, files and folders of folders and subfolders will be listed. IF false, only the files and folders of the select directory will be listed. *Default: true*
-* **stats (true | false)** : If true a stats object (with file information), will be added to every item. If false this info is not added. *Default: false*
+* **recursive (true | false)** : If true, files and folders of folders and subfolders will be listed. If false, only the files and folders of the select directory will be listed. *Default: true*
+* **stats (true | false)** : If true a `stats` object ([with file information](https://nodejs.org/api/fs.html#fs_class_fs_stats)) will be added to every item. If false this info is not added. *Default: false*
 * **ignoreFolders (true | false)** : If true and mode is LIST, the list will be returned with files only. If true and mode is TREE, the directory structures without files will be deleted. If false, all empty and non empty directories will be listed. *Default: true*
-* **extensions (true | false)** : If true, lowercase extensions will be added to every item (file.TXT = .txt). *Default: false*
-* **deep (true | false)** : If true, folder depth information will be added to every item starting by 0 (initial path), and be incremented by 1 in every subfolder. *Default: false*
+* **extensions (true | false)** : If true, lowercase extensions will be added to every item in the `extension` object property (`file.TXT` => `info.extension = ".txt"`). *Default: false*
+* **deep (true | false)** : If true, folder depth information will be added to every item starting with 0 (initial path), and will be incremented by 1 in every subfolder. *Default: false*
 * **normalizePath (true | false)** : Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style). *Default: true*
-* **realPath (true | false)** : Computes the canonical pathname by resolving ., .. and symbolic links. *Default: true*
+* **realPath (true | false)** : Computes the canonical pathname by resolving `.`, `..` and symbolic links. *Default: true*
 ## Object structure
-The function will return an object and never throw an error. All errors will be added to the returned object. The return object in LIST mode are like this:
+The function will return an object and never throw an error. All errors will be added to the returned object. The return object in LIST mode looks like this:
 ```json
 [
     {
         "name":"item_name",
         "path":"/absolute/path/to/item",
         "fullname":"/absolute/path/to/item/item_name",
+        "extension":"",
         "isDirectory": true,
         "stats":{
 
@@ -76,6 +77,17 @@ The function will return an object and never throw an error. All errors will be 
         "name":"file.txt",
         "path":"/absolute/path/to/item/item_name",
         "fullname":"/absolute/path/to/item/item_name/file.txt",
+        "extension":".txt",
+        "isDirectory": false,
+        "stats":{
+
+        }
+    },
+    {
+        "name":"UCASE.JPEG",
+        "path":"/absolute/path/to/item/item_name",
+        "fullname":"/absolute/path/to/item/item_name/UCASE.JPEG",
+        "extension":".jpeg",
         "isDirectory": false,
         "stats":{
 
@@ -83,7 +95,7 @@ The function will return an object and never throw an error. All errors will be 
     }
 ]
 ```
-The same example as TREE:
+The same example for TREE mode:
 ```json
 [
     {
@@ -99,6 +111,17 @@ The same example as TREE:
                 "name":"file.txt",
                 "path":"/absolute/path/to/item/item_name",
                 "fullname":"/absolute/path/to/item/item_name/file.txt",
+                "extension":".txt",
+                "isDirectory": false,
+                "stats":{
+
+                }
+            },
+            {
+                "name":"UCASE.JPEG",
+                "path":"/absolute/path/to/item/item_name",
+                "fullname":"/absolute/path/to/item/item_name/UCASE.JPEG",
+                "extension":".jpeg",
                 "isDirectory": false,
                 "stats":{
 
@@ -108,11 +131,13 @@ The same example as TREE:
     }
 ]
 ```
->isDirectory only exists if stats, recursive or ignoreFolders are true or mode are TREE
+>`isDirectory` only exists if `stats`, `recursive` or `ignoreFolders` are `true` or `mode` is TREE
 
->stats only exists if stats is true
+>`stats` only exists if `options.stats` is `true`
+
+>`extension` only exists if `options.extensions` is `true`
 ## Errors handling
-All errors will be added to the returned object. If error occurs on the main call, the error will be returned like this:
+All errors will be added to the returned object. If an error occurs on the main call, the error will be returned like this:
 ```json
 {
     "error":
