@@ -76,7 +76,7 @@ async function myReaddir(path, settings, deep) {
                         reject(err);
                     } else {
 
-                        // Iterate trough elements (files and folders)
+                        // Iterate through elements (files and folders)
                         for (let i = 0, tam = files.length; i < tam; i++) {
                             const obj = {
                                 'name': files[i],
