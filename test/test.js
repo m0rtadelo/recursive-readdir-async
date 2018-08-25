@@ -166,16 +166,16 @@ describe('usage', function () {
     it('should include only paths that exists in settings.include', async function () {
         const prom = await rra.list('./test/test', { 'mode': rra.TREE, 'ignoreFolders': false, 'include': ['/subfolder2'] })
         let isOK = false
-        if (prom[0].fullname.indexOf('/test/test/folder2') > -1 && prom.length == 1)
+        if (prom.length == 1 && prom[0].fullname.indexOf('/test/test/folder2') > -1)
             isOK = true
-        assert.equal(isOK, true, 'path folder2 must be included' + prom[0].fullname)
+        assert.equal(isOK, true, 'path folder2 must be included' + (prom.length ? prom[0].fullname : ""))
     });
     it('should exclude paths that exists in settings.exclude', async function () {
         const prom = await rra.list('./test/test/', { 'exclude': ['subfolder2'], 'mode': rra.TREE })
         let isOK = false
-        if (prom[0].fullname.indexOf('/test/test/folder1') > -1 && prom.length == 1)
+        if (prom.length == 1 && prom[0].fullname.indexOf('/test/test/folder1') > -1)
             isOK = true
-        assert.equal(isOK, true, 'path folder2 must be excluded' + prom[0].fullname)
+        assert.equal(isOK, true, 'path folder2 must be excluded' + (prom.length ? prom[0].fullname : ""))
     });
 });
 
