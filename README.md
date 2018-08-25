@@ -37,7 +37,9 @@ const options = {
     extensions: false,
     deep: false,
     realPath: true,
-    normalizePath: true
+    normalizePath: true,
+    include: [],
+    exclude: []
 }
 const list = await rra.list('.', options, function (obj, index, total) {
     console.log(`${index} of ${total} ${obj.path}`)
@@ -59,6 +61,27 @@ An options object can be passed to configure the module. The next options can be
 * **deep (true | false)** : If true, folder depth information will be added to every item starting with 0 (initial path), and will be incremented by 1 in every subfolder. *Default: false*
 * **normalizePath (true | false)** : Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style). *Default: true*
 * **realPath (true | false)** : Computes the canonical pathname by resolving `.`, `..` and symbolic links. *Default: true*
+* **include (Array of String)** : Positive filter the items: only items which [DO](http://www.ietf.org/rfc/rfc2119.txt) (partially or completely) match one of the strings in the `include` array will be returned. *Default: []*
+* **exclude (Array of String)** : Negative filter the items: only items which [DO NOT](http://www.ietf.org/rfc/rfc2119.txt) (partially or completely) match *any* of the strings in the `exclude` array will be returned. *Default: []*
+
+### Notes
+* Counter-intuitive to some folks, an *empty* `include` array is treated same as setting it to `null` / `undefined`: no include filter will be applied.
+  Obviously, an *empty* `exclude` array acts similar: no `exclude` filter will be applied.
+* The `include` and `exclude` options interact.
+  
+  **When `mode` is TREE**
+  
+  * Directories which [DO NOT](http://www.ietf.org/rfc/rfc2119.txt) match the `include` criteria themselves but contain items which [DO](http://www.ietf.org/rfc/rfc2119.txt) *are kept* in the returned items tree. I.e. *inclusion of the child* has precedence over *rejection of the parent*.
+  * Directories which [DO](http://www.ietf.org/rfc/rfc2119.txt) match one of the `exclude` criteria themselves but contain items which [DO NOT](http://www.ietf.org/rfc/rfc2119.txt) *will not* be kept in the returned items tree. I.e. *exclusion of the parent* has precedence over *remaining of the child*.
+  
+  **When `mode` is LIST**
+
+  As the directory tree is flattened into a list, directories and their children (subdirectories and files) are filtered through the `exclude` and `include` rules independently.
+
+  **Common ground: `mode` is LIST or TREE**
+
+  * `exclude` has precedence over `include`: exclusion rules are applied before the inclusion rules. Hence when an item matches both a string in the `include` array and a string in the `exclude` array, the item will be *excluded* (removed) from the list.
+  
 ## Object structure
 The function will return an object and never throw an error. All errors will be added to the returned object. The return object in LIST mode looks like this:
 ```json
