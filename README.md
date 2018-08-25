@@ -76,7 +76,7 @@ An options object can be passed to configure the module. The next options can be
   
   **When `mode` is LIST**
 
-  As the directory tree is flattened into a list, directories and their children (subdirectories and files) are filtered through the `exclude` and `include` rules independently.
+  As the directory tree is flattened into a list, directories and their children (subdirectories and files) are filtered through the `exclude` and `include` rules independently, hence `include` and `exclude` will only interact when an item matches *both* filters. See below: 
 
   **Common ground: `mode` is LIST or TREE**
 
