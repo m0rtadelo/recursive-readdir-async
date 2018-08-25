@@ -202,4 +202,87 @@ describe('error control', function () {
         }
         assert.equal(isOk, true, 'unexpected behavior (no error)')
     })
+
+    // towards 100% coverage: generate failure to test line #175 (try/catch)
+    it('controlled error for exceptions - part 1: subtree fatality', async function () {
+        let isOk = false
+        try {
+            let count = 0;
+            const res = await rra.list('./test', function progressUserCallback() {
+                // fake failure.
+                count++;
+                if (count === 2) throw new Error('boom!');
+            });
+            if (!res.error && res[1].error)
+                isOk = true
+            assert.equal(isOk, true, 'unexpected behavior (no json with error)')
+        } catch (error) {
+            isOk = false
+        }
+        assert.equal(isOk, true, 'unexpected behavior (error or no json with error)')
+    })
+
+    // complete the previou test for the root entry: regression test: previously rra
+    // would pass this exception through to the caller.
+    it('controlled error for exceptions - part 2: root fatality', async function () {
+        let isOk = false
+        try {
+            let count = 0;
+            const res = await rra.list('./test', function progressUserCallback() {
+                // fake failure.
+                count++;
+                if (count === 1) throw new Error('boom!');
+            });
+            if (res[0].error)
+                isOk = true
+            assert.equal(isOk, true, 'unexpected behavior (no json with error)')
+        } catch (error) {
+            isOk = false
+        }
+        assert.equal(isOk, true, 'unexpected behavior (error or no json with error)')
+    })
+
+    // towards 100% coverage: generate failure to test line #99 (try/catch)
+    it('controlled error for exceptions - part 3: file system fatality', async function () {
+        let isOk = false
+        let rpf = rra.fs.realpath;
+        try {
+            let count = 0;
+            rra.fs.realpath = function fakeRealPath(path, cb) {
+                throw new Error('boom');
+            };
+            const res = await rra.list('./test');
+            if (res.error)
+                isOk = true
+            assert.equal(isOk, true, 'unexpected behavior (no json with error)')
+        } catch (error) {
+            isOk = false
+        }
+        rra.fs.realpath = rpf;
+        assert.equal(isOk, true, 'unexpected behavior (error or no json with error)')
+    })
+
+    // towards 100% coverage: generate failure to test line #144 (try/catch)
+    it('controlled error for exceptions - part 4: file system fatality #2', async function () {
+        let rpf = rra.fs.stat;
+        try {
+            rra.fs.stat = function fakeStat(path, cb) {
+                if (/test\/test$/.test(path)) {
+                    // console.error('STAT:', path);
+                    cb(new Error('boom'));
+                    return;
+                }
+
+                rpf(path, cb);
+            };
+            const res = await rra.list('./test');
+
+            assert.ok(!res.error, 'unexpected behavior')
+            assert.strictEqual(res.length, 2, 'unexpected behavior')
+            assert.ok(res[0].error, 'unexpected behavior (no json with error for item)')
+        } catch (error) {
+            assert.ok(false, 'unexpected behavior')
+        }
+        rra.fs.realpath = rpf;
+    })
 });

@@ -21,7 +21,7 @@ const PATH = require('path')
 let pathSimbol = '/';
 /**
  * returns a Promise with Stats info of the item (file/folder/...)
- * @param {string} file 
+ * @param {string} file
  */
 async function stat(file) {
     return new Promise(function (resolve, reject) {
@@ -35,7 +35,7 @@ async function stat(file) {
     });
 }
 /**
- * Returns if an item should be added based on include/exclude options. 
+ * Returns if an item should be added based on include/exclude options.
  * @param {string} path item path
  * @param {object} settings options
  * @returns {boolean} returns if item must be added
@@ -72,7 +72,6 @@ async function myReaddir(path, settings, deep) {
 
                     // If error reject them
                     if (err) {
-                        // console.error(err)
                         reject(err);
                     } else {
 
@@ -133,8 +132,8 @@ async function listDir(path, settings, progress, deep) {
     } catch (err) {
         return { 'error': err, 'path': path }
     }
-    if (settings.stats || settings.recursive || settings.ignoreFolders || settings.mode == TREE) {
 
+    if (settings.stats || settings.recursive || settings.ignoreFolders || settings.mode == TREE) {
         list = await statDir(list, settings, progress, deep);
     }
 
@@ -146,7 +145,7 @@ async function listDir(path, settings, progress, deep) {
         for (let j = 0; j < settings.include.length; j++) {
             for (let i = list.length - 1; i > -1; i--) {
                 let item = list[i];
-                
+
                 // do not check directory entries in TREE mode where we already know
                 // there's at least one(1) content entry which matches the `include`
                 // criteria:
@@ -170,14 +169,15 @@ async function statDir(list, settings, progress, deep) {
     for (let i = list.length - 1; i > -1; i--) {
         try {
             list = await statDirItem(list, i, settings, progress, deep);
+            if (progress != undefined)
+                isOk = !progress(list[i], list.length - i, list.length);
         }
         catch (err) {
             list[i].error = err;
         }
-        if (progress != undefined)
-            isOk = !progress(list[i], list.length - i, list.length);
-        if ((list[i].isDirectory && settings.ignoreFolders && list[i].content == undefined) || !isOk)
+        if ((list[i].isDirectory && settings.ignoreFolders && list[i].content == undefined && list[i].error == undefined) || !isOk) {
             list.splice(i, 1);
+        }
     }
     return list;
 }
