@@ -225,7 +225,7 @@ async function list(path, options, progress) {
         exclude: []
     }
 
-    // Aplying options (if set)
+    // Applying options (if set)
     setOptions();
 
     // Setting pathSimbol if normalizePath is disabled
