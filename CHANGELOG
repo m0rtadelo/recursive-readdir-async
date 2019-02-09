@@ -12,4 +12,5 @@
     added realPath & normalizePath option
     Fixed path separator duplication 
 1.0.3
-    added exclude & include options
+    added exclude & include options (wip)
+    improved build file (keeps js doc and params names)
