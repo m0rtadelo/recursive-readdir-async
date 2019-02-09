@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nyc mocha",
     "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test",
-    "build":"uglifyjs --compress --mangle -- module.js > module.min.js"
+    "build": "uglifyjs --compress --mangle reserved=[file,path,options,progress] --comments -- module.js > module.min.js"
   },
   "engines": {
     "node": ">=7.6"
