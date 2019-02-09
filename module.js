@@ -14,14 +14,23 @@ const LIST = 1
  * creates tree object with content
  */
 const TREE = 2
-// native modules
+/**
+ * Native fs module
+ * @preserve
+ */
 const FS = require('fs')
+/**
+ * Native path module
+ * @preserve
+ */
 const PATH = require('path')
 // variables
 let pathSimbol = '/';
 /**
- * returns a Promise with Stats info of the item (file/folder/...)
+ * Returns a Promise with Stats info of the item (file/folder/...)
  * @param {string} file 
+ * @returns {Promise} promise stat object info
+ * @preserve
  */
 async function stat(file) {
     return new Promise(function (resolve, reject) {
@@ -204,6 +213,7 @@ async function statDirItem(list, i, settings, progress, deep) {
  * @param {string} path the path to start reading contents
  * @param {object} options options (mode, recursive, stats, ignoreFolders)
  * @param {function} progress callback with item data and progress info for each item
+ * @preserve
  */
 async function list(path, options, progress) {
 
@@ -271,15 +281,3 @@ module.exports = {
     fs: FS,
     path: PATH
 }
-/*
-async function test() {
-    const obj = await list('./test/test', { 'mode': TREE, 'ignoreFolders': true })
-    obj.forEach(element => {
-        console.log(element)
-    })
-//    console.log(obj)
-//    console.log(obj.length)
-}
-test()
-*/
-//console.log(checkItem('./test/test/folder1/', { 'mode': LIST,'exclude':['folder2/'],'include':[] }))
