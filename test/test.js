@@ -163,14 +163,21 @@ describe('usage', function () {
             isOK = false
         assert.equal(isOK, true, 'Working in Linux? ' + prom[0].path)
     });
-    it('should include only paths that exists in settings.include', async function () {
-        const prom = await rra.list('./test/test', { 'mode': rra.TREE, 'ignoreFolders': false, 'include': ['/subfolder2'] })
+    it('should include only paths that exists in settings.include (LIST)', async function () {
+        const prom = await rra.list('./test/test', { 'mode': rra.LIST, 'ignoreFolders': false, 'include': ['/subfolder2'] })
         let isOK = false
         if (prom[0].fullname.indexOf('/test/test/folder2') > -1 && prom.length == 1)
             isOK = true
         assert.equal(isOK, true, 'path folder2 must be included' + prom[0].fullname)
     });
-    it('should exclude paths that exists in settings.exclude', async function () {
+    it('should exclude paths that exists in settings.exclude (LIST)', async function () {
+        const prom = await rra.list('./test/test/', { 'exclude': ['subfolder2'], 'mode': rra.LIST })
+        let isOK = false
+        if (prom[0].fullname.indexOf('/test/test/folder1') > -1 && prom.length == 2)
+            isOK = true
+        assert.equal(isOK, true, 'path folder2 must be excluded' + prom[0].fullname)
+    });
+    it('should exclude paths that exists in settings.exclude (TREE)', async function () {
         const prom = await rra.list('./test/test/', { 'exclude': ['subfolder2'], 'mode': rra.TREE })
         let isOK = false
         if (prom[0].fullname.indexOf('/test/test/folder1') > -1 && prom.length == 1)
