@@ -1,6 +1,6 @@
 {
   "name": "recursive-readdir-async",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Module to recursive read directory async (non blocking). Must be used with Promises. Configurable, extended filtering. etc.",
   "main": "module.min.js",
   "scripts": {
@@ -39,7 +39,7 @@
   "devDependencies": {
     "fs-extra": "^7.0.0",
     "mocha": "^5.2.0",
-    "nyc": "^12.0.2",
+    "nyc": "^13.3.0",
     "uglify-es": "^3.3.10"
   }
 }
