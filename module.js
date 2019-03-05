@@ -44,7 +44,7 @@ async function stat(file) {
     });
 }
 /**
- * Returns if an item should be added based on include/exclude options. 
+ * Returns if an item should be added based on include/exclude options.
  * @param {string} path item path
  * @param {object} settings options
  * @returns {boolean} returns if item must be added
@@ -81,11 +81,10 @@ async function myReaddir(path, settings, deep) {
 
                     // If error reject them
                     if (err) {
-                        // console.error(err)
                         reject(err);
                     } else {
 
-                        // Iterate trough elements (files and folders)
+                        // Iterate through elements (files and folders)
                         for (let i = 0, tam = files.length; i < tam; i++) {
                             const obj = {
                                 'name': files[i],
@@ -142,8 +141,8 @@ async function listDir(path, settings, progress, deep) {
     } catch (err) {
         return { 'error': err, 'path': path }
     }
-    if (settings.stats || settings.recursive || settings.ignoreFolders || settings.mode == TREE) {
 
+    if (settings.stats || settings.recursive || settings.ignoreFolders || settings.mode == TREE) {
         list = await statDir(list, settings, progress, deep);
     }
 
@@ -154,7 +153,14 @@ async function listDir(path, settings, progress, deep) {
     function onlyInclude() {
         for (let j = 0; j < settings.include.length; j++) {
             for (let i = list.length - 1; i > -1; i--) {
-                if (list[i].fullname.indexOf(settings.include[j]) == -1)
+                let item = list[i];
+
+                // do not check directory entries in TREE mode where we already know
+                // there's at least one(1) content entry which matches the `include`
+                // criteria:
+                if (settings.mode === TREE && item.isDirectory && item.content) continue;
+
+                if (item.fullname.indexOf(settings.include[j]) === -1)
                     list.splice(i, 1);
             }
         }
@@ -172,14 +178,15 @@ async function statDir(list, settings, progress, deep) {
     for (let i = list.length - 1; i > -1; i--) {
         try {
             list = await statDirItem(list, i, settings, progress, deep);
+            if (progress != undefined)
+                isOk = !progress(list[i], list.length - i, list.length);
         }
         catch (err) {
             list[i].error = err;
         }
-        if (progress != undefined)
-            isOk = !progress(list[i], list.length - i, list.length);
-        if ((list[i].isDirectory && settings.ignoreFolders && list[i].content == undefined) || !isOk)
+        if ((list[i].isDirectory && settings.ignoreFolders && list[i].content == undefined && list[i].error == undefined) || !isOk) {
             list.splice(i, 1);
+        }
     }
     return list;
 }
@@ -235,7 +242,7 @@ async function list(path, options, progress) {
         exclude: []
     }
 
-    // Aplying options (if set)
+    // Applying options (if set)
     setOptions();
 
     // Setting pathSimbol if normalizePath is disabled
