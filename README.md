@@ -129,7 +129,7 @@ The same example for TREE mode:
         "stats":{
 
         },
-        "contents": [
+        "content": [
             {
                 "name":"file.txt",
                 "path":"/absolute/path/to/item/item_name",
