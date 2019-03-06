@@ -14,3 +14,7 @@
 1.0.3
     added exclude & include options (wip)
     improved build file (keeps js doc and params names)
+1.1.0
+    finished include & exclude options (GerHobbelt pull)
+    100% UT coverage (GerHobbelt pull)
+    minor fixes and updates
