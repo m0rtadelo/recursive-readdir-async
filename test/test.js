@@ -1,5 +1,6 @@
 var assert = require('assert');
 const rra = require('../module.js')
+const path = require('path')
 
 // UT testing
 describe('load', function () {
@@ -156,28 +157,38 @@ describe('usage', function () {
             isOK = false
         assert.equal(isOK, true, 'something wrong')
     });
-    it('should not normalize and set realPath (only works in Windows)', async function () {
+    it('should not normalize and set realPath', async function () {
         const prom = await rra.list('.\\test\\test\\', { 'realPath': false, 'normalizePath': false })
-        let isOK = true
-        if (!prom[0].path.startsWith('.\\test\\test\\folder1'))
-            isOK = false
-        assert.equal(isOK, true, 'Working in Linux? ' + prom[0].path)
+        // As we pass in a 'Windows' path in this test, we can expect quite different behaviour on different platforms:
+        if (path.sep === '\\') {
+            // Windows et al
+            assert.ok(prom[0].path.startsWith('.\\test\\test\\folder1'), 'Backslashed paths should work in Windows: ' + prom[0].path)
+        } else {
+            assert.deepEqual(prom, {
+              "error": {
+                "errno": -2,
+                "code": "ENOENT",
+                "syscall": "scandir",
+                "path": ".\\test\\test\\"
+              },
+              "path": ".\\test\\test\\"
+            }, "Backslashed paths are only supported on Windows platforms.");
+        }
     });
-    it('should include only paths that exists in settings.include (LIST)', async function () {
-        const prom = await rra.list('./test/test', { 'mode': rra.LIST, 'ignoreFolders': false, 'include': ['/subfolder2'] })
+    it('should normalize Windows paths on all platforms by default', async function () {
+        const prom = await rra.list('.\\test\\test\\', { 'realPath': false })
+        assert.ok(prom[0].path.startsWith('./test/test/folder1'), 'Backslashed paths should be normalized by default on any platform: ' + prom[0].path)
+    });
+    it('should include only paths that exists in settings.include', async function () {
+        const prom = await rra.list('./test/test', { 'mode': rra.TREE, 'ignoreFolders': false, 'include': ['/subfolder2'] })
         let isOK = false
         if (prom.length == 1 && prom[0].fullname.indexOf('/test/test/folder2') > -1)
             isOK = true
         assert.equal(isOK, true, 'path folder2 must be included' + (prom.length ? prom[0].fullname : ""))
+        assert.strictEqual(prom[0].content.length, 1, 'path folder2 must include subfolder content')
+        assert.ok(prom[0].content[0].fullname.indexOf('/subfolder2') > 7, 'path folder2 must include subfolder2 in its tree')
     });
-    it('should exclude paths that exists in settings.exclude (LIST)', async function () {
-        const prom = await rra.list('./test/test/', { 'exclude': ['subfolder2'], 'mode': rra.LIST })
-        let isOK = false
-        if (prom[0].fullname.indexOf('/test/test/folder1') > -1 && prom.length == 2)
-            isOK = true
-        assert.equal(isOK, true, 'path folder2 must be excluded' + prom[0].fullname)
-    });
-    it('should exclude paths that exists in settings.exclude (TREE)', async function () {
+    it('should exclude paths that exists in settings.exclude', async function () {
         const prom = await rra.list('./test/test/', { 'exclude': ['subfolder2'], 'mode': rra.TREE })
         let isOK = false
         if (prom.length == 1 && prom[0].fullname.indexOf('/test/test/folder1') > -1)
