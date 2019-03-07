@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/m0rtadelo/recursive-readdir-async.svg?branch=master)](https://travis-ci.org/m0rtadelo/recursive-readdir-async)
+
 # recursive-readdir-async 
 NPM Module to recursive read directory async (non blocking). Returns Promise. Configurable, with callback for extended filtering and progress status. Quiet, NO dependencies.
 As non blocking module is perfect to be used in any javascript based Desktop applications.
