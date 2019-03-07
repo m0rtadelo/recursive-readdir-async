@@ -125,7 +125,7 @@ async function myReaddir(path, settings, deep) {
  * @return {string} normalized path (unix style)
  */
 function normalizePath(path) {
-    return path.replace(/\\/g, '/');
+    return path.toString().replace(/\\/g, '/');
 }
 /**
  * Returns an array of items in path
@@ -283,6 +283,13 @@ async function list(path, options, progress) {
 module.exports = {
     LIST: LIST,
     TREE: TREE,
+    /**
+     * Returns a javascript object with directory items information (non blocking async with Promises)
+     * @param {string} path the path to start reading contents
+     * @param {object} options options (mode, recursive, stats, ignoreFolders)
+     * @param {function} progress callback with item data and progress info for each item
+     * @preserve
+     */
     list: list,
     stat: stat,
     fs: FS,
