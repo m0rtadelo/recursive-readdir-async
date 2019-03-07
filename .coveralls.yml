@@ -1,2 +1,2 @@
 service_name: travis-ci
-repo_token: $(echo $TOKEN)
+repo_token: ${TOKEN}
