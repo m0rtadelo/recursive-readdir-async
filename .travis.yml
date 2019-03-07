@@ -7,4 +7,4 @@ node_js:
   - 8
   - 7
   - node
-script: "npm run coverage"
+script: "npm run coveralls"
