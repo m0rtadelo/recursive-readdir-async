@@ -167,7 +167,7 @@ The same example for TREE mode:
     }
 ]
 ```
->`isDirectory` only exists if `stats`, `recursive` or `ignoreFolders` are `true` or `mode` is TREE
+>`isDirectory` only exists if `stats`, `recursive`,`readContent` or `ignoreFolders` are `true` or `mode` is TREE
 
 >`stats` only exists if `options.stats` is `true`
 
