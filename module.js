@@ -155,7 +155,7 @@ async function listDir (path, settings, progress, deep) {
     return { 'error': err, 'path': path }
   }
 
-  if (settings.stats || settings.recursive || settings.ignoreFolders || settings.readContent || settings.mode === TREE) {
+  if (settings.stats || settings.recursive || !settings.ignoreFolders || settings.readContent || settings.mode === TREE) {
     list = await statDir(list, settings, progress, deep)
   }
 
