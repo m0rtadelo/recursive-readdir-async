@@ -153,7 +153,7 @@ describe('usage', function () {
     it('should not return keys (deep, extension,... ) if not set', async function () {
         const prom = await rra.list('./test/test/')
         let isOK = true
-        if (prom[0].hasOwnProperty('stats') || prom[0].hasOwnProperty('deep') || prom[0].hasOwnProperty('extension'))
+        if (prom[0].hasOwnProperty('stats') || prom[0].hasOwnProperty('deep') || prom[0].hasOwnProperty('extension') || prom[0].hasOwnProperty('data'))
             isOK = false
         assert.equal(isOK, true, 'something wrong')
     });
@@ -195,6 +195,18 @@ describe('usage', function () {
             isOK = true
         assert.equal(isOK, true, 'path folder2 must be excluded' + (prom.length ? prom[0].fullname : ""))
     });
+    it('should include file data if readContent is set', async function() {
+        const prom = await rra.list('./test/test/', { 'readContent': true, 'mode': rra.LIST })
+        assert.notEqual(prom[0].data, undefined, 'data unavailable')
+        assert.notEqual(prom[1].data, undefined, 'data unavailable')
+    });
+    it('should return data in base64 format', async function() {
+        const prom = await rra.list('./test/test/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST })
+        console.log()
+        assert.equal(prom.length,1,'error with include option')
+        assert.equal(prom[0].data, 'c29tZXRoaW5n', 'unexpected base64 data')
+    });
+
 });
 
 describe('error control', function () {
@@ -213,6 +225,15 @@ describe('error control', function () {
         let isOk = false
         try {
             await rra.stat('./test/test/inexistent.file');
+        } catch (error) {
+            isOk = true
+        }
+        assert.equal(isOk, true, 'unexpected behavior (no error)')
+    })
+    it('controlled error for readFile (must throw error)', async function () {
+        let isOk = false
+        try {
+            await rra.readFile('./test/test/inexistent.file');
         } catch (error) {
             isOk = true
         }
