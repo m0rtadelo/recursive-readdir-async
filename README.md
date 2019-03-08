@@ -44,7 +44,8 @@ const options = {
     realPath: true,
     normalizePath: true,
     include: [],
-    exclude: []
+    exclude: [],
+    readContent: false
 }
 const list = await rra.list('.', options, function (obj, index, total) {
     console.log(`${index} of ${total} ${obj.path}`)
@@ -68,6 +69,7 @@ An options object can be passed to configure the module. The next options can be
 * **realPath (true | false)** : Computes the canonical pathname by resolving `.`, `..` and symbolic links. *Default: true*
 * **include (Array of String)** : Positive filter the items: only items which [DO](http://www.ietf.org/rfc/rfc2119.txt) (partially or completely) match one of the strings in the `include` array will be returned. *Default: []*
 * **exclude (Array of String)** : Negative filter the items: only items which [DO NOT](http://www.ietf.org/rfc/rfc2119.txt) (partially or completely) match *any* of the strings in the `exclude` array will be returned. *Default: []*
+* **readContent (true | false)** : Adds the content of the file into the item (base64 format). *Default: false*
 
 ### Notes
 * Counter-intuitive to some folks, an *empty* `include` array is treated same as setting it to `null` / `undefined`: no include filter will be applied.
@@ -86,6 +88,7 @@ An options object can be passed to configure the module. The next options can be
   **Common ground: `mode` is LIST or TREE**
 
   * `exclude` has precedence over `include`: exclusion rules are applied before the inclusion rules. Hence when an item matches both a string in the `include` array and a string in the `exclude` array, the item will be *excluded* (removed) from the list.
+* Reading data from the filesystem can have unexpected behaviors. Use the `readContent` option with responsability.
 
 ## Object structure
 The function will return an object and never throw an error. All errors will be added to the returned object. The return object in LIST mode looks like this:
@@ -107,6 +110,7 @@ The function will return an object and never throw an error. All errors will be 
         "fullname":"/absolute/path/to/item/item_name/file.txt",
         "extension":".txt",
         "isDirectory": false,
+        "data": "base64",
         "stats":{
 
         }
@@ -117,6 +121,7 @@ The function will return an object and never throw an error. All errors will be 
         "fullname":"/absolute/path/to/item/item_name/UCASE.JPEG",
         "extension":".jpeg",
         "isDirectory": false,
+        "data": "base64",
         "stats":{
 
         }
@@ -141,6 +146,7 @@ The same example for TREE mode:
                 "fullname":"/absolute/path/to/item/item_name/file.txt",
                 "extension":".txt",
                 "isDirectory": false,
+                "data": "base64",
                 "stats":{
 
                 }
@@ -151,6 +157,7 @@ The same example for TREE mode:
                 "fullname":"/absolute/path/to/item/item_name/UCASE.JPEG",
                 "extension":".jpeg",
                 "isDirectory": false,
+                "data": "base64",
                 "stats":{
 
                 }
@@ -164,6 +171,8 @@ The same example for TREE mode:
 >`stats` only exists if `options.stats` is `true`
 
 >`extension` only exists if `options.extensions` is `true`
+
+>`data` only exists if `options.readContent` is `true`
 ## Errors handling
 All errors will be added to the returned object. If an error occurs on the main call, the error will be returned like this:
 ```json
