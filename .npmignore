@@ -1,4 +1,4 @@
-.*/* 
+.*/*
 node_modules/*
 coverage/*
 test/*
@@ -7,3 +7,5 @@ test/*
 module.min.js
 .travis.yml
 package*
+.eslintignore
+.eslintrc.json
