@@ -28,4 +28,6 @@
     fix all linter errors (javascript standard - https://github.com/standard/standard)
     adds content from files to file object (feature/readContent)
 1.1.3
-
+    fix ignoreFolders bug
+    improved tests
+    Added link to wiki
