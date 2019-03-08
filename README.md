@@ -3,6 +3,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/m0rtadelo/recursive-readdir-async/badge.svg?targetFile=package.json)](https://snyk.io/test/github/m0rtadelo/recursive-readdir-async?targetFile=package.json)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5e14bf445b434f3f9603a61b6f851f14)](https://www.codacy.com/app/m0rtadelo/recursive-readdir-async?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=m0rtadelo/recursive-readdir-async&amp;utm_campaign=Badge_Grade)
 ![GitHub top language](https://img.shields.io/github/languages/top/m0rtadelo/recursive-readdir-async.svg)
+![npm](https://img.shields.io/npm/v/recursive-readdir-async.svg?style=social)
 # recursive-readdir-async
 NPM Module to recursive read directory async (non blocking). Returns Promise. Configurable, with callback for extended filtering and progress status. Quiet, NO dependencies.
 As non blocking module it is perfect to be used in any javascript based Desktop applications.
