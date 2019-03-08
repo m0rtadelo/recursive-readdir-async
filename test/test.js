@@ -48,10 +48,12 @@ describe('usage', function () {
     it('checking defaults', async function () {
         let isOK = true
         const prom = await rra.list('./test/test/')
-        if (prom[0].deep || prom[0].stats || prom[0].extension || prom[0].fullname.indexOf('/') == -1)
-            isOK = false
-        else if (!(prom[0].name && prom[0].path && prom[0].fullname && prom[0].isDirectory != undefined))
-            isOK = false
+        for (let i=0;i<prom.length;i++) {
+            if (prom[0].deep || prom[0].stats || prom[0].data || prom[0].extension || prom[0].fullname.indexOf('/') == -1)
+                isOK = false
+            else if (!(prom[0].name && prom[0].path && prom[0].fullname && prom[0].isDirectory != undefined))
+                isOK = false
+        }
         assert.equal(isOK, true, prom[0])
     });
     it('should return an array of 2 items (only files)', async function () {
@@ -103,6 +105,7 @@ describe('usage', function () {
         if (prom[0].name == 'subfile1.txt' && prom.length == 1)
             result = true
         assert.equal(result, true, 'returns ' + prom[0].name)
+        assert.equal(prom.length, 1, 'unexpected length')
     });
     it('should trigger function 7 times', async function () {
         options = {
@@ -195,18 +198,57 @@ describe('usage', function () {
             isOK = true
         assert.equal(isOK, true, 'path folder2 must be excluded' + (prom.length ? prom[0].fullname : ""))
     });
-    it('should include file data if readContent is set', async function() {
+    it('should include file data if readContent is true', async function() {
         const prom = await rra.list('./test/test/', { 'readContent': true, 'mode': rra.LIST })
         assert.notEqual(prom[0].data, undefined, 'data unavailable')
         assert.notEqual(prom[1].data, undefined, 'data unavailable')
     });
     it('should return data in base64 format', async function() {
-        const prom = await rra.list('./test/test/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST })
+        const prom = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false })
         console.log()
         assert.equal(prom.length,1,'error with include option')
         assert.equal(prom[0].data, 'c29tZXRoaW5n', 'unexpected base64 data')
     });
 
+});
+
+describe('bugfix check', function () {
+    it('should return data when readContent are the only active option', async function() {
+        const prom = await rra.list('./test/test/folder1/',
+        {'readContent': true, 'ignoreFolders':false, 'stats':false, 'recursive': false, });
+        assert.notEqual(prom[0].data, undefined, 'data expected')
+        assert.equal(prom[0].stats, undefined, 'stats unexpected')
+    });
+    it('should return subfolders when ignoreFolders are set to false', async function() {
+        const prom = await rra.list('./test/test/folder1/',
+        {'readContent': false, 'ignoreFolders':false, 'stats':false, 'recursive': false, });
+        assert.notEqual(prom[0].name, undefined, 'data expected')
+        assert.equal(prom[0].specs, undefined, 'specs unexpected')
+        assert.equal(prom.length,2,'should return 2 items')
+    });
+    it('should add extension field in files and folders and add isDirectory if ignoreFolders is false', async function() {
+        let counter=0;
+        const prom = await rra.list('./test/test/folder1/',
+        {'readContent': false, 'ignoreFolders':false, 'extensions':true, 'recursive': false, });
+        for(let i=0;i<prom.length;i++) {
+            if(prom[i].isDirectory && prom[i].extension != undefined)
+                counter++
+            if(!prom[i].isDirectory && prom[i].extension != undefined)
+                counter++
+        }
+        assert.equal(counter, 2, 'extension unexpected')
+        assert.equal(prom.length,2,'should return 2 items')
+    });
+    it('should add isDirectory field for mode TREE', async function() {
+        const prom = await rra.list('./test/test/folder1/',
+        {'readContent': false, 'ignoreFolders':true, 'stats':false, 'recursive': false, 'mode':rra.TREE});
+        assert.notEqual(prom[0].isDirectory, undefined, 'isDirectory expected')
+    });
+    it('should not add isDirectory field for non spec-required options', async function() {
+        const prom = await rra.list('./test/test/folder1/',
+        {'readContent': false, 'ignoreFolders':true, 'stats':false, 'recursive': false, 'mode':rra.LIST});
+        assert.equal(prom[0].isDirectory, undefined, 'isDirectory unexpected')
+    });
 });
 
 describe('error control', function () {
