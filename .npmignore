@@ -4,4 +4,6 @@ coverage/*
 test/*
 .npmignore
 .gitignore
-module.js
+module.min.js
+.travis.yml
+package*
