@@ -10,7 +10,7 @@
     source code added to .npmignore (npm is production)
     clean of lint errors & warnings (refactor)
     added realPath & normalizePath option
-    Fixed path separator duplication 
+    Fixed path separator duplication
 1.0.3
     added exclude & include options (wip)
     improved build file (keeps js doc and params names)
@@ -21,3 +21,8 @@
 1.1.1
     fix normalizePath bug
     added continuous integration
+1.1.2
+    improved build (jsdocs added to minified version)
+    improved jsdoc
+    package switched to non minified version (minified build removed)
+    fix all linter errors (javascript standard - https://github.com/standard/standard)
