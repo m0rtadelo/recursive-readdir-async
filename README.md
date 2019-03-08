@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/m0rtadelo/recursive-readdir-async.svg?branch=master)](https://travis-ci.org/m0rtadelo/recursive-readdir-async)
 [![Coverage Status](https://coveralls.io/repos/github/m0rtadelo/recursive-readdir-async/badge.svg?branch=master)](https://coveralls.io/github/m0rtadelo/recursive-readdir-async?branch=master)
-
-# recursive-readdir-async 
+[![Known Vulnerabilities](https://snyk.io/test/github/m0rtadelo/recursive-readdir-async/badge.svg?targetFile=package.json)](https://snyk.io/test/github/m0rtadelo/recursive-readdir-async?targetFile=package.json)
+# recursive-readdir-async
 NPM Module to recursive read directory async (non blocking). Returns Promise. Configurable, with callback for extended filtering and progress status. Quiet, NO dependencies.
 As non blocking module is perfect to be used in any javascript based Desktop applications.
 >This module uses Promises and can't be used in old javascript engines.
@@ -71,20 +71,20 @@ An options object can be passed to configure the module. The next options can be
 * Counter-intuitive to some folks, an *empty* `include` array is treated same as setting it to `null` / `undefined`: no include filter will be applied.
   Obviously, an *empty* `exclude` array acts similar: no `exclude` filter will be applied.
 * The `include` and `exclude` options interact.
-  
+
   **When `mode` is TREE**
-  
+
   * Directories which [DO NOT](http://www.ietf.org/rfc/rfc2119.txt) match the `include` criteria themselves but contain items which [DO](http://www.ietf.org/rfc/rfc2119.txt) *are kept* in the returned items tree. I.e. *inclusion of the child* has precedence over *rejection of the parent*.
   * Directories which [DO](http://www.ietf.org/rfc/rfc2119.txt) match one of the `exclude` criteria themselves but contain items which [DO NOT](http://www.ietf.org/rfc/rfc2119.txt) *will not* be kept in the returned items tree. I.e. *exclusion of the parent* has precedence over *remaining of the child*.
-  
+
   **When `mode` is LIST**
 
-  As the directory tree is flattened into a list, directories and their children (subdirectories and files) are filtered through the `exclude` and `include` rules independently, hence `include` and `exclude` will only interact when an item matches *both* filters. See below: 
+  As the directory tree is flattened into a list, directories and their children (subdirectories and files) are filtered through the `exclude` and `include` rules independently, hence `include` and `exclude` will only interact when an item matches *both* filters. See below:
 
   **Common ground: `mode` is LIST or TREE**
 
   * `exclude` has precedence over `include`: exclusion rules are applied before the inclusion rules. Hence when an item matches both a string in the `include` array and a string in the `exclude` array, the item will be *excluded* (removed) from the list.
-  
+
 ## Object structure
 The function will return an object and never throw an error. All errors will be added to the returned object. The return object in LIST mode looks like this:
 ```json
@@ -172,7 +172,7 @@ All errors will be added to the returned object. If an error occurs on the main 
             "errno": -4058,
             "code": "ENOENT",
             "syscall": "scandir",
-            "path": "/inexistentpath" 
+            "path": "/inexistentpath"
         },
     "path":"/inexistentpath"
 }
@@ -185,7 +185,7 @@ For errors with files and folders, the error will be added to the item like this
         "path":"/absolute/path/to/item",
         "fullname":"/absolute/path/to/item/item_name",
         "error":{
-            
+
         }
     }
     {
