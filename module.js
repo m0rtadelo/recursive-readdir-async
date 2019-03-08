@@ -43,11 +43,11 @@ async function stat (file) {
  */
 async function readFile (file) {
   return new Promise(function (resolve, reject) {
-    FS.readFile(file, function (err, data) {
+    FS.readFile(file, { 'encoding': 'base64' }, function (err, data) {
       if (err) {
         reject(err)
       } else {
-        resolve(data.toString())
+        resolve(data)
       }
     })
   })
@@ -343,6 +343,13 @@ module.exports = {
      * @preserve
      */
   stat: stat,
+  /**
+     * Returns a Promise with Stats info of the item (file/folder/...)
+     * @param {string} file
+     * @returns {Promise} promise stat object info
+     * @preserve
+     */
+  readFile: readFile,
   /**
      * Native FS module
      * @preserve
