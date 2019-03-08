@@ -37,6 +37,22 @@ async function stat (file) {
   })
 }
 /**
+ * Returns a Promise with Stats info of the item (file/folder/...)
+ * @param {string} file
+ * @returns {Promise} promise stat object info
+ */
+async function readFile (file) {
+  return new Promise(function (resolve, reject) {
+    FS.readFile(file, function (err, data) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data.toString())
+      }
+    })
+  })
+}
+/**
  * Returns if an item should be added based on include/exclude options.
  * @param {string} path item path
  * @param {object} settings options
@@ -204,6 +220,9 @@ async function statDirItem (list, i, settings, progress, deep) {
   if (settings.stats) {
     list[i].stats = stats
   }
+  if (settings.readContent && !list[i].isDirectory) {
+    list[i].data = await readFile(list[i].fullname)
+  }
   if (list[i].isDirectory && settings.recursive) {
     if (settings.mode === LIST) {
       list = list.concat(await listDir(list[i].fullname, settings, progress, deep + 1))
@@ -214,6 +233,7 @@ async function statDirItem (list, i, settings, progress, deep) {
       }
     }
   }
+
   return list
 }
 
@@ -241,7 +261,8 @@ async function list (path, options, progress) {
     realPath: true,
     normalizePath: true,
     include: [],
-    exclude: []
+    exclude: [],
+    readContent: false
   }
 
   // Applying options (if set)
@@ -288,6 +309,9 @@ async function list (path, options, progress) {
       }
       if (options.exclude !== undefined) {
         settings.exclude = options.exclude
+      }
+      if (options.readContent !== undefined) {
+        settings.readContent = options.readContent
       }
     }
   }
