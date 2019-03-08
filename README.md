@@ -5,7 +5,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/m0rtadelo/recursive-readdir-async.svg)
 # recursive-readdir-async
 NPM Module to recursive read directory async (non blocking). Returns Promise. Configurable, with callback for extended filtering and progress status. Quiet, NO dependencies.
-As non blocking module is perfect to be used in any javascript based Desktop applications.
+As non blocking module it is perfect to be used in any javascript based Desktop applications.
 >This module uses Promises and can't be used in old javascript engines.
 ## Installation
 For normal usage into a project, you must install as a NPM dependency. The next command will do all the work:
@@ -18,7 +18,7 @@ After install, you can use the module using the *require* key:
 const rra = require('recursive-readdir-async')
 // use it
 ```
-## Usage:
+## Usage
 Example of basic usage:
 ```javascript
 const rra = require('recursive-readdir-async');
