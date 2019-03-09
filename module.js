@@ -37,6 +37,7 @@
 *  @param {File|Folder} item - The item object with all the required fields
 *  @param {number} index - The current index in the array/collection of Files and/or Folders
 *  @param {number} total - The total number of Files and/or Folders
+*  @returns {boolean} - true to delete the item from the list
 */
 
 // constants
