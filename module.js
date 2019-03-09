@@ -345,6 +345,7 @@ module.exports.list = async function list (path, options, progress) {
   // Reading contents
   return listDir(path, settings, progress)
 
+  // sets the user settings
   function setOptions () {
     if (options) {
       if (options.recursive !== undefined) {
