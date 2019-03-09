@@ -210,4 +210,4 @@ For errors with files and folders, the error will be added to the item like this
     }
 ]
 ```
-More information in the Wiki page https://github.com/m0rtadelo/recursive-readdir-async/wiki
+More information on: https://m0rtadelo.github.io/recursive-readdir-async/global.html
