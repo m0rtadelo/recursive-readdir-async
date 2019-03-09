@@ -1,4 +1,4 @@
-/**
+/*
  * project: recursive-readdir-async
  * author: m0rtadelo (ricard.figuls)
  * license: MIT
@@ -7,16 +7,22 @@
 'use strict'
 // constants
 /**
- * mode structure
+ * mode structure LIST
  */
 const LIST = 1
+/**
+ * mode structure TREE
+ */
 const TREE = 2
 /**
- * Native modules
+ * Native FS module
  */
 const FS = require('fs')
-const PATH = require('path')
 /**
+ * Native PATH module
+ */
+const PATH = require('path')
+/*
  * Variables
  */
 let pathSimbol = '/'
@@ -37,7 +43,7 @@ async function stat (file) {
   })
 }
 /**
- * Returns a Promise with Stats info of the item (file/folder/...)
+ * Returns a Promise with content (data) of the file
  * @param {string} file
  * @returns {Promise} promise stat object info
  */
@@ -344,7 +350,7 @@ module.exports = {
      */
   stat: stat,
   /**
-     * Returns a Promise with Stats info of the item (file/folder/...)
+     * Returns a Promise with content (data) of the file
      * @param {string} file
      * @returns {Promise} promise stat object info
      * @preserve
