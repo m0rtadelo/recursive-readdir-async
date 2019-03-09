@@ -9,3 +9,4 @@ module.min.js
 package*
 .eslintignore
 .eslintrc.json
+docs/
