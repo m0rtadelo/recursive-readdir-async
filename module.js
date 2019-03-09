@@ -294,6 +294,7 @@ async function statDirItem (list, i, settings, progress, deep) {
  * @param {Options} options options (mode, recursive, stats, ignoreFolders)
  * @param {CallbackFunction} progress callback with item data and progress info for each item
  * @returns {File[]|Folder[]} array with file/folder information
+ * @async
  */
 module.exports.list = async function list (path, options, progress) {
   // options skipped?
