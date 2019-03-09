@@ -44,19 +44,22 @@
  * constant for mode LIST to be used in Options
  */
 const LIST = 1
+module.exports.LIST = LIST
 /**
  * constant for mode TREE to be used in Options
  */
 const TREE = 2
+module.exports.TREE = TREE
 /**
  * native FS module
  */
 const FS = require('fs')
+module.exports.fs = FS
 /**
  * native PATH module
  */
 const PATH = require('path')
-
+module.exports.path = PATH
 /*
  * Variables
  */
@@ -77,6 +80,7 @@ async function stat (file) {
     })
   })
 }
+module.exports.stat = stat
 /**
  * Returns a Promise with content (data) of the file
  * @param {string} file the name of the file to read content from
@@ -93,6 +97,7 @@ async function readFile (file) {
     })
   })
 }
+module.exports.readFile = readFile
 /**
  * Returns if an item should be added based on include/exclude options.
  * @param {string} path the item fullpath
@@ -289,7 +294,7 @@ async function statDirItem (list, i, settings, progress, deep) {
  * @param {CallbackFunction} progress callback with item data and progress info for each item
  * @returns {File[]|Folder[]} array with file/folder information
  */
-async function list (path, options, progress) {
+module.exports.list = async function list (path, options, progress) {
   // options skipped?
   if (typeof options === 'function') {
     progress = options
@@ -375,49 +380,4 @@ async function list (path, options, progress) {
       }
     }
   }
-}
-module.exports = {
-  /**
-     * creates list object with content
-     * @preserve
-    */
-  LIST: LIST,
-  /**
-     * creates tree object with content
-     * @preserve
-    */
-  TREE: TREE,
-  /**
-     * Returns a javascript object with directory items information (non blocking async with Promises)
-     * @param {string} path the path to start reading contents
-     * @param {object} options options (mode, recursive, stats, ignoreFolders)
-     * @param {function} progress callback with item data and progress info for each item
-     * @returns {Promise} object array with file information
-     * @preserve
-     */
-  list: list,
-  /**
-     * Returns a Promise with Stats info of the item (file/folder/...)
-     * @param {string} file
-     * @returns {Promise} promise stat object info
-     * @preserve
-     */
-  stat: stat,
-  /**
-     * Returns a Promise with content (data) of the file
-     * @param {string} file
-     * @returns {Promise} promise stat object info
-     * @preserve
-     */
-  readFile: readFile,
-  /**
-     * Native FS module
-     * @preserve
-     */
-  fs: FS,
-  /**
-     * Native PATH module
-     * @preserve
-     */
-  path: PATH
 }
