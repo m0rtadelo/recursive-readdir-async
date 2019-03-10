@@ -1,7 +1,7 @@
-/*
+/**
  * project: recursive-readdir-async
  * author: m0rtadelo (ricard.figuls)
- * license: MIT
+ * @license MIT
  * 2018
  */
 'use strict'
