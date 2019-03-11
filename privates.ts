@@ -186,11 +186,11 @@ export async function listDir(path: string, settings?: IOptions, progress?, deep
 }
 /**
  * Returns an object with all items with selected options
- * @param {object} list items list
+ * @param {IItem[]} list items list
  * @param {IOptions} settings the options to use
  * @param {callbackFunction} progress callback progress
  * @param {number} deep folder depth
- * @returns {object[]} array with file information
+ * @returns Promise<IItem[]>} array with file information
  * @private
  */
 async function statDir(list: IItem[], settings: IOptions, progress: callbackFunction, deep: number): Promise<IItem[]> {
@@ -212,15 +212,15 @@ async function statDir(list: IItem[], settings: IOptions, progress: callbackFunc
 }
 /**
  * Returns an object with updated item information
- * @param {object} list items list
+ * @param {IItem[]} list items list
  * @param {number} i index of item
- * @param {object} settings the options to use
- * @param {function} progress callback progress
+ * @param {IOptions} settings the options to use
+ * @param {callbackFunction} progress callback progress
  * @param {number} deep folder depth
- * @returns {object[]} array with file information
+ * @returns {Promise<IItem[]>} array with file information
  * @private
  */
-async function statDirItem(list: IItem[], i: number, settings: IOptions, progress, deep: number): Promise<IItem[]> {
+async function statDirItem(list: IItem[], i: number, settings: IOptions, progress: callbackFunction, deep: number): Promise<IItem[]> {
   const stats = await stat(list[i].fullname);
   list[i].isDirectory = stats.isDirectory();
   if (settings.stats) {
