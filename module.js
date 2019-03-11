@@ -68,7 +68,7 @@ let pathSimbol = '/'
 /**
  * Returns a Promise with Stats info of the item (file/folder/...)
  * @param {string} file the name of the object to get stats from
- * @returns {Promise} stat object information
+ * @returns {Promise<stat>} stat object information
  */
 async function stat (file) {
   return new Promise(function (resolve, reject) {
@@ -85,7 +85,7 @@ module.exports.stat = stat
 /**
  * Returns a Promise with content (data) of the file
  * @param {string} file the name of the file to read content from
- * @returns {Promise} data content string (base64 format)
+ * @returns {Promise<string>} data content string (base64 format)
  */
 async function readFile (file) {
   return new Promise(function (resolve, reject) {
@@ -102,7 +102,7 @@ module.exports.readFile = readFile
 /**
  * Returns if an item should be added based on include/exclude options.
  * @param {string} path the item fullpath
- * @param {object} settings the options configuration to use
+ * @param {Options} settings the options configuration to use
  * @returns {boolean} if item must be added
  * @private
  */
@@ -117,7 +117,7 @@ function checkItem (path, settings) {
 /**
  * Returns a Promise with an objects info array
  * @param {string} path the item fullpath to be searched for
- * @param {object} settings the options configuration to use
+ * @param {Options} settings the options configuration to use
  * @param {number} deep folder depth value
  * @returns {Promise} the file object info
  * @private
