@@ -1,5 +1,5 @@
 var assert = require('assert');
-const rra = require('../module.js')
+const rra = require('../modulets.js')
 const path = require('path')
 
 // UT testing
