@@ -12,7 +12,7 @@ import { Mode } from "./enums";
 import { IError, IItem, IOptions } from "./interfaces";
 import { callbackFunction } from "./types";
 
-const pathSimbol = "/";
+let pathSeparator;
 
 // export class Private {
 /**
@@ -96,7 +96,7 @@ async function myReaddir(path: string, settings: IOptions, deep: number): Promis
             // Iterate through elements (files and folders)
             for (let i = 0, tam = files.length; i < tam; i++) {
               const obj = {
-                fullname: rpath + (rpath.endsWith(pathSimbol) ? "" : pathSimbol) + files[i],
+                fullname: rpath + (rpath.endsWith(pathSeparator) ? "" : pathSeparator) + files[i],
                 name: files[i],
                 path: rpath,
               };
@@ -149,9 +149,11 @@ function normalizePath(path: string): string {
  * @returns {<IItem[]|IError>} array with file information
  * @private
  */
-export async function listDir(path: string, settings?: IOptions, progress?, deep?: number): Promise<IItem[]|IError> {
-  let list;
-  deep = (deep === undefined ? 0 : deep);
+export async function listDir(path: string, settings: IOptions, progress: callbackFunction, deep: number, pathSimbol?: string): Promise<IItem[]|IError> {
+  if(pathSimbol !== undefined) {
+    pathSeparator = pathSimbol;
+  }
+  let list: IItem[];
   try {
     list = await myReaddir(path, settings, deep);
   } catch (err) {

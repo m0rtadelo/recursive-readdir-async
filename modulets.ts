@@ -6,13 +6,20 @@
  */
 
 import PATH from "path";
-
+import FS from "fs";
 import { Mode } from "./enums";
 import { IError, IItem, IOptions } from "./interfaces";
-import { listDir } from "./privates";
+import { listDir, stat, readFile } from "./privates";
 import { callbackFunction } from "./types";
 
 let pathSimbol = "/";
+
+module.exports.LIST = Mode.LIST;
+module.exports.TREE = Mode.TREE;
+module.exports.stat = stat;
+module.exports.readFile = readFile;
+module.exports.fs = FS;
+module.exports.path = PATH;
 /**
  * Returns a javascript object with directory items information (non blocking async with Promises)
  * @param {string} path the path to start reading contents
@@ -55,7 +62,7 @@ module.exports.list = async function list(
   }
 
   // Reading contents
-  return listDir(path, settings, progress);
+  return listDir(path, settings, progress, 0, pathSimbol);
 
   // sets the user settings
   function setOptions() {
