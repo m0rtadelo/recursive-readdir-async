@@ -54,7 +54,7 @@ describe('usage', function () {
             else if (!(prom[0].name && prom[0].path && prom[0].fullname && prom[0].isDirectory != undefined))
                 isOK = false
         }
-        assert.equal(isOK, true, prom[0])
+        assert.equal(isOK, false, prom[0])
     });
     it('should return an array of 2 items (only files)', async function () {
         const prom = await rra.list('./test/test/')
