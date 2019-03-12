@@ -8,3 +8,4 @@ node_js:
   - 7.6
   - node
 script: "npm run coveralls"
+after_success: ".travis/push.sh"

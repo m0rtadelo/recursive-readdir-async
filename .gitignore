@@ -1,4 +1,6 @@
-.*/* 
+.nyc_output/*
+.sonarlint/*
+.vscode/*
 node_modules/*
 test/test/*
 coverage/*
