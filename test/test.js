@@ -24,7 +24,6 @@ describe('load', function () {
     it('should load on require', function () {
         assert.notEqual(rra, undefined, 'module not loaded')
     });
-    /*
     it('should return an object', function () {
         assert.equal(typeof rra, 'object', 'not returns a object, returns ' + typeof rra)
     })
@@ -43,9 +42,9 @@ describe('load', function () {
         });
         assert.equal(cb, true, 'not loads supressing options.')
     })
-    */
+
 });
-/*
+
 describe('usage', function () {
     it('checking defaults', async function () {
         let isOK = true
@@ -367,4 +366,3 @@ describe('error control', function () {
         rra.fs.realpath = rpf;
     })
 });
-*/
