@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nyc mocha",
     "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test",
-    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "coveralls": "jsdoc module.js -d ./docs -R ./README.md && nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "build": "uglifyjs --compress --mangle reserved=[file,path,options,progress] --comments -- module.js > module.min.js && jsdoc module.js -d ./docs -R ./README.md",
     "lint": "eslint ."
   },
