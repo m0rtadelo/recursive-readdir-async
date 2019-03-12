@@ -1,5 +1,4 @@
 language: node_js
-sudo: false
 
 node_js:
   - 10
@@ -8,4 +7,7 @@ node_js:
   - 7.6
   - node
 script: "npm run coveralls"
-after_success: ".travis/push.sh"
+after_success:
+  - sudo apt-get install git
+  - chmod +x .travis/push.sh
+  - .travis/push.sh
