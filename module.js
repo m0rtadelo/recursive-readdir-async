@@ -7,19 +7,29 @@
 'use strict'
 
 /**
-*  @typedef File
+ * Definition for the main Error object that contains information of the current exception
+ * @typedef Error
+ * @type {object}
+ * @property {object} error - The error object. The structure is variable
+ * @property {string} path - The path where the error is related to
+ */
+
+/**
+ * Definition for the Item object that contains information of files used but this module
+*  @typedef File  
 *  @type {object}
 *  @property {string} name - The filename of the file
 *  @property {string} path - The path of the file
 *  @property {string} fullname - The fullname of the file (path & name)
-*  @property {string} extension - The extension of the file in lowercase
-*  @property {boolean} isDirectory - Always false in files
-*  @property {string} data - The content of the file in a base64 string
-*  @property {object} stats - The stats (information) of the file
-*  @property {error} error - If something goes wrong the error comes here
+*  @property {string} [extension] - The extension of the file in lowercase
+*  @property {boolean} [isDirectory] - Always false in files
+*  @property {string} [data] - The content of the file in a base64 string
+*  @property {object} [stats] - The stats (information) of the file
+*  @property {Error} [error] - If something goes wrong the error comes here
 */
 
 /**
+ * Definition for the Item object that contains information of folders used but this module
 *  @typedef Folder
 *  @type {object}
 *  @property {string} name - The filename of the folder
