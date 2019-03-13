@@ -142,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line57">line 57</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line67">line 67</a>
     </li></ul></dd>
     
 
@@ -204,7 +204,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line47">line 47</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line57">line 57</a>
     </li></ul></dd>
     
 
@@ -266,7 +266,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line62">line 62</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line72">line 72</a>
     </li></ul></dd>
     
 
@@ -328,7 +328,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line52">line 52</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line62">line 62</a>
     </li></ul></dd>
     
 
@@ -503,7 +503,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line299">line 299</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line309">line 309</a>
     </li></ul></dd>
     
 
@@ -663,7 +663,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line90">line 90</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line100">line 100</a>
     </li></ul></dd>
     
 
@@ -820,7 +820,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line73">line 73</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -1028,7 +1028,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line34">line 34</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line44">line 44</a>
     </li></ul></dd>
     
 
@@ -1080,10 +1080,14 @@
 
             
                 
-<h4 class="name" id="File">File</h4>
+<h4 class="name" id="Error">Error</h4>
 
 
 
+
+<div class="description">
+    Definition for the main Error object that contains information of the current exception
+</div>
 
 
 
@@ -1127,13 +1131,13 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>error</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">object</span>
 
 
             
@@ -1143,7 +1147,7 @@
 
             
 
-            <td class="description last">The filename of the file</td>
+            <td class="description last">The error object. The structure is variable</td>
         </tr>
 
     
@@ -1166,145 +1170,7 @@
 
             
 
-            <td class="description last">The path of the file</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>fullname</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The fullname of the file (path & name)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>extension</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The extension of the file in lowercase</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>isDirectory</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Always false in files</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The content of the file in a base64 string</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stats</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The stats (information) of the file</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>error</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">error</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">If something goes wrong the error comes here</td>
+            <td class="description last">The path where the error is related to</td>
         </tr>
 
     
@@ -1361,10 +1227,359 @@
 
             
                 
+<h4 class="name" id="File">File</h4>
+
+
+
+
+<div class="description">
+    Definition for the Item object that contains information of files used but this module
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The filename of the file</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The path of the file</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fullname</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The fullname of the file (path & name)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>extension</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The extension of the file in lowercase</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isDirectory</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Always false in files</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The content of the file in a base64 string</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>stats</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The stats (information) of the file</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Error">Error</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">If something goes wrong the error comes here</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
 <h4 class="name" id="Folder">Folder</h4>
 
 
 
+
+<div class="description">
+    Definition for the Item object that contains information of folders used but this module
+</div>
 
 
 
@@ -1604,7 +1819,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line22">line 22</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line31">line 31</a>
     </li></ul></dd>
     
 
@@ -1957,7 +2172,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line305">line 305</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line315">line 315</a>
     </li></ul></dd>
     
 
@@ -1993,7 +2208,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Mar 12 2019 22:32:34 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Mar 13 2019 14:18:33 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
