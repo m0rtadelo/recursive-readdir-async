@@ -16,7 +16,7 @@
 
 /**
  * Definition for the Item object that contains information of files used but this module
-*  @typedef File  
+*  @typedef File
 *  @type {object}
 *  @property {string} name - The filename of the file
 *  @property {string} path - The path of the file
@@ -26,6 +26,7 @@
 *  @property {string} [data] - The content of the file in a base64 string
 *  @property {object} [stats] - The stats (information) of the file
 *  @property {Error} [error] - If something goes wrong the error comes here
+*  @property {number} [deep] - The depth of current content
 */
 
 /**
@@ -35,10 +36,11 @@
 *  @property {string} name - The filename of the folder
 *  @property {string} path - The path of the folder
 *  @property {string} fullname - The fullname of the folder (path & name)
-*  @property {string} extension - The extension of the folder in lowercase
-*  @property {boolean} isDirectory - Always true in folders
-*  @property {File[]|Folder[]} content - Array of File/Folder content
-*  @property {error} error - If something goes wrong the error comes here
+*  @property {string} [extension] - The extension of the folder in lowercase
+*  @property {boolean} [isDirectory] - Always true in folders
+*  @property {File[]|Folder[]} [content] - Array of File/Folder content
+*  @property {Error} [error] - If something goes wrong the error comes here
+*  @property {number} [deep] - The depth of current content
 */
 
 /**
@@ -52,12 +54,14 @@
 
 // constants
 /**
- * constant for mode LIST to be used in Options
+ * @readonly
+ * @enum {number} constant for mode LIST to be used in Options
  */
 const LIST = 1
 module.exports.LIST = LIST
 /**
- * constant for mode TREE to be used in Options
+ * @readonly
+ * @enum {number} constant for mode TREE to be used in Options
  */
 const TREE = 2
 module.exports.TREE = TREE
@@ -303,7 +307,7 @@ async function statDirItem (list, i, settings, progress, deep) {
  * @param {string} path the path to start reading contents
  * @param {Options} options options (mode, recursive, stats, ignoreFolders)
  * @param {CallbackFunction} progress callback with item data and progress info for each item
- * @returns {File[]|Folder[]} array with file/folder information
+ * @returns {Promise<File[]|Folder[]>} promise array with file/folder information
  * @async
  */
 module.exports.list = async function list (path, options, progress) {
