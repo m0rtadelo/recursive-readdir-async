@@ -142,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line67">line 67</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line71">line 71</a>
     </li></ul></dd>
     
 
@@ -160,7 +160,7 @@
 
         
             
-<h4 class="name" id="LIST"><span class="type-signature">(constant) </span>LIST<span class="type-signature"></span></h4>
+<h4 class="name" id="LIST"><span class="type-signature">(constant) </span>LIST<span class="type-signature"> :number</span></h4>
 
 
 
@@ -170,6 +170,16 @@
 </div>
 
 
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -204,7 +214,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line57">line 57</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -266,7 +276,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line72">line 72</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line76">line 76</a>
     </li></ul></dd>
     
 
@@ -284,7 +294,7 @@
 
         
             
-<h4 class="name" id="TREE"><span class="type-signature">(constant) </span>TREE<span class="type-signature"></span></h4>
+<h4 class="name" id="TREE"><span class="type-signature">(constant) </span>TREE<span class="type-signature"> :number</span></h4>
 
 
 
@@ -294,6 +304,16 @@
 </div>
 
 
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -328,7 +348,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line62">line 62</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line66">line 66</a>
     </li></ul></dd>
     
 
@@ -356,7 +376,7 @@
     
 
     
-    <h4 class="name" id="list"><span class="type-signature">(async) </span>list<span class="signature">(path, options, progress)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#File">File</a>>|Array.&lt;<a href="global.html#Folder">Folder</a>>}</span></h4>
+    <h4 class="name" id="list"><span class="type-signature">(async) </span>list<span class="signature">(path, options, progress)</span><span class="type-signature"> &rarr; {Promise.&lt;(Array.&lt;<a href="global.html#File">File</a>>|Array.&lt;<a href="global.html#Folder">Folder</a>>)>}</span></h4>
     
 
     
@@ -503,7 +523,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line309">line 309</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line313">line 313</a>
     </li></ul></dd>
     
 
@@ -530,7 +550,7 @@
 
         
 <div class="param-desc">
-    array with file/folder information
+    promise array with file/folder information
 </div>
 
 
@@ -541,10 +561,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;<a href="global.html#File">File</a>></span>
-|
-
-<span class="param-type">Array.&lt;<a href="global.html#Folder">Folder</a>></span>
+<span class="param-type">Promise.&lt;(Array.&lt;<a href="global.html#File">File</a>>|Array.&lt;<a href="global.html#Folder">Folder</a>>)></span>
 
 
     </dd>
@@ -663,7 +680,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line100">line 100</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line104">line 104</a>
     </li></ul></dd>
     
 
@@ -820,7 +837,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line83">line 83</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line87">line 87</a>
     </li></ul></dd>
     
 
@@ -1028,7 +1045,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line44">line 44</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -1519,6 +1536,37 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>deep</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The depth of current content</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -1611,6 +1659,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -1636,6 +1686,12 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
@@ -1658,6 +1714,12 @@
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+                </td>
             
 
             
@@ -1682,6 +1744,12 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
@@ -1705,6 +1773,14 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
 
             
 
@@ -1727,6 +1803,14 @@
             
             </td>
 
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
             
 
             
@@ -1754,6 +1838,14 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
 
             
 
@@ -1770,17 +1862,56 @@
             <td class="type">
             
                 
-<span class="param-type">error</span>
+<span class="param-type"><a href="global.html#Error">Error</a></span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last">If something goes wrong the error comes here</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>deep</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The depth of current content</td>
         </tr>
 
     
@@ -1819,7 +1950,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line31">line 31</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -2172,7 +2303,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="module.js.html">module.js</a>, <a href="module.js.html#line315">line 315</a>
+        <a href="module.js.html">module.js</a>, <a href="module.js.html#line319">line 319</a>
     </li></ul></dd>
     
 
@@ -2208,7 +2339,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Mar 13 2019 14:18:33 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 14 2019 21:24:46 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
