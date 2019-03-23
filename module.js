@@ -7,6 +7,12 @@
 'use strict'
 
 /**
+ * A fs.Stats object provides information about a file.
+ * @external stats
+ * @see https://nodejs.org/api/fs.html#fs_class_fs_stats
+ */
+
+/**
  * Definition for the main Error object that contains information of the current exception
  * @typedef Error
  * @type {object}
@@ -24,7 +30,7 @@
 *  @property {string} [extension] - The extension of the file in lowercase
 *  @property {boolean} [isDirectory] - Always false in files
 *  @property {string} [data] - The content of the file in a base64 string
-*  @property {object} [stats] - The stats (information) of the file
+*  @property {external:stats} [stats] - The stats (information) of the file
 *  @property {Error} [error] - If something goes wrong the error comes here
 *  @property {number} [deep] - The depth of current content
 */
@@ -67,11 +73,15 @@ const TREE = 2
 module.exports.TREE = TREE
 /**
  * native FS module
+ * @see https://nodejs.org/api/fs.html#fs_file_system
+ * @external
  */
 const FS = require('fs')
 module.exports.fs = FS
 /**
  * native PATH module
+ * @external
+ * @see https://nodejs.org/api/path.html#path_path
  */
 const PATH = require('path')
 module.exports.path = PATH

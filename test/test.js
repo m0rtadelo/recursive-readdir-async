@@ -206,11 +206,9 @@ describe('usage', function () {
     });
     it('should return data in base64 format', async function() {
         const prom = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false })
-        console.log()
         assert.equal(prom.length,1,'error with include option')
         assert.equal(prom[0].data, 'c29tZXRoaW5n', 'unexpected base64 data')
     });
-
 });
 
 describe('bugfix check', function () {
