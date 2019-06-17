@@ -168,15 +168,7 @@ describe('usage', function () {
             // Windows et al
             assert.ok(prom[0].path.startsWith('.\\test\\test\\folder1'), 'Backslashed paths should work in Windows: ' + prom[0].path)
         } else {
-            assert.deepEqual(prom, {
-              "error": {
-                "errno": -2,
-                "code": "ENOENT",
-                "syscall": "scandir",
-                "path": ".\\test\\test\\"
-              },
-              "path": ".\\test\\test\\"
-            }, "Backslashed paths are only supported on Windows platforms.");
+            assert.ok(prom.error.code == "ENOENT", "Backslashed paths are only supported on Windows platforms.");
         }
     });
     it('should normalize Windows paths on all platforms by default', async function () {
