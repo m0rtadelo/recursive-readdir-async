@@ -31,3 +31,6 @@
     fix ignoreFolders bug
     improved tests
     Added link to wiki
+1.1.4
+    fix npm vulnerabilities
+    fix jsdoc files
