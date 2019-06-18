@@ -29,7 +29,7 @@
 *  @property {string} fullname - The fullname of the file (path & name)
 *  @property {string} [extension] - The extension of the file in lowercase
 *  @property {boolean} [isDirectory] - Always false in files
-*  @property {string} [data] - The content of the file in a base64 string
+*  @property {string} [data] - The content of the file in a base64 string by default
 *  @property {external:stats} [stats] - The stats (information) of the file
 *  @property {Error} [error] - If something goes wrong the error comes here
 *  @property {number} [deep] - The depth of current content
@@ -109,11 +109,15 @@ module.exports.stat = stat
 /**
  * Returns a Promise with content (data) of the file
  * @param {string} file the name of the file to read content from
- * @returns {Promise<string>} data content string (base64 format)
+ * @param {string} encoding format for returned data (ascii, base64, binary, hex, ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). Default: base64
+ * @returns {Promise<any>} data content string (base64 format by default)
  */
-async function readFile (file) {
+async function readFile (file, encoding) {
+  if (encoding === undefined) {
+    encoding = 'base64'
+  }
   return new Promise(function (resolve, reject) {
-    FS.readFile(file, { 'encoding': 'base64' }, function (err, data) {
+    FS.readFile(file, encoding ? { 'encoding': encoding } : {}, function (err, data) {
       if (err) {
         reject(err)
       } else {
@@ -296,7 +300,7 @@ async function statDirItem (list, i, settings, progress, deep) {
     list[i].stats = stats
   }
   if (settings.readContent && !list[i].isDirectory) {
-    list[i].data = await readFile(list[i].fullname)
+    list[i].data = await readFile(list[i].fullname, settings.encoding)
   }
   if (list[i].isDirectory && settings.recursive) {
     if (settings.mode === LIST) {
@@ -340,6 +344,7 @@ module.exports.list = async function list (path, options, progress) {
   *  @property {string[]} include - Positive filter the items: only items which DO (partially or completely) match one of the strings in the include array will be returned. Default: []
   *  @property {string[]} exclude - Negative filter the items: only items which DO NOT (partially or completely) match any of the strings in the exclude array will be returned. Default: []
   *  @property {boolean} readContent -  Adds the content of the file into the item (base64 format). Default: false
+  *  @property {string} encoding - Sets the encoding format to use in the readFile FS native node function (ascii, base64, binary, hex, ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). Default: 'base64'
   */
   // Setting default settings
   const settings = {
@@ -353,7 +358,8 @@ module.exports.list = async function list (path, options, progress) {
     normalizePath: true,
     include: [],
     exclude: [],
-    readContent: false
+    readContent: false,
+    encoding: undefined
   }
 
   // Applying options (if set)
@@ -404,6 +410,9 @@ module.exports.list = async function list (path, options, progress) {
       }
       if (options.readContent !== undefined) {
         settings.readContent = options.readContent
+      }
+      if (options.encoding !== undefined) {
+        settings.encoding = options.encoding
       }
     }
   }

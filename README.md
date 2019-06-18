@@ -46,7 +46,8 @@ const options = {
     normalizePath: true,
     include: [],
     exclude: [],
-    readContent: false
+    readContent: false,
+    encoding: 'base64'
 }
 const list = await rra.list('.', options, function (obj, index, total) {
     console.log(`${index} of ${total} ${obj.path}`)
@@ -71,6 +72,7 @@ An options object can be passed to configure the module. The next options can be
 * **include (Array of String)** : Positive filter the items: only items which [DO](http://www.ietf.org/rfc/rfc2119.txt) (partially or completely) match one of the strings in the `include` array will be returned. *Default: []*
 * **exclude (Array of String)** : Negative filter the items: only items which [DO NOT](http://www.ietf.org/rfc/rfc2119.txt) (partially or completely) match *any* of the strings in the `exclude` array will be returned. *Default: []*
 * **readContent (true | false)** : Adds the content of the file into the item (base64 format). *Default: false*
+* **encoding (String)**: Sets the encoding of the file data  (ascii, base64, binary, hex, ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). *Default: base64*
 
 ### Notes
 * Counter-intuitive to some folks, an *empty* `include` array is treated same as setting it to `null` / `undefined`: no include filter will be applied.
@@ -111,7 +113,7 @@ The function will return an object and never throw an error. All errors will be 
         "fullname":"/absolute/path/to/item/item_name/file.txt",
         "extension":".txt",
         "isDirectory": false,
-        "data": "base64",
+        "data": "base64/utf8/etc.",
         "stats":{
 
         }
@@ -122,7 +124,7 @@ The function will return an object and never throw an error. All errors will be 
         "fullname":"/absolute/path/to/item/item_name/UCASE.JPEG",
         "extension":".jpeg",
         "isDirectory": false,
-        "data": "base64",
+        "data": "base64/utf8/etc.",
         "stats":{
 
         }
@@ -147,7 +149,7 @@ The same example for TREE mode:
                 "fullname":"/absolute/path/to/item/item_name/file.txt",
                 "extension":".txt",
                 "isDirectory": false,
-                "data": "base64",
+                "data": "base64/utf8/etc.",
                 "stats":{
 
                 }
@@ -158,7 +160,7 @@ The same example for TREE mode:
                 "fullname":"/absolute/path/to/item/item_name/UCASE.JPEG",
                 "extension":".jpeg",
                 "isDirectory": false,
-                "data": "base64",
+                "data": "base64/utf8/etc.",
                 "stats":{
 
                 }

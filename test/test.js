@@ -196,10 +196,24 @@ describe('usage', function () {
         assert.notEqual(prom[0].data, undefined, 'data unavailable')
         assert.notEqual(prom[1].data, undefined, 'data unavailable')
     });
-    it('should return data in base64 format', async function() {
+    it('should return data in base64 format by default', async function() {
         const prom = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false })
         assert.equal(prom.length,1,'error with include option')
-        assert.equal(prom[0].data, 'c29tZXRoaW5n', 'unexpected base64 data')
+        assert.equal(prom[0].data, 'c29tZXRoaW5n', 'unexpected base64 data: "' + prom[0].data + '"')
+    });
+    it('should return data in utf8 format if defined in options', async function() {
+        const prom = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false, encoding: 'utf8' })
+        assert.equal(prom.length,1,'error with include option')
+        assert.equal(prom[0].data, 'something', 'unexpected utf8 data: "' + prom[0].data + '"')
+    });
+    it('should return unencoded data if undefined in options', async function() {
+        const prom = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false, encoding: '' })
+        assert.equal(prom.length,1,'error with include option')
+        assert.equal(prom[0].data, 'something', 'unexpected unencoded data: "' + prom[0].data + '"')
+    });
+    it('should return base64 data if undefined in parameter', async function() {
+        const prom = await rra.readFile('./test/test/folder1/subfolder1/subsubf1/subfile1.txt')
+        assert.equal(prom, 'c29tZXRoaW5n', 'unexpected response data: "' + prom[0].data + '"')
     });
 });
 
