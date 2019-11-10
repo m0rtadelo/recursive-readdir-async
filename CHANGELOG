@@ -36,3 +36,5 @@
     fix jsdoc files
 1.1.5
     adds data encoding options
+1.1.6
+    fix npm vulnerabilities
