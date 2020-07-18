@@ -1,6 +1,6 @@
 {
-  "name": "recursive-readdir-async",
-  "version": "1.1.6",
+  "name": "@keepsolutions/recursive-readdir-async",
+  "version": "1.1.7",
   "description": "Module to recursive read directory async (non blocking). Must be used with Promises. Configurable, extended filtering. etc.",
   "main": "module.js",
   "scripts": {
@@ -35,7 +35,7 @@
   "homepage": "https://github.com/m0rtadelo/recursive-readdir-async",
   "repository": {
     "type": "git",
-    "url": "https://github.com/m0rtadelo/recursive-readdir-async.git"
+    "url": "git+https://github.com/m0rtadelo/recursive-readdir-async.git"
   },
   "license": "MIT",
   "devDependencies": {
@@ -51,5 +51,10 @@
     "mocha": "^5.2.0",
     "nyc": "^14.1.1",
     "uglify-es": "^3.3.10"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "dependencies": {}
 }
