@@ -244,13 +244,21 @@ async function listDir (path, settings, progress, deep) {
   return list
 
   function onlyInclude () {
-    for (let j = 0; j < settings.include.length; j++) {
+    function exists (fullname) {
+      for (let j = 0; j < settings.include.length; j++) {
+        if (fullname.indexOf(settings.include[j]) > -1) {
+          return true
+        }
+      }
+      return false
+    }
+    if (settings.include.length > 0) {
       for (let i = list.length - 1; i > -1; i--) {
         let item = list[i]
 
         if (settings.mode === TREE && item.isDirectory && item.content) continue
 
-        if (item.fullname.indexOf(settings.include[j]) === -1) {
+        if (!exists(item.fullname)) {
           list.splice(i, 1)
         }
       }
