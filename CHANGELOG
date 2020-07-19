@@ -38,3 +38,5 @@
     adds data encoding options
 1.1.6
     fix npm vulnerabilities
+1.1.7
+    fix issue 3 & 10 (are the same)
