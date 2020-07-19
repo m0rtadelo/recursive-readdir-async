@@ -20,6 +20,8 @@ describe('load', function () {
     fs.writeFileSync('./test/test/folder1/subfolder1/subsubf1/subfile1.txt', 'something')
     fs.mkdirSync('./test/test/folder2/')
     fs.mkdirSync('./test/test/folder2/subfolder2/')
+    fs.mkdirSync('./test/test/folder3/')
+    fs.writeFileSync('./test/test/folder3/file3.txt', 'some')
 
     it('should load on require', function () {
         assert.notEqual(rra, undefined, 'module not loaded')
@@ -57,24 +59,24 @@ describe('usage', function () {
         }
         assert.equal(isOK, true, prom[0])
     });
-    it('should return an array of 2 items (only files)', async function () {
+    it('should return an array of 3 items (only files)', async function () {
         const prom = await rra.list('./test/test/')
-        assert.equal(prom.length, 2, 'returns ' + prom.length)
+        assert.equal(prom.length, 3, 'returns ' + prom.length)
     });
     let options = {
         ignoreFolders: false
     }
-    it('should return an array of 7 items (files and folders)', async function () {
+    it('should return an array of 9 items (files and folders)', async function () {
         const prom = await rra.list('./test/test/', options)
-        assert.equal(prom.length, 7, 'returns ' + prom.length)
+        assert.equal(prom.length, 9, 'returns ' + prom.length)
     });
-    it('should return an array of 2 items (folders)', async function () {
+    it('should return an array of 3 items (folders)', async function () {
         options = {
             ignoreFolders: false,
             recursive: false
         }
         const prom = await rra.list('./test/test/', options)
-        assert.equal(prom.length, 2, 'returns ' + prom.length)
+        assert.equal(prom.length, 3, 'returns ' + prom.length)
     });
     it('should return an array of 0 items (empty folders LIST)', async function () {
         options = {
@@ -91,7 +93,7 @@ describe('usage', function () {
         const prom = await rra.list('./test/test/folder2/', options)
         assert.equal(prom.length, 0, 'returns ' + prom.length)
     });
-    it('should delete file with 4 bytes (remains subfile1.txt)', async function () {
+    it('should delete files with 4 bytes (remains subfile1.txt)', async function () {
         options = {
             mode: rra.LIST,
             recursive: true,
@@ -108,7 +110,7 @@ describe('usage', function () {
         assert.equal(result, true, 'returns ' + prom[0].name)
         assert.equal(prom.length, 1, 'unexpected length')
     });
-    it('should trigger function 7 times', async function () {
+    it('should trigger function 9 times', async function () {
         options = {
             mode: rra.LIST,
             recursive: true,
@@ -119,7 +121,7 @@ describe('usage', function () {
         const prom = await rra.list('./test/test/', options, function () {
             counter++
         })
-        assert.equal(counter, 7, 'returns ' + prom.length)
+        assert.equal(counter, 9, 'returns ' + prom.length)
     });
     it('should ignore folder2 structure', async function () {
         options = {
@@ -131,7 +133,7 @@ describe('usage', function () {
             extensions: true
         }
         const prom = await rra.list('./test/test/', options)
-        assert.equal(prom.length, 1, 'returns ' + prom.length)
+        assert.equal(prom.length, 2, 'returns ' + prom.length)
     });
     it('should return deep & lowercase extensions properly', async function () {
         let isOK = true
@@ -173,7 +175,7 @@ describe('usage', function () {
     });
     it('should normalize Windows paths on all platforms by default', async function () {
         const prom = await rra.list('.\\test\\test\\', { 'realPath': false })
-        assert.ok(prom[0].path.startsWith('./test/test/folder1'), 'Backslashed paths should be normalized by default on any platform: ' + prom[0].path)
+        assert.ok(prom.some(p => p.path.startsWith('./test/test/folder1')), 'Backslashed paths should be normalized by default on any platform: ' + prom[0].path)
     });
     it('should include only paths that exists in settings.include', async function () {
         const prom = await rra.list('./test/test', { 'mode': rra.TREE, 'ignoreFolders': false, 'include': ['/subfolder2'] })
@@ -185,7 +187,7 @@ describe('usage', function () {
         assert.ok(prom[0].content[0].fullname.indexOf('/subfolder2') > 7, 'path folder2 must include subfolder2 in its tree')
     });
     it('should exclude paths that exists in settings.exclude', async function () {
-        const prom = await rra.list('./test/test/', { 'exclude': ['subfolder2'], 'mode': rra.TREE })
+        const prom = await rra.list('./test/test/', { 'exclude': ['subfolder2', 'folder3'], 'mode': rra.TREE })
         let isOK = false
         if (prom.length == 1 && prom[0].fullname.indexOf('/test/test/folder1') > -1)
             isOK = true
