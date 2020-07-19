@@ -254,6 +254,15 @@ describe('bugfix check', function () {
         {'readContent': false, 'ignoreFolders':true, 'stats':false, 'recursive': false, 'mode':rra.LIST});
         assert.equal(prom[0].isDirectory, undefined, 'isDirectory unexpected')
     });
+    it('should include only paths that exists in settings.include (with array)', async function () {
+        const prom = await rra.list('./test/test', { 'mode': rra.TREE, 'ignoreFolders': false, 'include': ['/subfolder2', '/subsub'] })
+        let isOK = false
+        if (prom.length == 2 && prom[1].fullname.indexOf('/test/test/folder2') > -1 && prom[0].content[0].content[0].fullname.indexOf('/test/folder1/subfolder1/subsubf1') > -1)
+            isOK = true
+        assert.equal(isOK, true, 'path folder2 & folder 1 must be included' + (prom.length ? prom[0].fullname : ""))
+        assert.strictEqual(prom[1].content.length, 1, 'path folder2 must include subfolder content')
+        assert.ok(prom[1].content[0].fullname.indexOf('/subfolder2') > 7, 'path folder2 must include subfolder2 in its tree')
+    });
 });
 
 describe('error control', function () {
