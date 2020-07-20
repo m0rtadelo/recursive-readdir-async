@@ -2,12 +2,14 @@
   "name": "recursive-readdir-async",
   "version": "1.1.7",
   "description": "Module to recursive read directory async (non blocking). Must be used with Promises. Configurable, extended filtering. etc.",
-  "main": "module.js",
+  "main": "build/module.cjs.js",
+  "module": "build/module.esm.js",
   "scripts": {
     "test": "nyc mocha",
     "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "coveralls": "jsdoc module.js -d ./docs -R ./README.md && nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "build": "uglifyjs --compress --mangle reserved=[file,path,options,progress] --comments -- module.js > module.min.js && jsdoc module.js -d ./docs -R ./README.md",
+    "release": "rollup -c",
     "lint": "eslint ."
   },
   "engines": {
@@ -39,6 +41,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^8.4.0",
     "coveralls": "^3.1.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
@@ -50,6 +53,7 @@
     "jsdoc": "^3.6.4",
     "mocha": "^5.2.0",
     "nyc": "^14.1.1",
+    "rollup": "^2.22.1",
     "uglify-es": "^3.3.10"
   }
 }
