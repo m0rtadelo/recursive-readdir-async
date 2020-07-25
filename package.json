@@ -28,13 +28,15 @@
     "list",
     "tree",
     "dir",
-    "ls"
+    "ls",
+    "commonjs",
+    "es6"
   ],
   "author": "ricard.figuls",
   "bugs": {
     "url": "https://github.com/m0rtadelo/recursive-readdir-async/issues"
   },
-  "homepage": "https://github.com/m0rtadelo/recursive-readdir-async",
+  "homepage": "https://m0rtadelo.github.io/recursive-readdir-async/",
   "repository": {
     "type": "git",
     "url": "https://github.com/m0rtadelo/recursive-readdir-async.git"
