@@ -5,3 +5,4 @@ node_modules/*
 test/test/*
 coverage/*
 module.min.js
+build/

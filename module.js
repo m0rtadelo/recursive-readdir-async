@@ -109,7 +109,7 @@ module.exports.stat = stat
 /**
  * Returns a Promise with content (data) of the file
  * @param {string} file the name of the file to read content from
- * @param {string} encoding format for returned data (ascii, base64, binary, hex, ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). Default: base64
+ * @param {string=} encoding format for returned data (ascii, base64, binary, hex, ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). Default: base64
  * @returns {Promise<any>} data content string (base64 format by default)
  */
 async function readFile (file, encoding) {
@@ -327,8 +327,8 @@ async function statDirItem (list, i, settings, progress, deep) {
 /**
  * Returns a javascript object with directory items information (non blocking async with Promises)
  * @param {string} path the path to start reading contents
- * @param {Options} options options (mode, recursive, stats, ignoreFolders)
- * @param {CallbackFunction} progress callback with item data and progress info for each item
+ * @param {Options=} options options (mode, recursive, stats, ignoreFolders)
+ * @param {CallbackFunction=} progress callback with item data and progress info for each item
  * @returns {Promise<File[]|Folder[]>} promise array with file/folder information
  * @async
  */
