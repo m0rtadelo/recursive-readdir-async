@@ -5,36 +5,40 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/m0rtadelo/recursive-readdir-async.svg)
 [![npm version](https://badge.fury.io/js/recursive-readdir-async.svg)](https://badge.fury.io/js/recursive-readdir-async)
 # recursive-readdir-async
-NPM Module to recursive read directory async (non blocking). Returns Promise. Configurable, with callback for extended filtering and progress status. Quiet, NO dependencies.
-As non blocking module it is perfect to be used in any javascript based Desktop applications.
+NPM Module to recursive read directory async (non blocking). Returns Promise. Configurable, with callback for extended filtering and progress status. Quiet, NO dependencies. As non blocking module it is perfect to be used in any javascript based Desktop applications.
 >This module uses Promises and can't be used in old javascript engines.
+
+>Compatible with CommonJS (require key) and ES6 (import key).
 ## Installation
 For normal usage into a project, you must install as a NPM dependency. The next command will do all the work:
 ```
 npm install --save recursive-readdir-async
 ```
-After install, you can use the module using the *require* key:
+After install, you can use the module using the *require* key (CommonJS):
 ```javascript
 // Assign recursive-readdir-async to constant
 const rra = require('recursive-readdir-async')
 // use it
 ```
+or using the *import* key (ES6):
+```typescript
+// Import ES6 module
+import * as rra from 'recursive-readdir-async'
+// use it
+```
 ## Usage
 Example of basic usage:
 ```javascript
-const rra = require('recursive-readdir-async');
 const list = await rra.list('.');
 console.log(list)
 ```
 ```javascript
-const rra = require('recursive-readdir-async');
 rra.list('.').then(function(list){
     console.log(list)
 })
 ```
 Example with full features:
 ```javascript
-const rra = require('recursive-readdir-async');
 const options = {
     mode: rra.LIST,
     recursive: true,

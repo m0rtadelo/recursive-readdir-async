@@ -40,3 +40,5 @@
     fix npm vulnerabilities
 1.1.7
     fix issue 3 & 10 (are the same)
+1.1.8
+    add support to ES6 modules
