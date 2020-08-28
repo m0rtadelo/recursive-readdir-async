@@ -171,10 +171,15 @@ async function myReaddir (path, settings, deep) {
           if (err) {
             reject(err)
           } else {
+            const removeExt = (file) => {
+              const extSize = PATH.extname(file).length
+              return file.substring(0, file.length - (extSize > 0 ? extSize : 0))
+            }
             // Iterate through elements (files and folders)
             for (let i = 0, tam = files.length; i < tam; i++) {
               const obj = {
                 'name': files[i],
+                'title': removeExt(files[i]),
                 'path': rpath,
                 'fullname': rpath + (rpath.endsWith(pathSimbol) ? '' : pathSimbol) + files[i]
               }
