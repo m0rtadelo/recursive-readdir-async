@@ -70,7 +70,6 @@ describe('usage', function () {
     }
     it('should return an array of 10 items (files and folders)', async function () {
         const prom = await rra.list('./test/test/', options)
-        console.log(prom)
         assert.equal(prom.length, 10, 'returns ' + prom.length)
     });
     it('should return an array of 3 items (folders)', async function () {
