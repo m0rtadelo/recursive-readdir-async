@@ -22,6 +22,7 @@ describe('load', function () {
     fs.mkdirSync('./test/test/folder2/subfolder2/')
     fs.mkdirSync('./test/test/folder3/')
     fs.writeFileSync('./test/test/folder3/file3.txt', 'some')
+    fs.writeFileSync('./test/test/folder3/noext', '1234')
 
     it('should load on require', function () {
         assert.notEqual(rra, undefined, 'module not loaded')
@@ -59,16 +60,17 @@ describe('usage', function () {
         }
         assert.equal(isOK, true, prom[0])
     });
-    it('should return an array of 3 items (only files)', async function () {
+    it('should return an array of 4 items (only files)', async function () {
         const prom = await rra.list('./test/test/')
-        assert.equal(prom.length, 3, 'returns ' + prom.length)
+        assert.equal(prom.length, 4, 'returns ' + prom.length)
     });
     let options = {
-        ignoreFolders: false
+        ignoreFolders: false,
+        extensions: true
     }
-    it('should return an array of 9 items (files and folders)', async function () {
+    it('should return an array of 10 items (files and folders)', async function () {
         const prom = await rra.list('./test/test/', options)
-        assert.equal(prom.length, 9, 'returns ' + prom.length)
+        assert.equal(prom.length, 10, 'returns ' + prom.length)
     });
     it('should return an array of 3 items (folders)', async function () {
         options = {
@@ -110,7 +112,7 @@ describe('usage', function () {
         assert.equal(result, true, 'returns ' + prom[0].name)
         assert.equal(prom.length, 1, 'unexpected length')
     });
-    it('should trigger function 9 times', async function () {
+    it('should trigger function 10 times', async function () {
         options = {
             mode: rra.LIST,
             recursive: true,
@@ -121,7 +123,7 @@ describe('usage', function () {
         const prom = await rra.list('./test/test/', options, function () {
             counter++
         })
-        assert.equal(counter, 9, 'returns ' + prom.length)
+        assert.equal(counter, 10, 'returns ' + prom.length)
     });
     it('should ignore folder2 structure', async function () {
         options = {
@@ -147,7 +149,7 @@ describe('usage', function () {
         }
         const prom = await rra.list('./test/test/', options)
         for (var i = 0; i < prom.length; i++) {
-            if (prom[i].extension != '.txt' || isNaN(prom[i].deep))
+            if ((prom[i].extension != '.txt' && prom[i].title !== 'noext') || isNaN(prom[i].deep))
                 isOK = false
             if (prom[i].name == 'file1.TXT' && prom[i].deep != 1)
                 isOK = false
@@ -217,6 +219,14 @@ describe('usage', function () {
         const prom = await rra.readFile('./test/test/folder1/subfolder1/subsubf1/subfile1.txt')
         assert.equal(prom, 'c29tZXRoaW5n', 'unexpected response data: "' + prom[0].data + '"')
     });
+    it('should return title and extension as expected', async function() {
+        const prom = await rra.list('./test/test/folder1/subfolder1/subsubf1/',{'mode': rra.LIST, 'include':['subfile1.txt'], extensions: true})
+        const prom2 = await rra.list('./test/test/folder3',{mode: rra.LIST, include: ['noext'], extensions: true})
+        assert.equal(prom[0].title, 'subfile1')
+        assert.equal(prom[0].extension, '.txt')
+        assert.equal(prom2[0].title, 'noext')
+        assert.equal(prom2[0].extension, '')
+    })
 });
 
 describe('bugfix check', function () {
@@ -306,7 +316,7 @@ describe('error control', function () {
             const res = await rra.list('./test', function progressUserCallback() {
                 // fake failure.
                 count++;
-                if (count === 2) throw new Error('boom!');
+                if (count === 3) throw new Error('boom!');
             });
             if (!res.error && res[1].error)
                 isOk = true
@@ -317,7 +327,7 @@ describe('error control', function () {
         assert.equal(isOk, true, 'unexpected behavior (error or no json with error)')
     })
 
-    // complete the previou test for the root entry: regression test: previously rra
+    // complete the previous test for the root entry: regression test: previously rra
     // would pass this exception through to the caller.
     it('controlled error for exceptions - part 2: root fatality', async function () {
         let isOk = false

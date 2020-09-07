@@ -103,6 +103,7 @@ The function will return an object and never throw an error. All errors will be 
 [
     {
         "name":"item_name",
+        "title":"item_name",
         "path":"/absolute/path/to/item",
         "fullname":"/absolute/path/to/item/item_name",
         "extension":"",
@@ -113,6 +114,7 @@ The function will return an object and never throw an error. All errors will be 
     },
     {
         "name":"file.txt",
+        "title":"file",
         "path":"/absolute/path/to/item/item_name",
         "fullname":"/absolute/path/to/item/item_name/file.txt",
         "extension":".txt",
@@ -124,6 +126,7 @@ The function will return an object and never throw an error. All errors will be 
     },
     {
         "name":"UCASE.JPEG",
+        "title":"UCASE",
         "path":"/absolute/path/to/item/item_name",
         "fullname":"/absolute/path/to/item/item_name/UCASE.JPEG",
         "extension":".jpeg",
@@ -140,6 +143,7 @@ The same example for TREE mode:
 [
     {
         "name":"item_name",
+        "title":"item_name",
         "path":"/absolute/path/to/item",
         "fullname":"/absolute/path/to/item/item_name",
         "isDirectory": true,
@@ -149,6 +153,7 @@ The same example for TREE mode:
         "content": [
             {
                 "name":"file.txt",
+                "title":"file",
                 "path":"/absolute/path/to/item/item_name",
                 "fullname":"/absolute/path/to/item/item_name/file.txt",
                 "extension":".txt",
@@ -160,6 +165,7 @@ The same example for TREE mode:
             },
             {
                 "name":"UCASE.JPEG",
+                "title":"UCASE",
                 "path":"/absolute/path/to/item/item_name",
                 "fullname":"/absolute/path/to/item/item_name/UCASE.JPEG",
                 "extension":".jpeg",
@@ -200,6 +206,7 @@ For errors with files and folders, the error will be added to the item like this
 [
     {
         "name":"item_name",
+        "title":"item_name",
         "path":"/absolute/path/to/item",
         "fullname":"/absolute/path/to/item/item_name",
         "error":{
@@ -208,6 +215,7 @@ For errors with files and folders, the error will be added to the item like this
     }
     {
         "name":"file.txt",
+        "title":"file",
         "path":"/absolute/path/to/item",
         "fullname":"/absolute/path/to/item/file.txt",
         "error":{
