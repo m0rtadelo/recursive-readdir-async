@@ -324,7 +324,9 @@ function normalizePath(path: string): string {
  * @returns {object[]} array with file information
  * @private
  */
-async function listDir(path: string, settings: IOptions, progress:Function|undefined, deep = 0): Promise<(IFile|IFolder)[]|IError> {
+async function listDir(
+    path: string, settings: IOptions, progress:Function|undefined, deep = 0,
+): Promise<(IFile|IFolder)[]|IError> {
   let list: (IFile|IFolder)[];
   try {
     list = await myReaddir(path, settings, deep);
@@ -332,7 +334,8 @@ async function listDir(path: string, settings: IOptions, progress:Function|undef
     return { 'error': err, 'path': path };
   }
 
-  if (settings.stats || settings.recursive || !settings.ignoreFolders || settings.readContent || settings.mode === TREE) {
+  if (settings.stats || settings.recursive || !settings.ignoreFolders ||
+    settings.readContent || settings.mode === TREE) {
     list = await statDir(list, settings, progress, deep);
   }
 
@@ -382,7 +385,9 @@ async function listDir(path: string, settings: IOptions, progress:Function|undef
  * @returns {object[]} array with file information
  * @private
  */
-async function statDir(list:(IFile|IFolder)[], settings: IOptions, progress: Function|undefined, deep: number): Promise<(IFile|IFolder)[]> {
+async function statDir(
+    list:(IFile|IFolder)[], settings: IOptions, progress: Function|undefined, deep: number,
+): Promise<(IFile|IFolder)[]> {
   let isOk = true;
   for (let i = list.length - 1; i > -1; i--) {
     try {

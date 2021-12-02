@@ -225,4 +225,4 @@ For errors with files and folders, the error will be added to the item like this
     }
 ]
 ```
-More information on: https://m0rtadelo.github.io/recursive-readdir-async/global.html
+More information on: https://m0rtadelo.github.io/recursive-readdir-async/
