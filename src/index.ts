@@ -248,8 +248,8 @@ export async function readFile(file: string, encoding: BufferEncoding|undefined 
  */
 function checkItem(path: string, settings: IOptions): boolean {
   if (settings.exclude) {
-    for (let i = 0; i < settings.exclude.length; i++) {
-      if (path.indexOf(settings.exclude[i]) > -1) {
+    for (const value of settings.exclude) {
+      if (path.indexOf(value) > -1) {
         return false;
       }
     }
@@ -378,8 +378,8 @@ async function listDir(
      */
     function exists(fullname: string): boolean {
       if (settings.include) {
-        for (let j = 0; j < settings.include.length; j++) {
-          if (fullname.indexOf(settings.include[j]) > -1) {
+        for (const value of settings.include) {
+          if (fullname.indexOf(value) > -1) {
             return true;
           }
         }
