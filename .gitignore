@@ -6,3 +6,4 @@ test/test/*
 coverage/*
 module.min.js
 build/
+docs/
