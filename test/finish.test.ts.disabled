@@ -27,7 +27,7 @@ describe('load', function () {
           let isOk = false
           try {
               let count = 0;
-              const res:any = await rra.list('./test');
+              const res  = await rra.list('./test');
               if (res.error)
                   isOk = true
               assert.equal(isOk, true, 'unexpected behavior (no json with error)')
@@ -51,7 +51,7 @@ describe('load', function () {
   
               //     rpf(path, cb);
               // };
-              const res:any = await rra.list('./test');
+              const res  = await rra.list('./test');
   
               assert.ok(!res.error, 'unexpected behavior')
               assert.strictEqual(res.length, 2, 'unexpected behavior')

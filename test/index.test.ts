@@ -302,7 +302,7 @@ describe('error control', function () {
     it('controlled error for list (must be quiet and return error into object)', async function () {
         let isOk = false
         try {
-            const res:any = await rra.list('./test/test/inexistent.file');
+            const res  = await rra.list('./test/test/inexistent.file');
             if (res.error)
                 isOk = true
         } catch (error) {
@@ -333,7 +333,7 @@ describe('error control', function () {
         let isOk = false
         try {
             let count = 0;
-            const res:any = await rra.list('./test', function progressUserCallback() {
+            const res = await rra.list('./test', function progressUserCallback() {
                 // fake failure.
                 count++;
                 if (count === 3) throw new Error('boom!');
@@ -353,7 +353,7 @@ describe('error control', function () {
         let isOk = false
         try {
             let count = 0;
-            const res:any = await rra.list('./test', function progressUserCallback() {
+            const res  = await rra.list('./test', function progressUserCallback() {
                 // fake failure.
                 throw new Error('boom!');
             });
