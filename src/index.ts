@@ -398,7 +398,8 @@ async function statDir(
     } catch (err) {
       list[i].error = err;
     }
-    if ((list[i].isDirectory && settings.ignoreFolders && !((list[i] as IFolder).content) && list[i].error === undefined) || !isOk) {
+    if ((list[i].isDirectory && settings.ignoreFolders &&
+      !((list[i] as IFolder).content) && list[i].error === undefined) || !isOk) {
       list.splice(i, 1);
     }
   }
