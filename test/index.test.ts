@@ -1,7 +1,24 @@
-var assert = require('assert');
-const rra = require('../module.js')
-const path = require('path')
+import assert from 'assert';
+import path from 'path';
+import * as rra from '../src/index';
+/*
+jest.mock('fs', () => {
+    const origin = jest.requireActual('fs');
+    return {
+        __esModule: true,
+        ...origin,
+        // realpath: (path:any, cb:any) =>  { throw new Error('boom') },
+        // stat: (path:any, cb:any) => {
+        //         if (/test\/test$/.test(path)) {
+        //             cb(new Error('boom'));
+        //             return;
+        //         }
 
+        //         return
+        // }
+    }
+})
+*/
 // UT testing
 describe('load', function () {
 
@@ -31,11 +48,11 @@ describe('load', function () {
         assert.equal(typeof rra, 'object', 'not returns a object, returns ' + typeof rra)
     })
     it('should return an object (Promise) when ok', function () {
-        const prom = rra.list('.');
+        const prom:any = rra.list('.');
         assert.equal(Promise.resolve(prom), prom, 'not returns a promise.')
     })
     it('should return an object (Promise) when ko', function () {
-        const prom = rra.list('....../0/0...#@');
+        const prom:any = rra.list('....../0/0...#@');
         assert.equal(Promise.resolve(prom), prom, 'not returns a promise.')
     })
     it('should load without options (with callback)', async function () {
@@ -51,7 +68,7 @@ describe('load', function () {
 describe('usage', function () {
     it('checking defaults', async function () {
         let isOK = true
-        const prom = await rra.list('./test/test/')
+        const prom:any = await rra.list('./test/test/')
         for (let i=0;i<prom.length;i++) {
             if (prom[0].deep || prom[0].stats || prom[0].data || prom[0].extension || prom[0].fullname.indexOf('/') == -1)
                 isOK = false
@@ -61,15 +78,19 @@ describe('usage', function () {
         assert.equal(isOK, true, prom[0])
     });
     it('should return an array of 4 items (only files)', async function () {
-        const prom = await rra.list('./test/test/')
+        const prom:any = await rra.list('./test/test/')
         assert.equal(prom.length, 4, 'returns ' + prom.length)
     });
-    let options = {
+    let options:any = {
         ignoreFolders: false,
         extensions: true
     }
     it('should return an array of 10 items (files and folders)', async function () {
-        const prom = await rra.list('./test/test/', options)
+        options = {
+            ignoreFolders: false,
+            extensions: true
+        }
+        const prom:any = await rra.list('./test/test/', options)
         assert.equal(prom.length, 10, 'returns ' + prom.length)
     });
     it('should return an array of 3 items (folders)', async function () {
@@ -77,7 +98,7 @@ describe('usage', function () {
             ignoreFolders: false,
             recursive: false
         }
-        const prom = await rra.list('./test/test/', options)
+        const prom:any = await rra.list('./test/test/', options)
         assert.equal(prom.length, 3, 'returns ' + prom.length)
     });
     it('should return an array of 0 items (empty folders LIST)', async function () {
@@ -85,14 +106,14 @@ describe('usage', function () {
             ignoreFolders: true,
             recursive: true
         }
-        const prom = await rra.list('./test/test/folder2/', options)
+        const prom:any = await rra.list('./test/test/folder2/', options)
         assert.equal(prom.length, 0, 'returns ' + prom.length)
     });
     it('should return an array of 0 items (empty folders TREE)', async function () {
         options = {
             mode: rra.TREE
         }
-        const prom = await rra.list('./test/test/folder2/', options)
+        const prom:any = await rra.list('./test/test/folder2/', options)
         assert.equal(prom.length, 0, 'returns ' + prom.length)
     });
     it('should delete files with 4 bytes (remains subfile1.txt)', async function () {
@@ -102,8 +123,8 @@ describe('usage', function () {
             ignoreFolders: true,
             stats: true
         }
-        const prom = await rra.list('./test/test/', options, function (file) {
-            if (file.stats.size === 4)
+        const prom:any = await rra.list('./test/test/', options, function (file: rra.IFile) {
+            if (file.stats?.size === 4)
                 return true;
         })
         let result = false
@@ -120,7 +141,7 @@ describe('usage', function () {
             stats: false
         }
         let counter = 0
-        const prom = await rra.list('./test/test/', options, function () {
+        const prom:any = await rra.list('./test/test/', options, function () {
             counter++
         })
         assert.equal(counter, 10, 'returns ' + prom.length)
@@ -134,7 +155,7 @@ describe('usage', function () {
             deep: true,
             extensions: true
         }
-        const prom = await rra.list('./test/test/', options)
+        const prom:any = await rra.list('./test/test/', options)
         assert.equal(prom.length, 2, 'returns ' + prom.length)
     });
     it('should return deep & lowercase extensions properly', async function () {
@@ -147,7 +168,7 @@ describe('usage', function () {
             deep: true,
             extensions: true
         }
-        const prom = await rra.list('./test/test/', options)
+        const prom:any = await rra.list('./test/test/', options)
         for (var i = 0; i < prom.length; i++) {
             if ((prom[i].extension != '.txt' && prom[i].title !== 'noext') || isNaN(prom[i].deep))
                 isOK = false
@@ -159,28 +180,28 @@ describe('usage', function () {
         assert.equal(isOK, true, 'something went wrong')
     });
     it('should not return keys (deep, extension,... ) if not set', async function () {
-        const prom = await rra.list('./test/test/')
+        const prom:any = await rra.list('./test/test/')
         let isOK = true
         if (prom[0].hasOwnProperty('stats') || prom[0].hasOwnProperty('deep') || prom[0].hasOwnProperty('extension') || prom[0].hasOwnProperty('data'))
             isOK = false
         assert.equal(isOK, true, 'something wrong')
     });
     it('should not normalize and set realPath', async function () {
-        const prom = await rra.list('.\\test\\test\\', { 'realPath': false, 'normalizePath': false })
+        const prom = await rra.list('.\\test\\test\\', { realPath: false, normalizePath: false })
         // As we pass in a 'Windows' path in this test, we can expect quite different behaviour on different platforms:
         if (path.sep === '\\') {
             // Windows et al
             assert.ok(prom[0].path.startsWith('.\\test\\test\\folder1'), 'Backslashed paths should work in Windows: ' + prom[0].path)
         } else {
-            assert.ok(prom.error.code == "ENOENT", "Backslashed paths are only supported on Windows platforms.");
+            assert.ok((prom as rra.IError).error.code == "ENOENT", "Backslashed paths are only supported on Windows platforms.");
         }
     });
     it('should normalize Windows paths on all platforms by default', async function () {
-        const prom = await rra.list('.\\test\\test\\', { 'realPath': false })
-        assert.ok(prom.some(p => p.path.startsWith('./test/test/folder1')), 'Backslashed paths should be normalized by default on any platform: ' + prom[0].path)
+        const prom:rra.IFile[]|rra.IFolder[] = await rra.list('.\\test\\test\\', { 'realPath': false })
+        assert.ok(prom.some((p:rra.IFile|rra.IFolder) => p.path.startsWith('./test/test/folder1')), 'Backslashed paths should be normalized by default on any platform: ' + prom[0].path)
     });
     it('should include only paths that exists in settings.include', async function () {
-        const prom = await rra.list('./test/test', { 'mode': rra.TREE, 'ignoreFolders': false, 'include': ['/subfolder2'] })
+        const prom:any = await rra.list('./test/test', { 'mode': rra.TREE, 'ignoreFolders': false, 'include': ['/subfolder2'] })
         let isOK = false
         if (prom.length == 1 && prom[0].fullname.indexOf('/test/test/folder2') > -1)
             isOK = true
@@ -189,39 +210,39 @@ describe('usage', function () {
         assert.ok(prom[0].content[0].fullname.indexOf('/subfolder2') > 7, 'path folder2 must include subfolder2 in its tree')
     });
     it('should exclude paths that exists in settings.exclude', async function () {
-        const prom = await rra.list('./test/test/', { 'exclude': ['subfolder2', 'folder3'], 'mode': rra.TREE })
+        const prom:any = await rra.list('./test/test/', { 'exclude': ['subfolder2', 'folder3'], 'mode': rra.TREE })
         let isOK = false
         if (prom.length == 1 && prom[0].fullname.indexOf('/test/test/folder1') > -1)
             isOK = true
         assert.equal(isOK, true, 'path folder2 must be excluded' + (prom.length ? prom[0].fullname : ""))
     });
     it('should include file data if readContent is true', async function() {
-        const prom = await rra.list('./test/test/', { 'readContent': true, 'mode': rra.LIST })
+        const prom:any = await rra.list('./test/test/', { 'readContent': true, 'mode': rra.LIST })
         assert.notEqual(prom[0].data, undefined, 'data unavailable')
         assert.notEqual(prom[1].data, undefined, 'data unavailable')
     });
     it('should return data in base64 format by default', async function() {
-        const prom = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false })
+        const prom:any = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false })
         assert.equal(prom.length,1,'error with include option')
         assert.equal(prom[0].data, 'c29tZXRoaW5n', 'unexpected base64 data: "' + prom[0].data + '"')
     });
     it('should return data in utf8 format if defined in options', async function() {
-        const prom = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false, encoding: 'utf8' })
+        const prom:any = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false, encoding: 'utf8' })
         assert.equal(prom.length,1,'error with include option')
         assert.equal(prom[0].data, 'something', 'unexpected utf8 data: "' + prom[0].data + '"')
     });
-    it('should return unencoded data if undefined in options', async function() {
-        const prom = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false, encoding: '' })
+    it('should return default encode if undefined in options', async function() {
+        const prom:any = await rra.list('./test/test/folder1/subfolder1/subsubf1/', { 'include':['subfile1.txt'], 'readContent': true, 'mode': rra.LIST, 'recursive': false, encoding: undefined })
         assert.equal(prom.length,1,'error with include option')
-        assert.equal(prom[0].data, 'something', 'unexpected unencoded data: "' + prom[0].data + '"')
+        assert.equal(prom[0].data, 'c29tZXRoaW5n', 'unexpected unencoded data: "' + prom[0].data + '"')
     });
     it('should return base64 data if undefined in parameter', async function() {
-        const prom = await rra.readFile('./test/test/folder1/subfolder1/subsubf1/subfile1.txt')
+        const prom:any = await rra.readFile('./test/test/folder1/subfolder1/subsubf1/subfile1.txt')
         assert.equal(prom, 'c29tZXRoaW5n', 'unexpected response data: "' + prom[0].data + '"')
     });
     it('should return title and extension as expected', async function() {
-        const prom = await rra.list('./test/test/folder1/subfolder1/subsubf1/',{'mode': rra.LIST, 'include':['subfile1.txt'], extensions: true})
-        const prom2 = await rra.list('./test/test/folder3',{mode: rra.LIST, include: ['noext'], extensions: true})
+        const prom:any = await rra.list('./test/test/folder1/subfolder1/subsubf1/',{'mode': rra.LIST, 'include':['subfile1.txt'], extensions: true})
+        const prom2:any = await rra.list('./test/test/folder3',{mode: rra.LIST, include: ['noext'], extensions: true})
         assert.equal(prom[0].title, 'subfile1')
         assert.equal(prom[0].extension, '.txt')
         assert.equal(prom2[0].title, 'noext')
@@ -231,13 +252,13 @@ describe('usage', function () {
 
 describe('bugfix check', function () {
     it('should return data when readContent are the only active option', async function() {
-        const prom = await rra.list('./test/test/folder1/',
+        const prom:any = await rra.list('./test/test/folder1/',
         {'readContent': true, 'ignoreFolders':false, 'stats':false, 'recursive': false, });
         assert.notEqual(prom[0].data, undefined, 'data expected')
         assert.equal(prom[0].stats, undefined, 'stats unexpected')
     });
     it('should return subfolders when ignoreFolders are set to false', async function() {
-        const prom = await rra.list('./test/test/folder1/',
+        const prom:any = await rra.list('./test/test/folder1/',
         {'readContent': false, 'ignoreFolders':false, 'stats':false, 'recursive': false, });
         assert.notEqual(prom[0].name, undefined, 'data expected')
         assert.equal(prom[0].specs, undefined, 'specs unexpected')
@@ -245,7 +266,7 @@ describe('bugfix check', function () {
     });
     it('should add extension field in files and folders and add isDirectory if ignoreFolders is false', async function() {
         let counter=0;
-        const prom = await rra.list('./test/test/folder1/',
+        const prom:any = await rra.list('./test/test/folder1/',
         {'readContent': false, 'ignoreFolders':false, 'extensions':true, 'recursive': false, });
         for(let i=0;i<prom.length;i++) {
             if(prom[i].isDirectory && prom[i].extension != undefined)
@@ -257,17 +278,17 @@ describe('bugfix check', function () {
         assert.equal(prom.length,2,'should return 2 items')
     });
     it('should add isDirectory field for mode TREE', async function() {
-        const prom = await rra.list('./test/test/folder1/',
+        const prom:any = await rra.list('./test/test/folder1/',
         {'readContent': false, 'ignoreFolders':true, 'stats':false, 'recursive': false, 'mode':rra.TREE});
         assert.notEqual(prom[0].isDirectory, undefined, 'isDirectory expected')
     });
     it('should not add isDirectory field for non spec-required options', async function() {
-        const prom = await rra.list('./test/test/folder1/',
+        const prom:any = await rra.list('./test/test/folder1/',
         {'readContent': false, 'ignoreFolders':true, 'stats':false, 'recursive': false, 'mode':rra.LIST});
         assert.equal(prom[0].isDirectory, undefined, 'isDirectory unexpected')
     });
     it('should include only paths that exists in settings.include (with array)', async function () {
-        const prom = await rra.list('./test/test', { 'mode': rra.TREE, 'ignoreFolders': false, 'include': ['/subfolder2', '/subsub'] })
+        const prom:any = await rra.list('./test/test', { 'mode': rra.TREE, 'ignoreFolders': false, 'include': ['/subfolder2', '/subsub'] })
         let isOK = false
         if (prom.length == 2 && prom[1].fullname.indexOf('/test/test/folder2') > -1 && prom[0].content[0].content[0].fullname.indexOf('/test/folder1/subfolder1/subsubf1') > -1)
             isOK = true
@@ -281,7 +302,7 @@ describe('error control', function () {
     it('controlled error for list (must be quiet and return error into object)', async function () {
         let isOk = false
         try {
-            const res = await rra.list('./test/test/inexistent.file');
+            const res:any = await rra.list('./test/test/inexistent.file');
             if (res.error)
                 isOk = true
         } catch (error) {
@@ -308,17 +329,16 @@ describe('error control', function () {
         assert.equal(isOk, true, 'unexpected behavior (no error)')
     })
 
-    // towards 100% coverage: generate failure to test line #175 (try/catch)
     it('controlled error for exceptions - part 1: subtree fatality', async function () {
         let isOk = false
         try {
             let count = 0;
-            const res = await rra.list('./test', function progressUserCallback() {
+            const res:any = await rra.list('./test', function progressUserCallback() {
                 // fake failure.
                 count++;
                 if (count === 3) throw new Error('boom!');
             });
-            if (!res.error && res[1].error)
+            if (!res.error && res[2].error && !res[0].error)
                 isOk = true
             assert.equal(isOk, true, 'unexpected behavior (no json with error)')
         } catch (error) {
@@ -333,10 +353,9 @@ describe('error control', function () {
         let isOk = false
         try {
             let count = 0;
-            const res = await rra.list('./test', function progressUserCallback() {
+            const res:any = await rra.list('./test', function progressUserCallback() {
                 // fake failure.
-                count++;
-                if (count === 1) throw new Error('boom!');
+                throw new Error('boom!');
             });
             if (res[0].error)
                 isOk = true
@@ -347,47 +366,4 @@ describe('error control', function () {
         assert.equal(isOk, true, 'unexpected behavior (error or no json with error)')
     })
 
-    // towards 100% coverage: generate failure to test line #99 (try/catch)
-    it('controlled error for exceptions - part 3: file system fatality', async function () {
-        let isOk = false
-        let rpf = rra.fs.realpath;
-        try {
-            let count = 0;
-            rra.fs.realpath = function fakeRealPath(path, cb) {
-                throw new Error('boom');
-            };
-            const res = await rra.list('./test');
-            if (res.error)
-                isOk = true
-            assert.equal(isOk, true, 'unexpected behavior (no json with error)')
-        } catch (error) {
-            isOk = false
-        }
-        rra.fs.realpath = rpf;
-        assert.equal(isOk, true, 'unexpected behavior (error or no json with error)')
-    })
-
-    // towards 100% coverage: generate failure to test line #144 (try/catch)
-    it('controlled error for exceptions - part 4: file system fatality #2', async function () {
-        let rpf = rra.fs.stat;
-        try {
-            rra.fs.stat = function fakeStat(path, cb) {
-                if (/test\/test$/.test(path)) {
-                    // console.error('STAT:', path);
-                    cb(new Error('boom'));
-                    return;
-                }
-
-                rpf(path, cb);
-            };
-            const res = await rra.list('./test');
-
-            assert.ok(!res.error, 'unexpected behavior')
-            assert.strictEqual(res.length, 2, 'unexpected behavior')
-            assert.ok(res[0].error, 'unexpected behavior (no json with error for item)')
-        } catch (error) {
-            assert.ok(false, 'unexpected behavior')
-        }
-        rra.fs.realpath = rpf;
-    })
 });
