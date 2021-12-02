@@ -16,44 +16,66 @@
  *  Options/Settings options available for this module
  *  @typedef Options
  *  @type {object}
- *  @property [mode] - The list will return an array of items. The tree will return the items structured like the file system. Default: LIST
- *  @property [recursive] - If true, files and folders of folders and subfolders will be listed. If false, only the files and folders of the select directory will be listed. Default: true
- *  @property [stats] - If true a stats object (with file information) will be added to every item. If false this info is not added. Default: false.
- *  @property [ignoreFolders] - If true and mode is LIST, the list will be returned with files only. If true and mode is TREE, the directory structures without files will be deleted. If false, all empty and non empty directories will be listed. Default: true
- *  @property [extensions] - If true, lowercase extensions will be added to every item in the extension object property (file.TXT => info.extension = ".txt"). Default: false
- *  @property [deep] - If true, folder depth information will be added to every item starting with 0 (initial path), and will be incremented by 1 in every subfolder. Default: false
+ *  @property [mode] - The list will return an array of items. The tree will return the
+ *  items structured like the file system. Default: LIST
+ *  @property [recursive] - If true, files and folders of folders and subfolders will be listed.
+ *  If false, only the files and folders of the select directory will be listed. Default: true
+ *  @property [stats] - If true a stats object (with file information) will be added to every item.
+ *  If false this info is not added. Default: false.
+ *  @property [ignoreFolders] - If true and mode is LIST, the list will be returned with files only.
+ *  If true and mode is TREE, the directory structures without files will be deleted.
+ *  If false, all empty and non empty directories will be listed. Default: true
+ *  @property [extensions] - If true, lowercase extensions will be added to every item in the extension object property
+ *  (file.TXT => info.extension = ".txt"). Default: false
+ *  @property [deep] - If true, folder depth information will be added to every item starting with 0 (initial path),
+ *  and will be incremented by 1 in every subfolder. Default: false
  *  @property [realPath] - Computes the canonical pathname by resolving ., .. and symbolic links. Default: true
- *  @property [normalizePath] - Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style). Default: true
- *  @property [include] - Positive filter the items: only items which DO (partially or completely) match one of the strings in the include array will be returned. Default: []
- *  @property [exclude] - Negative filter the items: only items which DO NOT (partially or completely) match any of the strings in the exclude array will be returned. Default: []
+ *  @property [normalizePath] - Normalizes windows style paths by replacing double backslahes with single forward
+ *  slahes (unix style). Default: true
+ *  @property [include] - Positive filter the items: only items which DO (partially or completely) match one of the
+ *  strings in the include array will be returned. Default: []
+ *  @property [exclude] - Negative filter the items: only items which DO NOT (partially or completely) match any of
+ *  the strings in the exclude array will be returned. Default: []
  *  @property [readContent] - Adds the content of the file into the item (base64 format). Default: false
- *  @property [encoding] - Sets the encoding format to use in the readFile FS native node function (ascii, base64, binary, hex, ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). Default: 'base64'
+ *  @property [encoding] - Sets the encoding format to use in the readFile FS native node function
+ *  (ascii, base64, binary, hex, ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). Default: 'base64'
  */
 
 export interface IOptions {
-   /** The list will return an array of items. The tree will return the items structured like the file system. Default: LIST */
+   /** The list will return an array of items. The tree will return the items structured like the file system.
+    *  Default: LIST */
   mode?: any,
-  /** If true, files and folders of folders and subfolders will be listed. If false, only the files and folders of the select directory will be listed. Default: true */
+  /** If true, files and folders of folders and subfolders will be listed. If false, only the files and folders
+   *  of the select directory will be listed. Default: true */
   recursive?: boolean,
-  /** If true a stats object (with file information) will be added to every item. If false this info is not added. Default: false. */
+  /** If true a stats object (with file information) will be added to every item. If false this info is not added.
+   *  Default: false. */
   stats?: any,
-  /** If true and mode is LIST, the list will be returned with files only. If true and mode is TREE, the directory structures without files will be deleted. If false, all empty and non empty directories will be listed. Default: true */
+  /** If true and mode is LIST, the list will be returned with files only. If true and mode is TREE, the directory
+   *  structures without files will be deleted. If false, all empty and non empty directories will be listed.
+   *  Default: true */
   ignoreFolders?: boolean,
-  /** If true, lowercase extensions will be added to every item in the extension object property (file.TXT => info.extension = ".txt"). Default: false */
+  /** If true, lowercase extensions will be added to every item in the extension object property
+   *  (file.TXT => info.extension = ".txt"). Default: false */
   extensions?: boolean,
-  /** If true, folder depth information will be added to every item starting with 0 (initial path), and will be incremented by 1 in every subfolder. Default: false */
+  /** If true, folder depth information will be added to every item starting with 0 (initial path), and will be
+   *  incremented by 1 in every subfolder. Default: false */
   deep?: boolean,
   /** Computes the canonical pathname by resolving ., .. and symbolic links. Default: true */
   realPath?: boolean,
-  /** Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style). Default: true */
+  /** Normalizes windows style paths by replacing double backslahes with single forward
+   *  slahes (unix style). Default: true */
   normalizePath?: boolean,
-  /** Positive filter the items: only items which DO (partially or completely) match one of the strings in the include array will be returned. Default: [] */
+  /** Positive filter the items: only items which DO (partially or completely) match one of the
+   *  strings in the include array will be returned. Default: [] */
   include?: string[],
-  /** Negative filter the items: only items which DO NOT (partially or completely) match any of the strings in the exclude array will be returned. Default: [] */
+  /** Negative filter the items: only items which DO NOT (partially or completely) match any of the
+   *  strings in the exclude array will be returned. Default: [] */
   exclude?: string[],
   /** Adds the content of the file into the item (base64 format). Default: false */
   readContent?: boolean,
-  /** Sets the encoding format to use in the readFile FS native node function (ascii, base64, binary, hex, ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). Default: 'base64' */
+  /** Sets the encoding format to use in the readFile FS native node function (ascii, base64, binary, hex,
+   *  ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). Default: 'base64' */
   encoding?: BufferEncoding,
 }
 /**
@@ -201,7 +223,8 @@ export async function stat(file:string): Promise<_fs.Stats> {
 /**
  * Returns a Promise with content (data) of the file
  * @param file the name of the file to read content from
- * @param encoding format for returned data (ascii, base64, binary, hex, ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). Default: base64
+ * @param encoding format for returned data (ascii, base64, binary, hex, ucs2/ucs-2/utf16le/utf-16le,
+ *  utf8/utf-8, latin1). Default: base64
  * @returns {Promise<string>} data content string (base64 format by default)
  * @async
  */
@@ -415,7 +438,9 @@ async function statDir(
  * @returns {object[]} array with file information
  * @private
  */
-async function statDirItem(list:(IFile|IFolder)[], i: number, settings: IOptions, progress: Function|undefined, deep: number):Promise<(IFile|IFolder)[]> {
+async function statDirItem(
+    list:(IFile|IFolder)[], i: number, settings: IOptions, progress: Function|undefined, deep: number,
+):Promise<(IFile|IFolder)[]> {
   const stats = await stat(list[i].fullname);
   list[i].isDirectory = stats.isDirectory();
   if (settings.stats) {
@@ -450,7 +475,9 @@ async function statDirItem(list:(IFile|IFolder)[], i: number, settings: IOptions
  * @returns promise array with file/folder information
  * @async
  */
-export async function list(path: string, options?: IOptions|Function, progress?:Function): Promise<(IFile|IFolder)[]|IError|any> {
+export async function list(
+    path: string, options?: IOptions|Function, progress?:Function,
+): Promise<(IFile|IFolder)[]|IError|any> {
   // options skipped?
   if (typeof options === 'function') {
     progress = options;
