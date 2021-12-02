@@ -120,7 +120,7 @@ export interface IFile extends IBase {
   /** The content of the file in a base64 string by default */
   data?: string,
   /** The stats (information) of the file */
-  stats?: fs.Stats,
+  stats?: _fs.Stats,
 }
 /**
  * Definition for the Item object that contains information of folders used but this module
@@ -166,17 +166,17 @@ export const TREE = 2;
  * @see https://nodejs.org/api/fs.html#fs_file_system
  * @external
  */
-import * as fs from 'fs';
+import * as _fs from 'fs';
 /** native node fs object */
-export const FS = fs;
+export const FS = _fs;
 /**
  * native PATH module
  * @external
  * @see https://nodejs.org/api/path.html#path_path
  */
-import * as path from 'path';
+import * as _path from 'path';
 /** native node path object */
-export const PATH = path;
+export const PATH = _path;
 /*
  * Variables
  */
@@ -187,9 +187,9 @@ let pathSimbol = '/';
  * @returns {Promise<fs.Stats>} stat object information
  * @async
  */
-export async function stat(file:string): Promise<fs.Stats> {
+export async function stat(file:string): Promise<_fs.Stats> {
   return new Promise(function(resolve, reject) {
-    FS.stat(file, function(err: any, stats: fs.Stats) {
+    FS.stat(file, function(err: any, stats: _fs.Stats) {
       if (err) {
         reject(err);
       } else {
@@ -257,10 +257,10 @@ async function myReaddir(path: string, settings: IOptions, deep: number): Promis
         }
 
         // Reading contents of path
-        FS.readdir(rpath, function(err: any, files: string[]) {
+        FS.readdir(rpath, function(error: any, files: string[]) {
           // If error reject them
-          if (err) {
-            reject(err);
+          if (error) {
+            reject(error);
           } else {
             const removeExt = (file: string) => {
               const extSize = PATH.extname(file).length;
@@ -327,21 +327,21 @@ function normalizePath(path: string): string {
 async function listDir(
     path: string, settings: IOptions, progress:Function|undefined, deep = 0,
 ): Promise<(IFile|IFolder)[]|IError> {
-  let list: (IFile|IFolder)[];
+  let content: (IFile|IFolder)[];
   try {
-    list = await myReaddir(path, settings, deep);
+    content = await myReaddir(path, settings, deep);
   } catch (err) {
     return { 'error': err, 'path': path };
   }
 
   if (settings.stats || settings.recursive || !settings.ignoreFolders ||
     settings.readContent || settings.mode === TREE) {
-    list = await statDir(list, settings, progress, deep);
+    content = await statDir(content, settings, progress, deep);
   }
 
   onlyInclude();
 
-  return list;
+  return content;
 
   /**
    * Removes paths that not match the include array
@@ -364,13 +364,13 @@ async function listDir(
       return false;
     }
     if (settings.include && settings.include.length > 0) {
-      for (let i = list.length - 1; i > -1; i--) {
-        const item = list[i];
+      for (let i = content.length - 1; i > -1; i--) {
+        const item = content[i];
 
         if (settings.mode === TREE && item.isDirectory && (item as IFolder).content) continue;
 
         if (!exists(item.fullname)) {
-          list.splice(i, 1);
+          content.splice(i, 1);
         }
       }
     }
