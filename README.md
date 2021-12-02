@@ -5,7 +5,8 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/m0rtadelo/recursive-readdir-async.svg)
 [![npm version](https://badge.fury.io/js/recursive-readdir-async.svg)](https://badge.fury.io/js/recursive-readdir-async)
 # recursive-readdir-async
-NPM Module to recursive read directory async (non blocking). Returns Promise. Configurable, with callback for extended filtering and progress status. Quiet, NO dependencies. As non blocking module it is perfect to be used in any javascript based Desktop applications.
+NPM Module to recursive read directory async (non blocking). Returns Promise. Configurable, with callback for extended filtering and progress status. Quiet, NO dependencies. As non blocking module it is perfect to be used in any javascript based Desktop applications. 
+Working with version 1.1.9
 >This module uses Promises and can't be used in old javascript engines.
 
 >Compatible with CommonJS (require key) and ES6 (import key).
