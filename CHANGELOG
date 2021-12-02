@@ -46,3 +46,4 @@
     using typescript source
     new build method
     builds with types (cjs and esm)
+    fix docs

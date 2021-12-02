@@ -458,7 +458,7 @@ async function statDirItem(
       }
     } else {
       item.content = await listDir(item.fullname, settings, progress, deep + 1);
-      if (item.content && (item.content as IFolder[])?.length === 0) {
+      if (item.content && (item.content as IFolder[]).length === 0) {
         item.content = undefined;
       }
     }
@@ -485,16 +485,16 @@ export async function list(
   // Setting default settings
   const settings = {
     mode: (options as IOptions)?.mode || LIST,
-    recursive: (options as IOptions)?.recursive === undefined ? true : (options as IOptions)?.recursive,
-    stats: (options as IOptions)?.stats === undefined ? false : (options as IOptions)?.stats,
-    ignoreFolders: (options as IOptions)?.ignoreFolders === undefined ? true : (options as IOptions)?.ignoreFolders,
-    extensions: (options as IOptions)?.extensions === undefined ? false : (options as IOptions)?.extensions,
-    deep: (options as IOptions)?.deep === undefined ? false : (options as IOptions)?.deep,
-    realPath: (options as IOptions)?.realPath === undefined ? true : (options as IOptions)?.realPath,
-    normalizePath: (options as IOptions)?.normalizePath === undefined ? true : (options as IOptions)?.normalizePath,
+    recursive: (options as IOptions)?.recursive === undefined ? true : (options as IOptions).recursive,
+    stats: (options as IOptions)?.stats === undefined ? false : (options as IOptions).stats,
+    ignoreFolders: (options as IOptions)?.ignoreFolders === undefined ? true : (options as IOptions).ignoreFolders,
+    extensions: (options as IOptions)?.extensions === undefined ? false : (options as IOptions).extensions,
+    deep: (options as IOptions)?.deep === undefined ? false : (options as IOptions).deep,
+    realPath: (options as IOptions)?.realPath === undefined ? true : (options as IOptions).realPath,
+    normalizePath: (options as IOptions)?.normalizePath === undefined ? true : (options as IOptions).normalizePath,
     include: (options as IOptions)?.include || [],
     exclude: (options as IOptions)?.exclude || [],
-    readContent: (options as IOptions)?.readContent === undefined ? false : (options as IOptions)?.readContent,
+    readContent: (options as IOptions)?.readContent === undefined ? false : (options as IOptions).readContent,
     encoding: (options as IOptions)?.encoding || undefined,
   };
   // Setting pathSimbol if normalizePath is disabled
