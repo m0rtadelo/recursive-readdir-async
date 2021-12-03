@@ -78,6 +78,7 @@ export interface IOptions {
    *  ucs2/ucs-2/utf16le/utf-16le, utf8/utf-8, latin1). Default: 'base64' */
   encoding?: BufferEncoding,
 }
+
 /**
  * Definition for the common dto object that contains information of the files and folders
  * @typedef IBase
@@ -109,6 +110,7 @@ export interface IBase {
   /** If something goes wrong the error comes here */
   error?: IError|any,
 }
+
 /**
  * Definition for the main Error object that contains information of the current exception
  * @typedef IError
@@ -123,6 +125,7 @@ export interface IError {
   path: string,
   [index:number]: any,
 }
+
 /**
  * Definition for the Item object that contains information of files used but this module
 *  @typedef IFile
@@ -144,6 +147,7 @@ export interface IFile extends IBase {
   /** The stats (information) of the file */
   stats?: _fs.Stats,
 }
+
 /**
  * Definition for the Item object that contains information of folders used but this module
 *  @typedef IFolder
@@ -162,6 +166,7 @@ export interface IFolder extends IBase {
   /** The content of the Folder (if any) */
   content?:(IFile|IFolder)[]|IError,
 }
+
 /**
 *  @typedef CallbackFunction
 *  @type {function}
@@ -178,11 +183,13 @@ export interface ICallback {
   /** The total number of Files and/or Folders */
   total: number,
 }
-// constants
+
 /** @readonly constant for mode LIST to be used in Options */
 export const LIST = 1;
+
 /** @readonly constant for mode TREE to be used in Options */
 export const TREE = 2;
+
 /**
  * native FS module
  * @see https://nodejs.org/api/fs.html#fs_file_system
@@ -191,6 +198,7 @@ export const TREE = 2;
 import * as _fs from 'fs';
 /** native node fs object */
 export const FS = _fs;
+
 /**
  * native PATH module
  * @external
@@ -199,10 +207,9 @@ export const FS = _fs;
 import * as _path from 'path';
 /** native node path object */
 export const PATH = _path;
-/*
- * Variables
- */
+
 let pathSimbol = '/';
+
 /**
  * Returns a Promise with Stats info of the item (file/folder/...)
  * @param file the name of the object to get stats from
@@ -220,6 +227,7 @@ export async function stat(file:string): Promise<_fs.Stats> {
     });
   });
 }
+
 /**
  * Returns a Promise with content (data) of the file
  * @param file the name of the file to read content from
@@ -239,6 +247,7 @@ export async function readFile(file: string, encoding: BufferEncoding|undefined 
     });
   });
 }
+
 /**
  * Returns if an item should be added based on include/exclude options.
  * @param path the item fullpath
@@ -347,6 +356,7 @@ async function myReaddir(path: string, settings: IOptions, deep: number): Promis
     }
   });
 }
+
 /**
  * Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style).
  * @param path windows/unix path
@@ -356,6 +366,24 @@ async function myReaddir(path: string, settings: IOptions, deep: number): Promis
 function normalizePath(path: string): string {
   return path.toString().replace(/\\/g, '/');
 }
+
+/**
+     * Search if the fullname exist in the include array
+     * @param fullname - The fullname of the item to search for
+     * @param settings the options to be used
+     * @returns true if exists
+     */
+function exists(fullname: string, settings: IOptions): boolean {
+  if (settings.include) {
+    for (const value of settings.include) {
+      if (fullname.includes(value)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 /**
    * Removes paths that not match the include array
    * @param settings the options to be used
@@ -363,28 +391,13 @@ function normalizePath(path: string): string {
    * @returns void
    */
 function onlyInclude(settings: IOptions, content: (IFile|IFolder)[]) {
-  /**
-     * Search if the fullname exist in the include array
-     * @param fullname - The fullname of the item to search for
-     * @returns true if exists
-     */
-  function exists(fullname: string): boolean {
-    if (settings.include) {
-      for (const value of settings.include) {
-        if (fullname.includes(value)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
   if (settings.include && settings.include.length > 0) {
     for (let i = content.length - 1; i > -1; i--) {
       const item = content[i];
 
       if (settings.mode === TREE && item.isDirectory && (item as IFolder).content) continue;
 
-      if (!exists(item.fullname)) {
+      if (!exists(item.fullname, settings)) {
         content.splice(i, 1);
       }
     }
@@ -419,6 +432,7 @@ async function listDir(
 
   return content;
 }
+
 /**
  * Returns an object with all items with selected options
  * @param list items list
@@ -448,6 +462,7 @@ async function statDir(
   }
   return list;
 }
+
 /**
  * Returns an object with updated item information
  * @param list items list
