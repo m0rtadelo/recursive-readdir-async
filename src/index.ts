@@ -256,6 +256,64 @@ function checkItem(path: string, settings: IOptions): boolean {
   }
   return true;
 }
+
+/**
+ * Reads content and creates a valid IBase collection
+ * @param error Error object (if any)
+ * @param files Files array to read in
+ * @param rpath Path relative to
+ * @param data Model
+ * @param settings the options configuration to use
+ * @param deep The deep level
+ * @param resolve Promise
+ * @param reject Promise
+ * @returns void
+ */
+function read(
+    error: any, files: string[], rpath: string, data: any, settings: IOptions, deep: number, resolve: any, reject: any,
+) {
+  /**
+     * Adds optional keys to item
+     * @param obj the item object
+     * @param file the filename
+     * @returns void
+     * @private
+     */
+  function addOptionalKeys(obj:IBase, file: string) {
+    if (settings.extensions) {
+      obj.extension = (PATH.extname(file)).toLowerCase();
+    }
+    if (settings.deep) {
+      obj.deep = deep;
+    }
+  }
+  // If error reject them
+  if (error) {
+    reject(error);
+  } else {
+    const removeExt = (file: string) => {
+      const extSize = PATH.extname(file).length;
+      return file.substring(0, file.length - (extSize > 0 ? extSize : 0));
+    };
+    // Iterate through elements (files and folders)
+    for (let i = 0, tam = files.length; i < tam; i++) {
+      const obj:IBase = {
+        name: files[i],
+        title: removeExt(files[i]),
+        path: rpath,
+        fullname: rpath + (rpath.endsWith(pathSimbol) ? '' : pathSimbol) + files[i],
+      };
+      if (checkItem(obj.fullname, settings)) {
+        addOptionalKeys(obj, files[i]);
+        data.push(obj);
+      }
+    }
+
+    // Finish, returning content
+    resolve(data);
+  }
+}
+
 /**
  * Returns a Promise with an objects info array
  * @param path the item fullpath to be searched for
@@ -281,31 +339,7 @@ async function myReaddir(path: string, settings: IOptions, deep: number): Promis
 
         // Reading contents of path
         FS.readdir(rpath, function(error: any, files: string[]) {
-          // If error reject them
-          if (error) {
-            reject(error);
-          } else {
-            const removeExt = (file: string) => {
-              const extSize = PATH.extname(file).length;
-              return file.substring(0, file.length - (extSize > 0 ? extSize : 0));
-            };
-            // Iterate through elements (files and folders)
-            for (let i = 0, tam = files.length; i < tam; i++) {
-              const obj:IBase = {
-                name: files[i],
-                title: removeExt(files[i]),
-                path: rpath,
-                fullname: rpath + (rpath.endsWith(pathSimbol) ? '' : pathSimbol) + files[i],
-              };
-              if (checkItem(obj.fullname, settings)) {
-                addOptionalKeys(obj, files[i]);
-                data.push(obj);
-              }
-            }
-
-            // Finish, returning content
-            resolve(data);
-          }
+          read(error, files, rpath, data, settings, deep, resolve, reject);
         });
       });
     } catch (err) {
@@ -313,21 +347,6 @@ async function myReaddir(path: string, settings: IOptions, deep: number): Promis
       reject(err);
     }
   });
-  /**
-     * Adds optional keys to item
-     * @param obj the item object
-     * @param file the filename
-     * @returns void
-     * @private
-     */
-  function addOptionalKeys(obj:IBase, file: string) {
-    if (settings.extensions) {
-      obj.extension = (PATH.extname(file)).toLowerCase();
-    }
-    if (settings.deep) {
-      obj.deep = deep;
-    }
-  }
 }
 /**
  * Normalizes windows style paths by replacing double backslahes with single forward slahes (unix style).
