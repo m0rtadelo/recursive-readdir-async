@@ -42,8 +42,9 @@
     fix issue 3 & 10 (are the same)
 1.1.8
     add support to ES6 modules
-1.1.9
-    using typescript source
+1.2.0
+    now using typescript source
     new build method
     builds with types (cjs and esm)
+    fix minor bugs
     fix docs
