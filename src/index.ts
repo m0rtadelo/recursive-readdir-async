@@ -357,6 +357,41 @@ function normalizePath(path: string): string {
   return path.toString().replace(/\\/g, '/');
 }
 /**
+   * Removes paths that not match the include array
+   * @param settings the options to be used
+   * @param content items list
+   * @returns void
+   */
+function onlyInclude(settings: IOptions, content: (IFile|IFolder)[]) {
+  /**
+     * Search if the fullname exist in the include array
+     * @param fullname - The fullname of the item to search for
+     * @returns true if exists
+     */
+  function exists(fullname: string): boolean {
+    if (settings.include) {
+      for (const value of settings.include) {
+        if (fullname.includes(value)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  if (settings.include && settings.include.length > 0) {
+    for (let i = content.length - 1; i > -1; i--) {
+      const item = content[i];
+
+      if (settings.mode === TREE && item.isDirectory && (item as IFolder).content) continue;
+
+      if (!exists(item.fullname)) {
+        content.splice(i, 1);
+      }
+    }
+  }
+}
+
+/**
  * Returns an array of items in path
  * @param path path
  * @param settings the options to be used
@@ -380,42 +415,9 @@ async function listDir(
     content = await statDir(content, settings, progress, deep);
   }
 
-  onlyInclude();
+  onlyInclude(settings, content);
 
   return content;
-
-  /**
-   * Removes paths that not match the include array
-   * @returns void
-   */
-  function onlyInclude() {
-    /**
-     * Search if the fullname exist in the include array
-     * @param fullname - The fullname of the item to search for
-     * @returns true if exists
-     */
-    function exists(fullname: string): boolean {
-      if (settings.include) {
-        for (const value of settings.include) {
-          if (fullname.includes(value)) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-    if (settings.include && settings.include.length > 0) {
-      for (let i = content.length - 1; i > -1; i--) {
-        const item = content[i];
-
-        if (settings.mode === TREE && item.isDirectory && (item as IFolder).content) continue;
-
-        if (!exists(item.fullname)) {
-          content.splice(i, 1);
-        }
-      }
-    }
-  }
 }
 /**
  * Returns an object with all items with selected options
