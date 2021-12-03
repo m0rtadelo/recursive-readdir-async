@@ -1,4 +1,4 @@
-name: CI & Sonar scanner
+name: Sonar scanner
 
 on:
   push:

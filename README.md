@@ -1,4 +1,4 @@
-[![CI Build](https://github.com/m0rtadelo/recursive-readdir-async/actions/workflows/pages.yml/badge.svg)](https://github.com/m0rtadelo/recursive-readdir-async/actions/workflows/pages.yml)
+[![CI Build](https://github.com/m0rtadelo/recursive-readdir-async/actions/workflows/ci.pages.yml/badge.svg)](https://github.com/m0rtadelo/recursive-readdir-async/actions/workflows/ci.pages.yml)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=m0rtadelo_recursive-readdir-async&metric=coverage)](https://sonarcloud.io/summary/new_code?id=m0rtadelo_recursive-readdir-async)
 [![Known Vulnerabilities](https://snyk.io/test/github/m0rtadelo/recursive-readdir-async/badge.svg?targetFile=package.json)](https://snyk.io/test/github/m0rtadelo/recursive-readdir-async?targetFile=package.json)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=m0rtadelo_recursive-readdir-async&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=m0rtadelo_recursive-readdir-async)
