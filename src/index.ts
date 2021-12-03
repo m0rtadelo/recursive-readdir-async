@@ -435,7 +435,7 @@ async function listDir(
 
 /**
  * Returns an object with all items with selected options
- * @param list items list
+ * @param collection items list
  * @param settings the options to use
  * @param progress callback progress
  * @param deep folder depth
@@ -443,29 +443,29 @@ async function listDir(
  * @private
  */
 async function statDir(
-    list:(IFile|IFolder)[], settings: IOptions, progress: Function|undefined, deep: number,
+    collection:(IFile|IFolder)[], settings: IOptions, progress: Function|undefined, deep: number,
 ): Promise<(IFile|IFolder)[]> {
   let isOk = true;
-  for (let i = list.length - 1; i > -1; i--) {
+  for (let i = collection.length - 1; i > -1; i--) {
     try {
-      list = await statDirItem(list, i, settings, progress, deep);
+      collection = await statDirItem(collection, i, settings, progress, deep);
       if (progress !== undefined) {
-        isOk = !progress(list[i], list.length - i, list.length);
+        isOk = !progress(collection[i], collection.length - i, collection.length);
       }
     } catch (err) {
-      list[i].error = err;
+      collection[i].error = err;
     }
-    if ((list[i].isDirectory && settings.ignoreFolders &&
-      !((list[i] as IFolder).content) && list[i].error === undefined) || !isOk) {
-      list.splice(i, 1);
+    if ((collection[i].isDirectory && settings.ignoreFolders &&
+      !((collection[i] as IFolder).content) && collection[i].error === undefined) || !isOk) {
+      collection.splice(i, 1);
     }
   }
-  return list;
+  return collection;
 }
 
 /**
  * Returns an object with updated item information
- * @param list items list
+ * @param collection items list
  * @param i index of item
  * @param settings the options to use
  * @param progress callback progress
@@ -474,22 +474,22 @@ async function statDir(
  * @private
  */
 async function statDirItem(
-    list:(IFile|IFolder)[], i: number, settings: IOptions, progress: Function|undefined, deep: number,
+    collection:(IFile|IFolder)[], i: number, settings: IOptions, progress: Function|undefined, deep: number,
 ):Promise<(IFile|IFolder)[]> {
-  const stats = await stat(list[i].fullname);
-  list[i].isDirectory = stats.isDirectory();
+  const stats = await stat(collection[i].fullname);
+  collection[i].isDirectory = stats.isDirectory();
   if (settings.stats) {
-    (list[i] as IFile).stats = stats;
+    (collection[i] as IFile).stats = stats;
   }
-  if (settings.readContent && !list[i].isDirectory) {
-    (list[i] as IFile).data = await readFile(list[i].fullname, settings.encoding);
+  if (settings.readContent && !collection[i].isDirectory) {
+    (collection[i] as IFile).data = await readFile(collection[i].fullname, settings.encoding);
   }
-  if (list[i].isDirectory && settings.recursive) {
-    const item: IFolder = list[i];
+  if (collection[i].isDirectory && settings.recursive) {
+    const item: IFolder = collection[i];
     if (settings.mode === LIST) {
       const result: (IFile|IFolder)[]|IError|any = await listDir(item.fullname, settings, progress, deep + 1);
       if (result.length) {
-        list = list.concat(result);
+        collection = collection.concat(result);
       }
     } else {
       item.content = await listDir(item.fullname, settings, progress, deep + 1);
@@ -499,7 +499,7 @@ async function statDirItem(
     }
   }
 
-  return list;
+  return collection;
 }
 
 /**
