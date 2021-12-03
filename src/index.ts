@@ -249,7 +249,7 @@ export async function readFile(file: string, encoding: BufferEncoding|undefined 
 function checkItem(path: string, settings: IOptions): boolean {
   if (settings.exclude) {
     for (const value of settings.exclude) {
-      if (path.indexOf(value) > -1) {
+      if (path.includes(value)) {
         return false;
       }
     }
@@ -258,9 +258,25 @@ function checkItem(path: string, settings: IOptions): boolean {
 }
 
 /**
+ * Adds optional keys to item
+ * @param obj the item object
+ * @param file the filename
+ * @param settings the options configuration to use
+ * @param deep The deep level
+ * @returns void
+ * @private
+ */
+function addOptionalKeys(obj:IBase, file: string, settings: IOptions, deep: number) {
+  if (settings.extensions) {
+    obj.extension = (PATH.extname(file)).toLowerCase();
+  }
+  if (settings.deep) {
+    obj.deep = deep;
+  }
+}
+
+/**
  * Reads content and creates a valid IBase collection
- * @param error Error object (if any)
- * @param files Files array to read in
  * @param rpath Path relative to
  * @param data Model
  * @param settings the options configuration to use
@@ -269,49 +285,34 @@ function checkItem(path: string, settings: IOptions): boolean {
  * @param reject Promise
  * @returns void
  */
-function read(
-    error: any, files: string[], rpath: string, data: any, settings: IOptions, deep: number, resolve: any, reject: any,
-) {
-  /**
-     * Adds optional keys to item
-     * @param obj the item object
-     * @param file the filename
-     * @returns void
-     * @private
-     */
-  function addOptionalKeys(obj:IBase, file: string) {
-    if (settings.extensions) {
-      obj.extension = (PATH.extname(file)).toLowerCase();
-    }
-    if (settings.deep) {
-      obj.deep = deep;
-    }
-  }
+function read(rpath: string, data: any, settings: IOptions, deep: number, resolve: any, reject: any) {
+  FS.readdir(rpath, function(error: any, files: string[]) {
   // If error reject them
-  if (error) {
-    reject(error);
-  } else {
-    const removeExt = (file: string) => {
-      const extSize = PATH.extname(file).length;
-      return file.substring(0, file.length - (extSize > 0 ? extSize : 0));
-    };
-    // Iterate through elements (files and folders)
-    for (let i = 0, tam = files.length; i < tam; i++) {
-      const obj:IBase = {
-        name: files[i],
-        title: removeExt(files[i]),
-        path: rpath,
-        fullname: rpath + (rpath.endsWith(pathSimbol) ? '' : pathSimbol) + files[i],
+    if (error) {
+      reject(error);
+    } else {
+      const removeExt = (file: string) => {
+        const extSize = PATH.extname(file).length;
+        return file.substring(0, file.length - (extSize > 0 ? extSize : 0));
       };
-      if (checkItem(obj.fullname, settings)) {
-        addOptionalKeys(obj, files[i]);
-        data.push(obj);
+      // Iterate through elements (files and folders)
+      for (const file of files) {
+        const obj:IBase = {
+          name: file,
+          title: removeExt(file),
+          path: rpath,
+          fullname: rpath + (rpath.endsWith(pathSimbol) ? '' : pathSimbol) + file,
+        };
+        if (checkItem(obj.fullname, settings)) {
+          addOptionalKeys(obj, file, settings, deep);
+          data.push(obj);
+        }
       }
-    }
 
-    // Finish, returning content
-    resolve(data);
-  }
+      // Finish, returning content
+      resolve(data);
+    }
+  });
 }
 
 /**
@@ -338,9 +339,7 @@ async function myReaddir(path: string, settings: IOptions, deep: number): Promis
         }
 
         // Reading contents of path
-        FS.readdir(rpath, function(error: any, files: string[]) {
-          read(error, files, rpath, data, settings, deep, resolve, reject);
-        });
+        read(rpath, data, settings, deep, resolve, reject);
       });
     } catch (err) {
       // If error reject them
@@ -398,7 +397,7 @@ async function listDir(
     function exists(fullname: string): boolean {
       if (settings.include) {
         for (const value of settings.include) {
-          if (fullname.indexOf(value) > -1) {
+          if (fullname.includes(value)) {
             return true;
           }
         }
