@@ -6,10 +6,12 @@
 [![npm version](https://badge.fury.io/js/recursive-readdir-async.svg)](https://badge.fury.io/js/recursive-readdir-async)
 # recursive-readdir-async
 NPM Module to recursive read directory async (non blocking). Returns Promise. Configurable, with callback for extended filtering and progress status. Quiet, NO dependencies. As non blocking module it is perfect to be used in any javascript based Desktop applications. 
-Working with version 1.1.9
+
 >This module uses Promises and can't be used in old javascript engines.
 
 >Compatible with CommonJS (require key) and ES6 (import key).
+
+>Compatible with Javascript and Typescript projects (with types)
 ## Installation
 For normal usage into a project, you must install as a NPM dependency. The next command will do all the work:
 ```
@@ -25,17 +27,19 @@ or using the *import* key (ES6):
 ```typescript
 // Import ES6 module
 import * as rra from 'recursive-readdir-async'
+// or
+import { list } from 'recursive-readdir-async'
 // use it
 ```
 ## Usage
 Example of basic usage:
 ```javascript
-const list = await rra.list('.');
-console.log(list)
+const result = await rra.list('.');
+console.log(result)
 ```
 ```javascript
-rra.list('.').then(function(list){
-    console.log(list)
+rra.list('.').then(function(result){
+    console.log(result)
 })
 ```
 Example with full features:
@@ -54,15 +58,15 @@ const options = {
     readContent: false,
     encoding: 'base64'
 }
-const list = await rra.list('.', options, function (obj, index, total) {
+const result = await rra.list('.', options, function (obj, index, total) {
     console.log(`${index} of ${total} ${obj.path}`)
     if(obj.name=="folder2")
-        return true;// return true to delete item
+        return true;// return true to delete item from the result array
 })
-if(list.error)
-    console.error(list.error)
+if(result.error)
+    console.error(result.error)
 else
-    console.log(list)
+    console.log(result)
 ```
 ## Options
 An options object can be passed to configure the module. The next options can be used:
