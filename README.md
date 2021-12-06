@@ -12,6 +12,7 @@ NPM Module to recursive read directory async (non blocking). Returns Promise. Co
 >Compatible with CommonJS (require key) and ES6 (import key).
 
 >Compatible with Javascript and Typescript projects (with types)
+
 ## Installation
 For normal usage into a project, you must install as a NPM dependency. The next command will do all the work:
 ```
