@@ -218,7 +218,7 @@ For errors with files and folders, the error will be added to the item like this
         "error":{
 
         }
-    }
+    },
     {
         "name":"file.txt",
         "title":"file",
