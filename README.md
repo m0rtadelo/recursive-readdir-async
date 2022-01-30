@@ -61,6 +61,7 @@ const options = {
 }
 const result = await rra.list('.', options, function (obj, index, total) {
     console.log(`${index} of ${total} ${obj.path}`)
+    obj.custom = { foo: 'bar' };// use custom key to inject custom properties
     if(obj.name=="folder2")
         return true;// return true to delete item from the result array
 })
@@ -192,6 +193,8 @@ The same example for TREE mode:
 >`extension` only exists if `options.extensions` is `true`
 
 >`data` only exists if `options.readContent` is `true`
+
+>`custom` only exists if includes custom properties
 ## Errors handling
 All errors will be added to the returned object. If an error occurs on the main call, the error will be returned like this:
 ```json

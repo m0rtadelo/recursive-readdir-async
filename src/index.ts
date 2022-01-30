@@ -91,6 +91,7 @@ export interface IOptions {
  * @property deep - The depth of current content
  * @property isDirectory - True for directory, false for files
  * @property error - The error object. The structure is variable
+ * @property custom - Custom key to add custom properties
  */
 export interface IBase {
   /** The filename of the file */
@@ -109,6 +110,8 @@ export interface IBase {
   isDirectory?: boolean,
   /** If something goes wrong the error comes here */
   error?: IError|any,
+  /** Custom key to add custom properties */
+  custom?: any,
 }
 
 /**
@@ -127,7 +130,7 @@ export interface IError {
 }
 
 /**
- * Definition for the Item object that contains information of files used but this module
+ * Definition for the Item object that contains information of files used in this module
 *  @typedef IFile
 *  @type {object}
 *  @property name - The filename of the file

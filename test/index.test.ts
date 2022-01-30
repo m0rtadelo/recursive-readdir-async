@@ -359,4 +359,21 @@ describe('error control', function() {
     }
     assert.equal(isOk, true, 'unexpected behavior (error or no json with error)');
   });
+
+  it('should allow to use custom property as expected in files and folders', async () => {
+    let result = true;
+    const res = await rra.list(
+        './test',
+        { ignoreFolders: false },
+        function progress(obj: any, curent: number, total: number) {
+          obj.custom = { 'key': 'value' };
+        },
+    );
+    res.forEach((item: rra.IFile | rra.IFolder) => {
+      if (item.custom?.key !== 'value') {
+        result = false;
+      }
+    });
+    assert.equal(result, true, 'no custom property detected!');
+  });
 });
