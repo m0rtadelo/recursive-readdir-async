@@ -13,6 +13,8 @@ NPM Module to recursive read directory async (non blocking). Returns Promise. Co
 
 >Compatible with Javascript and Typescript projects (with types)
 
+>Works with invalid filenames (special characters)
+
 ## Installation
 For normal usage into a project, you must install as a NPM dependency. The next command will do all the work:
 ```
@@ -110,9 +112,12 @@ The function will return an object and never throw an error. All errors will be 
 [
     {
         "name":"item_name",
+        "nameb":<Buffer .. .. ..>,
         "title":"item_name",
         "path":"/absolute/path/to/item",
+        "pathb":<Buffer .. .. ..>,
         "fullname":"/absolute/path/to/item/item_name",
+        "fullnameb":<Buffer .. .. ..>,
         "extension":"",
         "isDirectory": true,
         "stats":{
@@ -121,9 +126,12 @@ The function will return an object and never throw an error. All errors will be 
     },
     {
         "name":"file.txt",
+        "nameb":<Buffer .. .. ..>,
         "title":"file",
         "path":"/absolute/path/to/item/item_name",
+        "pathb":<Buffer .. .. ..>,
         "fullname":"/absolute/path/to/item/item_name/file.txt",
+        "fullnameb":<Buffer .. .. ..>,
         "extension":".txt",
         "isDirectory": false,
         "data": "base64/utf8/etc.",
@@ -133,9 +141,12 @@ The function will return an object and never throw an error. All errors will be 
     },
     {
         "name":"UCASE.JPEG",
+        "nameb":<Buffer .. .. ..>,
         "title":"UCASE",
         "path":"/absolute/path/to/item/item_name",
+        "pathb":<Buffer .. .. ..>,
         "fullname":"/absolute/path/to/item/item_name/UCASE.JPEG",
+        "fullnameb":<Buffer .. .. ..>,
         "extension":".jpeg",
         "isDirectory": false,
         "data": "base64/utf8/etc.",
@@ -150,9 +161,12 @@ The same example for TREE mode:
 [
     {
         "name":"item_name",
+        "nameb":<Buffer .. .. ..>,
         "title":"item_name",
         "path":"/absolute/path/to/item",
+        "pathb":<Buffer .. .. ..>,
         "fullname":"/absolute/path/to/item/item_name",
+        "fullnameb":<Buffer .. .. ..>,
         "isDirectory": true,
         "stats":{
 
@@ -160,9 +174,12 @@ The same example for TREE mode:
         "content": [
             {
                 "name":"file.txt",
+                "nameb":<Buffer .. .. ..>,
                 "title":"file",
                 "path":"/absolute/path/to/item/item_name",
+                "pathb":<Buffer .. .. ..>,
                 "fullname":"/absolute/path/to/item/item_name/file.txt",
+                "fullnameb":<Buffer .. .. ..>,
                 "extension":".txt",
                 "isDirectory": false,
                 "data": "base64/utf8/etc.",
@@ -172,9 +189,12 @@ The same example for TREE mode:
             },
             {
                 "name":"UCASE.JPEG",
+                "nameb":<Buffer .. .. ..>,
                 "title":"UCASE",
                 "path":"/absolute/path/to/item/item_name",
+                "pathb":<Buffer .. .. ..>,
                 "fullname":"/absolute/path/to/item/item_name/UCASE.JPEG",
+                "fullnameb":<Buffer .. .. ..>,
                 "extension":".jpeg",
                 "isDirectory": false,
                 "data": "base64/utf8/etc.",
@@ -215,18 +235,24 @@ For errors with files and folders, the error will be added to the item like this
 [
     {
         "name":"item_name",
+        "nameb":<Buffer .. .. ..>,
         "title":"item_name",
         "path":"/absolute/path/to/item",
+        "pathb":<Buffer .. .. ..>,
         "fullname":"/absolute/path/to/item/item_name",
+        "fullnameb":<Buffer .. .. ..>,
         "error":{
 
         }
     },
     {
         "name":"file.txt",
+        "nameb":<Buffer .. .. ..>,
         "title":"file",
         "path":"/absolute/path/to/item",
+        "pathb":<Buffer .. .. ..>,
         "fullname":"/absolute/path/to/item/file.txt",
+        "fullnameb":<Buffer .. .. ..>,
         "error":{
 
         }

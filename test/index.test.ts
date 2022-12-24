@@ -1,24 +1,37 @@
 import assert from 'assert';
 import path from 'path';
 import * as rra from '../src/index';
+
+function createDir(route:string) {
+  const fs = require('fs-extra');
+  if(!fs.existsSync(route)) {
+    fs.mkdirSync(route);
+  }
+}
 // UT testing
 describe('load', function() {
   // Creating test structure
   const fs = require('fs-extra');
+  const root_path = Buffer.from('./test');
+  const path_sep = Buffer.from('/');
+  const fname = Buffer.from('842E747874',"hex");
+  const fullpath_buf = Buffer.concat([root_path, path_sep, fname]);
+  fs.writeFileSync(fullpath_buf ,"invalidFilename");
+
   try {
     fs.removeSync('./test/test/');
   } catch (err) {
     // ignore
   }
-  fs.mkdirSync('./test/test/');
-  fs.mkdirSync('./test/test/folder1/');
-  fs.mkdirSync('./test/test/folder1/subfolder1/');
-  fs.mkdirSync('./test/test/folder1/subfolder1/subsubf1/');
+  createDir('./test/test/');
+  createDir('./test/test/folder1/');
+  createDir('./test/test/folder1/subfolder1/');
+  createDir('./test/test/folder1/subfolder1/subsubf1/');
+  createDir('./test/test/folder2/');
+  createDir('./test/test/folder2/subfolder2/');
+  createDir('./test/test/folder3/');
   fs.writeFileSync('./test/test/folder1/file1.TXT', 'some');
   fs.writeFileSync('./test/test/folder1/subfolder1/subsubf1/subfile1.txt', 'something');
-  fs.mkdirSync('./test/test/folder2/');
-  fs.mkdirSync('./test/test/folder2/subfolder2/');
-  fs.mkdirSync('./test/test/folder3/');
   fs.writeFileSync('./test/test/folder3/file3.txt', 'some');
   fs.writeFileSync('./test/test/folder3/noext', '1234');
 
@@ -226,7 +239,7 @@ describe('usage', function() {
     assert.equal(prom[0].data, 'c29tZXRoaW5n', 'unexpected unencoded data: "' + prom[0].data + '"');
   });
   it('should return base64 data if undefined in parameter', async function() {
-    const prom:any = await rra.readFile('./test/test/folder1/subfolder1/subsubf1/subfile1.txt');
+    const prom:any = await rra.readFile(Buffer.from('./test/test/folder1/subfolder1/subsubf1/subfile1.txt'));
     assert.equal(prom, 'c29tZXRoaW5n', 'unexpected response data: "' + prom[0].data + '"');
   });
   it('should return title and extension as expected', async function() {
@@ -306,7 +319,7 @@ describe('error control', function() {
   it('controlled error for stat (must throw error)', async function() {
     let isOk = false;
     try {
-      await rra.stat('./test/test/inexistent.file');
+      await rra.stat(Buffer.from('./test/test/inexistent.file'));
     } catch (error) {
       isOk = true;
     }
@@ -315,7 +328,7 @@ describe('error control', function() {
   it('controlled error for readFile (must throw error)', async function() {
     let isOk = false;
     try {
-      await rra.readFile('./test/test/inexistent.file');
+      await rra.readFile(Buffer.from('./test/test/inexistent.file'));
     } catch (error) {
       isOk = true;
     }
@@ -325,13 +338,11 @@ describe('error control', function() {
   it('controlled error for exceptions - part 1: subtree fatality', async function() {
     let isOk = false;
     try {
-      let count = 0;
-      const res = await rra.list('./test', function progressUserCallback() {
-        // fake failure.
-        count++;
-        if (count === 3) throw new Error('boom!');
+      const res = await rra.list('./test/test', function progressUserCallback(obj:any) {
+        if (obj.name === 'noext') throw new Error('boom!');
       });
-      if (!res.error && res[2].error && !res[0].error) {
+      const theError = res.filter((item:any) => item.error)
+      if (!res.error && theError[0].name === 'noext' && theError.length === 1 && res.length > 1 ) {
         isOk = true;
       };
       assert.equal(isOk, true, 'unexpected behavior (no json with error)');
@@ -375,5 +386,12 @@ describe('error control', function() {
       }
     });
     assert.equal(result, true, 'no custom property detected!');
+  });
+
+  it('should read invalid filenames (buffer used)', async () => {
+    const list = await rra.list('./test', { readContent: true, encoding: 'utf8' });
+    console.log(list);
+    const invalidItem = list.find((item:any) => item.data === 'invalidFilename');
+    assert.equal(invalidItem !== undefined, true, 'unable to read incorrect filenames');
   });
 });
