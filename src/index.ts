@@ -96,12 +96,18 @@ export interface IOptions {
 export interface IBase {
   /** The filename of the file */
   name: string,
+  /** The filename of the file (buffer version) */
+  nameb: Buffer,
   /** The title of the file (no extension) */
   title: string,
   /** The path of the file */
   path: string,
+  /** The path of the file (buffer version) */
+  pathb: Buffer,
   /** The fullname of the file (path & name & extension) */
   fullname: string,
+  /** The fullname of the file (path & name & extension buffer version) */
+  fullnameb: Buffer,
   /**  The extension of the file with dot in lowercase */
   extension?: string,
   /** The depth of current content */
@@ -219,9 +225,9 @@ let pathSimbol = '/';
  * @returns {Promise<fs.Stats>} stat object information
  * @async
  */
-export async function stat(file:string): Promise<_fs.Stats> {
+export async function stat(buffer:Buffer): Promise<_fs.Stats> {
   return new Promise(function(resolve, reject) {
-    FS.stat(file, function(err: any, stats: _fs.Stats) {
+    FS.stat(buffer, function(err: any, stats: _fs.Stats) {
       if (err) {
         reject(err);
       } else {
@@ -239,7 +245,7 @@ export async function stat(file:string): Promise<_fs.Stats> {
  * @returns {Promise<string>} data content string (base64 format by default)
  * @async
  */
-export async function readFile(file: string, encoding: BufferEncoding|undefined = 'base64'): Promise<string> {
+export async function readFile(file: Buffer, encoding: BufferEncoding|undefined = 'base64'): Promise<string> {
   return new Promise(function(resolve, reject) {
     FS.readFile(file, { encoding }, function(err: any, data: string) {
       if (err) {
@@ -298,7 +304,7 @@ function addOptionalKeys(obj:IBase, file: string, settings: IOptions, deep: numb
  * @returns void
  */
 function read(rpath: string, data: any, settings: IOptions, deep: number, resolve: any, reject: any) {
-  FS.readdir(rpath, function(error: any, files: string[]) {
+  FS.readdir(rpath, 'buffer', function(error: any, files: Buffer[]) {
   // If error reject them
     if (error) {
       reject(error);
@@ -309,14 +315,18 @@ function read(rpath: string, data: any, settings: IOptions, deep: number, resolv
       };
       // Iterate through elements (files and folders)
       for (const file of files) {
+        const path = rpath + (rpath.endsWith(pathSimbol) ? '' : pathSimbol);
         const obj:IBase = {
-          name: file,
-          title: removeExt(file),
+          name: file.toString(),
+          nameb: file,
+          title: removeExt(file.toString()),
           path: rpath,
-          fullname: rpath + (rpath.endsWith(pathSimbol) ? '' : pathSimbol) + file,
+          pathb: Buffer.from(rpath),
+          fullname: path + file.toString(),
+          fullnameb: Buffer.concat([Buffer.from(path), file]),
         };
         if (checkItem(obj.fullname, settings)) {
-          addOptionalKeys(obj, file, settings, deep);
+          addOptionalKeys(obj, file.toString(), settings, deep);
           data.push(obj);
         }
       }
@@ -479,13 +489,13 @@ async function statDir(
 async function statDirItem(
     collection:(IFile|IFolder)[], i: number, settings: IOptions, progress: Function|undefined, deep: number,
 ):Promise<(IFile|IFolder)[]> {
-  const stats = await stat(collection[i].fullname);
+  const stats = await stat(collection[i].fullnameb);
   collection[i].isDirectory = stats.isDirectory();
   if (settings.stats) {
     (collection[i] as IFile).stats = stats;
   }
   if (settings.readContent && !collection[i].isDirectory) {
-    (collection[i] as IFile).data = await readFile(collection[i].fullname, settings.encoding);
+    (collection[i] as IFile).data = await readFile(collection[i].fullnameb, settings.encoding);
   }
   if (collection[i].isDirectory && settings.recursive) {
     const item: IFolder = collection[i];
